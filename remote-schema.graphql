@@ -1,0 +1,175 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+type Bet {
+    betOptions: [BetOption]
+    createdAt: String!
+    id: ID!
+    marketOptionId: ID!
+    potentialWinnings: Float!
+    stake: Float!
+    status: BetStatus!
+    user: User
+    userId: ID!
+}
+
+type BetOption {
+    bet: Bet!
+    id: Int!
+    marketOption: MarketOption!
+}
+
+"An Event represents a sports match or competition on which users can place bets."
+type Event {
+    "Is this event completed?"
+    completed: Boolean!
+    "The id of the event in the source system."
+    externalId: String
+    id: ID!
+    "Is this event currently live?"
+    isLive: Boolean!
+    markets(source: String): [Market]
+    name: String!
+    scoreUpdates: [ScoreUpdate]
+    sport: Sport!
+    startTime: String!
+}
+
+"""
+
+A Market represents a specific betting opportunity within an event.
+It's usually associated with one aspect of the event that users can bet on.
+A single event can have multiple markets. Some common examples of markets
+include Moneyline, Point Spread, and Totals (Over/Under).
+"""
+type Market {
+    event: Event
+    id: ID!
+    "Is this Market available for live betting?"
+    isLive: Boolean!
+    """
+
+    When was this Market last updated? Used to track when the odds were last
+    updated during live betting.
+    """
+    lastUpdated: String
+    name: String!
+    options: [MarketOption]
+    "What is the source or bookmaker that provides the odds for this Market?"
+    source: String!
+}
+
+"""
+
+A MarketOption represents a specific choice or outcome within a market
+that users can bet on. Each market typically has two or more options to choose from.
+"""
+type MarketOption {
+    id: ID!
+    """
+
+    When was this Market last updated? Used to track when the odds were last
+    updated during live betting.
+    """
+    lastUpdated: String
+    market: Market
+    name: String!
+    odds: Float!
+}
+
+" Mutations"
+type Mutation {
+    " should be available for admins only:"
+    createEvent(name: String!, sport: String!, startTime: String!): Event
+    createMarket(eventId: ID!, name: String!): Market
+    createMarketOption(marketId: ID!, name: String!, odds: Float!): MarketOption
+    createUser(email: String!, password: String!, username: String!): User
+    depositFunds(amount: Float!, userId: ID!): Wallet
+    placeBet(marketOptions: [ID!]!, stake: Float!, userId: ID!): Bet
+    withdrawFunds(amount: Float!, userId: ID!): Wallet
+}
+
+" Queries"
+type Query {
+    getBet(id: ID!): Bet
+    getEvent(id: ID!): Event
+    getMarket(id: ID!): Market
+    getUser(id: ID!): User
+    listBets(userId: ID!): [Bet]
+    listEvents: [Event]
+    listLiveEvents: [Event]
+    listLiveMarkets(eventId: ID!): [Market]
+    listMarkets(eventId: ID!): [Market]
+}
+
+type ScoreUpdate {
+    event: Event!
+    id: ID!
+    name: String!
+    score: String!
+    timestamp: String!
+}
+
+type Sport {
+    "Is this sport in season at the moment?"
+    active: Boolean!
+    description: String!
+    group: String!
+    "Does this sport have outright markets?"
+    hasOutrights: Boolean!
+    id: ID!
+    key: String!
+    title: String!
+}
+
+type Subscription {
+    liveMarketOptionUpdated: MarketOption
+}
+
+type Transaction {
+    amount: Float!
+    createdAt: String!
+    id: ID!
+    transactionType: TransactionType!
+    wallet: Wallet
+}
+
+type User {
+    bets: [Bet]
+    email: String!
+    id: ID!
+    password: String!
+    username: String!
+    wallet: Wallet
+}
+
+type Wallet {
+    balance: Float!
+    id: ID!
+    transactions: [Transaction]
+    user: User
+    userId: ID!
+}
+
+enum BetStatus {
+    CANCELED
+    LOST
+    PENDING
+    WON
+}
+
+enum TransactionType {
+    BET_PLACED
+    BET_REFUNDED
+    BET_WON
+    DEPOSIT
+    WITHDRAWAL
+}
+
+"A slightly refined version of RFC-3339 compliant DateTime Scalar"
+scalar DateTime

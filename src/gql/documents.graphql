@@ -1,0 +1,50 @@
+fragment Event on Event {
+    id
+    externalId
+    name
+    startTime
+    sport {
+        id
+        key
+        title
+        description
+        active
+        group
+        hasOutrights
+    }
+    isLive
+    completed
+    markets(source: "betfair") {
+        id
+        isLive
+        name
+        source
+        lastUpdated
+        options {
+            id
+            name
+            odds
+        }
+    }
+}
+
+query ListEvents {
+    listEvents {
+        ...Event
+    }
+}
+
+query ListLiveEvents {
+    listLiveEvents {
+        ...Event
+    }
+}
+
+subscription marketOptionUpdates {
+    liveMarketOptionUpdated {
+        id
+        name
+        odds
+        lastUpdated
+    }
+}

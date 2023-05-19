@@ -11,10 +11,11 @@ import {
   NextSSRInMemoryCache,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
+import {BASE_URL, splitLink} from "@/lib/apollo-link";
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://ultrabet.herokuapp.com/graphql/",
+    uri: `${BASE_URL}/graphql`,
   });
 
   return new ApolloClient({
@@ -30,7 +31,7 @@ function makeClient() {
           }),
           httpLink,
         ])
-        : httpLink,
+        : splitLink(httpLink),
   });
 }
 
