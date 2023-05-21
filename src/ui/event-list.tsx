@@ -57,6 +57,17 @@ const OddsValue = styled.div`
   font-weight: bold;
 `;
 
+const OptionName = styled.div`
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+`
+
+const OddsHistory = styled.p`
+  font-size: 10px;
+  color: #666;
+`
+
 function elapsedTime(startTime: string) {
   const start = new Date(`${startTime}Z`);
   const now = new Date()
@@ -98,6 +109,8 @@ export function ElapsedTime({startTime}: { startTime: string }) {
   return <div>{formatDuration(elapsed)}</div>
 }
 
+type MarketOptionWithHistory = MarketOption & { history: string }
+
 export function EventList({events, live = false}: { events: EventFragment[], live?: boolean }) {
   const sorted = events.sort((a, b) => {
     const startA = new Date(a.startTime);
@@ -117,8 +130,10 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
           console.log("no h2h market")
           return null;
         }
-
-        const [homeTeam, awayTeam, draw] = headToHeadMarket.options;
+        let options = headToHeadMarket.options as MarketOptionWithHistory[];
+        if (options.length !== 2) {
+          options = [options[0], options[2], options[1]]
+        }
 
         return (
           <EventWrapper key={event.id}>
@@ -131,19 +146,15 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
               </HeaderItem>
             </EventHeader>
             <OddsWrapper>
-              <OddsBox>
-                <div>1</div>
-                <OddsValue>{homeTeam?.odds}</OddsValue>
-              </OddsBox>
-              {draw && (
-                <OddsBox>
-                  <div>X</div>
-                  <OddsValue>{draw.odds}</OddsValue>
-                </OddsBox>)}
-              <OddsBox>
-                <div>2</div>
-                <OddsValue>{awayTeam?.odds}</OddsValue>
-              </OddsBox>
+              {options.map((option: MarketOptionWithHistory) =>
+                (
+                  <OddsBox key={option?.id}>
+                    <OptionName>{option?.name}</OptionName>
+                    <OddsValue>{option?.odds}</OddsValue>
+                    <OddsHistory>{option?.history ?? ''}</OddsHistory>
+                  </OddsBox>)
+              )}
+
             </OddsWrapper>
           </EventWrapper>
         );
@@ -153,13 +164,13 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
 }
 
 export function LiveEventList({events}: { events: EventFragment[] }) {
-  const [liveEvents, setLiveEvents] = useState(events);
+  const [liveEvents, setLiveEvents] = useState<EventFragment[]>(events);
 
   const handleMarketOptionUpdate = (updatedMarketOption: MarketOption) => {
     const allOptions = liveEvents.flatMap((event) => event.markets?.flatMap((market) => market?.options ?? []));
     const currentOption = allOptions.find((option) => option?.id === updatedMarketOption.id)
-    if (currentOption) {
-      console.log("updating option", currentOption, updatedMarketOption)
+    if (currentOption && currentOption.odds !== updatedMarketOption.odds) {
+      console.log("updating odds to " + updatedMarketOption.odds, currentOption.name)
 
       setLiveEvents((prevEvents) =>
         prevEvents.map((event: EventFragment) => {
@@ -171,7 +182,11 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
               name: market?.name ?? '',
               source: market?.source ?? '',
               options: market?.options?.map((option) =>
-                option?.id === updatedMarketOption.id ? updatedMarketOption : option
+                option?.id === updatedMarketOption.id ? {
+                  ...option,
+                  odds: updatedMarketOption.odds,
+                  history: `${(option as MarketOptionWithHistory).history ?? option.odds} > ${updatedMarketOption.odds}`
+                } : option
               ),
             })),
           }
@@ -186,7 +201,7 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
     },
     onData: ({data}) => {
       if (data?.data?.liveMarketOptionUpdated) {
-        handleMarketOptionUpdate(data.data.liveMarketOptionUpdated);
+        console.log("update incoming...")
       }
     },
   });
@@ -200,7 +215,9 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
   }, [error]);
   useEffect(() => {
     if (subscriptionData) {
-      console.error(`Subscription data: ${subscriptionData}`);
+      if (subscriptionData?.liveMarketOptionUpdated) {
+        handleMarketOptionUpdate(subscriptionData.liveMarketOptionUpdated);
+      }
     }
   }, [subscriptionData]);
 
