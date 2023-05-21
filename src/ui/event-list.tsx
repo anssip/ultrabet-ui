@@ -64,7 +64,7 @@ function elapsedTime(startTime: string) {
 
 function formatStartTime(startTime: string) {
   const start = new Date(`${startTime}Z`);
-  return start.toLocaleTimeString()
+  return start.toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})
 }
 
 export function ElapsedTime({startTime}: { startTime: string }) {

@@ -5,7 +5,7 @@ import {BASE_URL, splitLink} from "@/lib/apollo-link";
 export const {getClient} = registerApolloClient(() => {
   const httpLink = new HttpLink({
     uri: `${BASE_URL}/graphql`,
-    fetchOptions: {cache: "no-store"},
+    fetchOptions: {revalidate: 10},
   });
 
   return new ApolloClient({
