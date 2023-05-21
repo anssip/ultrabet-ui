@@ -124,7 +124,7 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
       {sorted.map((event) => {
         if (!event) return null;
         // TODO: show all markets
-        const headToHeadMarket = event?.markets?.find(market => ['h2h', 'h2h_lay'].includes(market?.name ?? ''));
+        const headToHeadMarket = event?.markets?.find(market => ['h2h', 'h2h_lay'].includes(market?.name ?? '') && market?.source === 'betfair');
 
         if (!headToHeadMarket?.options) {
           console.log("no h2h market")
