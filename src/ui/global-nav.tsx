@@ -1,16 +1,36 @@
 'use client';
 
-import {useSelectedLayoutSegment} from "next/navigation";
+import {usePathname} from "next/navigation";
 import Link from "next/link";
+import styled from '@emotion/styled'
 
+const GlobalNavContainer = styled.div`
+  width: 100%;
+  background-color: #be8ec4;
+  color: white;
+  margin-bottom: 2em;
+  padding: 1em;
+`
+
+const MenuList = styled.ul`
+  display: flex;
+  flex-direction: row;
+`
+const NavItemContainer = styled.li<{ active: boolean }>`
+  list-style-type: none;
+  margin-left: 1em;
+  font-weight: ${({active}) => active ? '900' : '200'}
+`
 export default function GlobalNav() {
   return (
-    <nav>
-      <ul>
-        <li><GlobalNavItem label="In-play" slug=""/></li>
-        <li><GlobalNavItem label="Upcoming" slug="upcoming"/></li>
-      </ul>
-    </nav>
+    <GlobalNavContainer>
+      <nav>
+        <MenuList>
+          <GlobalNavItem label="In-play" slug="/"/>
+          <GlobalNavItem label="Upcoming" slug="/upcoming"/>
+        </MenuList>
+      </nav>
+    </GlobalNavContainer>
   )
 }
 
@@ -21,16 +41,17 @@ function GlobalNavItem({
   label: string
   slug: string
 }) {
-  const segment = useSelectedLayoutSegment();
-  console.log("segment", segment);
-  const isActive = slug === segment;
+  const path = usePathname();
+  console.log("segment", path);
+  const isActive = slug === path;
 
-  // TODO: style active link
   return (
-    <Link
-      href={`/${slug}`}
-    >
-      {isActive ? <span>{">>" + label}</span> : <span>{label}</span>}
-    </Link>
+    <NavItemContainer active={isActive}>
+      <Link
+        href={slug}
+      >
+        {label}
+      </Link>
+    </NavItemContainer>
   );
 }

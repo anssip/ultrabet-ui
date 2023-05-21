@@ -7,31 +7,42 @@ import {useEffect, useState} from "react";
 import {MarketOptionUpdatesDocument} from "@/gql/documents.generated";
 import {MarketOption} from "@/gql/types.generated";
 
+const Events = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+`
+
 const EventWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
-  max-width: 450px;
+  width: 400px;
   border: 1px solid #ccc;
   margin-left: auto;
   margin-right: auto;
-  padding: 1em;
+  padding: .5em 1em;
 `;
 
 const EventHeader = styled.div`
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 1em;
+  background-color: #ccc;
+  padding: .3em;
+  text-align: center;
 `;
 
 const OddsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const OddsBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   width: 100px;
 `;
 
@@ -42,11 +53,11 @@ const OddsValue = styled.div`
 
 export function EventList({events}: { events: EventFragment[] }) {
   return (
-    <>
+    <Events>
       {events.map((event) => {
         if (!event) return null;
         // TODO: show all markets
-        const headToHeadMarket = event?.markets?.find(market => market?.name === 'h2h');
+        const headToHeadMarket = event?.markets?.find(market => ['h2h', 'h2h_lay'].includes(market?.name ?? ''));
 
         if (!headToHeadMarket?.options) {
           console.log("no h2h market")
@@ -76,7 +87,7 @@ export function EventList({events}: { events: EventFragment[] }) {
           </EventWrapper>
         );
       })}
-    </>
+    </Events>
   )
 }
 
