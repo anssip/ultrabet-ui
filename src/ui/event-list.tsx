@@ -166,44 +166,16 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
 export function LiveEventList({events}: { events: EventFragment[] }) {
   const [liveEvents, setLiveEvents] = useState<EventFragment[]>(events);
 
-  const handleMarketOptionUpdate = (updatedMarketOption: MarketOption) => {
-    const allOptions = liveEvents.flatMap((event) => event.markets?.flatMap((market) => market?.options ?? []));
-    const currentOption = allOptions.find((option) => option?.id === updatedMarketOption.id)
-    if (currentOption && currentOption.odds !== updatedMarketOption.odds) {
-      console.log("updating odds to " + updatedMarketOption.odds, currentOption.name)
-
-      setLiveEvents((prevEvents) =>
-        prevEvents.map((event: EventFragment) => {
-          const updatedEvent: EventFragment = {
-            ...event,
-            markets: event.markets?.map((market) => ({
-              id: market?.id ?? '',
-              isLive: market?.isLive ?? false,
-              name: market?.name ?? '',
-              source: market?.source ?? '',
-              options: market?.options?.map((option) =>
-                option?.id === updatedMarketOption.id ? {
-                  ...option,
-                  odds: updatedMarketOption.odds,
-                  history: `${(option as MarketOptionWithHistory).history ?? option.odds} > ${updatedMarketOption.odds}`
-                } : option
-              ),
-            })),
-          }
-          return updatedEvent
-        }))
-    }
-  };
 
   const {data: subscriptionData, loading, error} = useSubscription(MarketOptionUpdatesDocument, {
     onError: (error) => {
       console.error("subscription error", error)
     },
-    onData: ({data}) => {
-      if (data?.data?.liveMarketOptionUpdated) {
-        console.log("update incoming...")
-      }
-    },
+    // onData: ({data}) => {
+    //   if (data?.data?.liveMarketOptionUpdated) {
+    //     console.log("update incoming...")
+    //   }
+    // },
   });
   if (loading) {
     console.log("loading...")
@@ -214,12 +186,41 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
     }
   }, [error]);
   useEffect(() => {
+    const handleMarketOptionUpdate = (updatedMarketOption: MarketOption) => {
+      const allOptions = liveEvents.flatMap((event) => event.markets?.flatMap((market) => market?.options ?? []));
+      const currentOption = allOptions.find((option) => option?.id === updatedMarketOption.id)
+      if (currentOption && currentOption.odds !== updatedMarketOption.odds) {
+        console.log("updating odds to " + updatedMarketOption.odds, currentOption.name)
+
+        setLiveEvents((prevEvents) =>
+          prevEvents.map((event: EventFragment) => {
+            const updatedEvent: EventFragment = {
+              ...event,
+              markets: event.markets?.map((market) => ({
+                id: market?.id ?? '',
+                isLive: market?.isLive ?? false,
+                name: market?.name ?? '',
+                source: market?.source ?? '',
+                options: market?.options?.map((option) =>
+                  option?.id === updatedMarketOption.id ? {
+                    ...option,
+                    odds: updatedMarketOption.odds,
+                    history: `${(option as MarketOptionWithHistory).history ?? option.odds} > ${updatedMarketOption.odds}`
+                  } : option
+                ),
+              })),
+            }
+            return updatedEvent
+          }))
+      }
+    };
+
     if (subscriptionData) {
       if (subscriptionData?.liveMarketOptionUpdated) {
         handleMarketOptionUpdate(subscriptionData.liveMarketOptionUpdated);
       }
     }
-  }, [subscriptionData]);
+  }, [subscriptionData, liveEvents]);
 
   return <EventList events={liveEvents} live={true}/>
 }
