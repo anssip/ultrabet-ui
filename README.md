@@ -42,4 +42,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - [x] Add GraphQL codegen
 - [x] Add context for Apollo client. Where to place this?
-- [ ] Move EventList to a UI component
+- [ ] h2h lay odds rendering
+- [ ] show some kind of notification when odds change
+- [ ] add to git
