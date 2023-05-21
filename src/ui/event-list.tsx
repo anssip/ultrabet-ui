@@ -36,6 +36,7 @@ const EventHeader = styled.div`
 `;
 const HeaderItem = styled.div`
   text-align: center;
+  max-width: 200px;
 `
 
 const OddsWrapper = styled.div`
@@ -64,7 +65,7 @@ function elapsedTime(startTime: string) {
 
 function formatStartTime(startTime: string) {
   const start = new Date(`${startTime}Z`);
-  return start.toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})
+  return start.toLocaleDateString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})
 }
 
 export function ElapsedTime({startTime}: { startTime: string }) {
@@ -101,8 +102,8 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
   const sorted = events.sort((a, b) => {
     const startA = new Date(a.startTime);
     const startB = new Date(b.startTime);
-    if (startA < startB) return 1;
-    if (startA > startB) return -1;
+    if (startA < startB) return live ? 1 : -1;
+    if (startA > startB) return live ? -1 : 1;
     return 0;
   });
   return (

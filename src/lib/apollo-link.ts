@@ -7,7 +7,7 @@ export const BASE_URL = "https://ultrabet.herokuapp.com";
 
 
 export const wsLink = new GraphQLWsLink(createClient({
-  url: `${BASE_URL}/subscriptions`.replace(/^https/, 'ws')
+  url: `${BASE_URL}/subscriptions`.replace(/^https/, 'wss')
 }));
 export const splitLink = (httpLink: HttpLink) => split(
   ({query}) => {
