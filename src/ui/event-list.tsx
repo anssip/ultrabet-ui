@@ -26,12 +26,17 @@ const EventWrapper = styled.div`
 `;
 
 const EventHeader = styled.div`
-  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-weight: 300;
   margin-bottom: 1em;
   background-color: #ccc;
   padding: .3em;
-  text-align: center;
 `;
+const HeaderItem = styled.div`
+  text-align: center;
+`
 
 const OddsWrapper = styled.div`
   display: flex;
@@ -51,10 +56,58 @@ const OddsValue = styled.div`
   font-weight: bold;
 `;
 
-export function EventList({events}: { events: EventFragment[] }) {
+function elapsedTime(startTime: string) {
+  const start = new Date(`${startTime}Z`);
+  const now = new Date()
+  return now.getTime() - start.getTime()
+}
+
+function formatStartTime(startTime: string) {
+  const start = new Date(`${startTime}Z`);
+  return start.toLocaleTimeString()
+}
+
+export function ElapsedTime({startTime}: { startTime: string }) {
+  const [elapsed, setElapsed] = useState(elapsedTime(startTime));
+
+  function formatDuration(ms: number): string {
+    const padWithZero = (n: number): string => (n < 10 ? '0' + n : n.toString());
+
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+
+    const remainingSeconds = seconds - (minutes * 60);
+    const remainingMinutes = minutes - (hours * 60);
+
+    return (hours > 0 ? padWithZero(hours) + ':' : '') +
+      ((minutes > 0 || hours > 0) ? padWithZero(remainingMinutes) + ':' : '') +
+      padWithZero(remainingSeconds);
+  }
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElapsed(elapsedTime(startTime))
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [startTime])
+
+  return <div>{formatDuration(elapsed)}</div>
+}
+
+export function EventList({events, live = false}: { events: EventFragment[], live?: boolean }) {
+  const sorted = events.sort((a, b) => {
+    const startA = new Date(a.startTime);
+    const startB = new Date(b.startTime);
+    if (startA < startB) return 1;
+    if (startA > startB) return -1;
+    return 0;
+  });
   return (
     <Events>
-      {events.map((event) => {
+      {sorted.map((event) => {
         if (!event) return null;
         // TODO: show all markets
         const headToHeadMarket = event?.markets?.find(market => ['h2h', 'h2h_lay'].includes(market?.name ?? ''));
@@ -68,7 +121,14 @@ export function EventList({events}: { events: EventFragment[] }) {
 
         return (
           <EventWrapper key={event.id}>
-            <EventHeader>{event.name}</EventHeader>
+            <EventHeader>
+              <HeaderItem>
+                {event.name}
+              </HeaderItem>
+              <HeaderItem>
+                {live ? <ElapsedTime startTime={event.startTime}/> : formatStartTime(event.startTime)}
+              </HeaderItem>
+            </EventHeader>
             <OddsWrapper>
               <OddsBox>
                 <div>1</div>
@@ -142,9 +202,6 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
       console.error(`Subscription data: ${subscriptionData}`);
     }
   }, [subscriptionData]);
-  // useEffect(() => {
-  //   console.log("liveEvents now", liveEvents)
-  // }, [liveEvents]);
 
-  return <EventList events={liveEvents}/>
+  return <EventList events={liveEvents} live={true}/>
 }
