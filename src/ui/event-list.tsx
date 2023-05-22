@@ -190,7 +190,8 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
       const allOptions = liveEvents.flatMap((event) => event.markets?.flatMap((market) => market?.options ?? []));
       const currentOption = allOptions.find((option) => option?.id === updatedMarketOption.id)
       if (currentOption && currentOption.odds !== updatedMarketOption.odds) {
-        console.log("updating odds to " + updatedMarketOption.odds, currentOption.name)
+        // @ts-ignore
+        console.log(`updating odds to ${currentOption.history} > ${updatedMarketOption.odds}`, currentOption.name)
 
         setLiveEvents((prevEvents) =>
           prevEvents.map((event: EventFragment) => {
