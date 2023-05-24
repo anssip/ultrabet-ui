@@ -2,7 +2,8 @@ import {getClient} from "@/lib/client";
 import LiveEventsPage from "@/app/(events)/(live)/live-events-rcs";
 import {EventFragment, ListLiveEventsDocument} from '@/gql/documents.generated'
 
-export const revalidate = 60;
+// export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function Page() {
   const data = await getClient().query({
