@@ -2,7 +2,7 @@ import type {CodegenConfig} from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'https://ultrabet.herokuapp.com/graphql',
+  schema: 'https://ultrabet-api.herokuapp.com/graphql',
   documents: ["src/**/*.graphql"],
   generates: {
     "src/gql/types.generated.ts": {plugins: ["typescript"]},

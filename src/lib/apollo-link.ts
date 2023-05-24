@@ -3,7 +3,7 @@ import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
 import {createClient} from "graphql-ws";
 import {getMainDefinition} from "@apollo/client/utilities";
 
-export const BASE_URL = "https://ultrabet.herokuapp.com";
+export const BASE_URL = "https://ultrabet-api.herokuapp.com";
 
 
 export const wsLink = new GraphQLWsLink(createClient({
