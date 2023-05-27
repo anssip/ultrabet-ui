@@ -249,7 +249,7 @@ export type Sport = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  liveMarketOptionUpdated?: Maybe<MarketOption>;
+  liveMarketOptionsUpdated?: Maybe<Array<Maybe<MarketOption>>>;
 };
 
 export type Transaction = {

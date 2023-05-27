@@ -41,7 +41,7 @@ query ListLiveEvents {
 }
 
 subscription marketOptionUpdates {
-    liveMarketOptionUpdated {
+    liveMarketOptionsUpdated {
         id
         name
         odds

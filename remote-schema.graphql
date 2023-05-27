@@ -128,7 +128,7 @@ type Sport {
 }
 
 type Subscription {
-    liveMarketOptionUpdated: MarketOption
+    liveMarketOptionsUpdated: [MarketOption]
 }
 
 type Transaction {

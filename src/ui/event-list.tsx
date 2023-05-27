@@ -1,10 +1,9 @@
 'use client';
 
 import styled from '@emotion/styled';
-import {EventFragment} from "@/gql/documents.generated";
+import {EventFragment, MarketOptionUpdatesDocument} from "@/gql/documents.generated";
 import {useSubscription} from '@apollo/client';
 import {useEffect, useState} from "react";
-import {MarketOptionUpdatesDocument} from "@/gql/documents.generated";
 import {MarketOption} from "@/gql/types.generated";
 
 const Events = styled.div`
@@ -149,7 +148,7 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
               {options.map((option: MarketOptionWithHistory) =>
                 (
                   <OddsBox key={option?.id}>
-                    <OptionName>{option?.name}</OptionName>
+                    <OptionName>{option?.name} ({option?.id})</OptionName>
                     <OddsValue>{option?.odds}</OddsValue>
                     <OddsHistory>{option?.history ?? ''}</OddsHistory>
                   </OddsBox>)
@@ -186,42 +185,35 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
     }
   }, [error]);
   useEffect(() => {
-    const handleMarketOptionUpdate = (updatedMarketOption: MarketOption) => {
-      const allOptions = liveEvents.flatMap((event) => event.markets?.flatMap((market) => market?.options ?? []));
-      const currentOption = allOptions.find((option) => option?.id === updatedMarketOption.id)
-      if (currentOption && currentOption.odds !== updatedMarketOption.odds) {
-        // @ts-ignore
-        console.log(`updating odds to ${currentOption.history} > ${updatedMarketOption.odds}`, currentOption.name)
-
-        setLiveEvents((prevEvents) =>
-          prevEvents.map((event: EventFragment) => {
-            const updatedEvent: EventFragment = {
-              ...event,
-              markets: event.markets?.map((market) => ({
-                id: market?.id ?? '',
-                isLive: market?.isLive ?? false,
-                name: market?.name ?? '',
-                source: market?.source ?? '',
-                options: market?.options?.map((option) =>
-                  option?.id === updatedMarketOption.id ? {
-                    ...option,
-                    odds: updatedMarketOption.odds,
-                    history: `${(option as MarketOptionWithHistory).history ?? option.odds} > ${updatedMarketOption.odds}`
-                  } : option
-                ),
-              })),
-            }
-            return updatedEvent
-          }))
-      }
+    let updated = false;
+    const handleMarketOptionUpdate = (currentEvents: EventFragment[], updatedMarketOptions: MarketOption[]) => {
+      return currentEvents.map((event) => {
+        const updatedMarkets = event?.markets?.map((market) => {
+          if (market?.options) {
+            const updatedOptions = market.options.map((option) => {
+              const updatedOption = updatedMarketOptions.find((updatedOption) => updatedOption.id === option?.id);
+              if (updatedOption) {
+                console.log("updating option", updatedOption);
+                updated = true
+                const history = option?.odds !== updatedOption.odds ? `${option?.odds} -> ${updatedOption.odds}` : '';
+                return {...option, ...updatedOption, history};
+              }
+              return option;
+            });
+            return {...market, options: updatedOptions};
+          }
+          return market;
+        });
+        return {...event, markets: updatedMarkets};
+      })
     };
 
     if (subscriptionData) {
-      if (subscriptionData?.liveMarketOptionUpdated) {
-        handleMarketOptionUpdate(subscriptionData.liveMarketOptionUpdated);
+      if (subscriptionData?.liveMarketOptionsUpdated) {
+        setLiveEvents(current => handleMarketOptionUpdate(current, subscriptionData.liveMarketOptionsUpdated as MarketOption[]));
       }
     }
-  }, [subscriptionData, liveEvents]);
+  }, [subscriptionData]);
 
   return <EventList events={liveEvents} live={true}/>
 }
