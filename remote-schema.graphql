@@ -26,10 +26,12 @@ type BetOption {
 
 "An Event represents a sports match or competition on which users can place bets."
 type Event {
+    awayTeamName: String!
     "Is this event completed?"
     completed: Boolean!
     "The id of the event in the source system."
     externalId: String
+    homeTeamName: String!
     id: ID!
     "Is this event currently live?"
     isLive: Boolean!
@@ -128,6 +130,8 @@ type Sport {
 }
 
 type Subscription {
+    eventScoresUpdated: Event
+    eventStatusUpdated: Event
     liveMarketOptionsUpdated: [MarketOption]
 }
 

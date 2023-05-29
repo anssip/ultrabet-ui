@@ -3,6 +3,8 @@ fragment Event on Event {
     externalId
     name
     startTime
+    homeTeamName
+    awayTeamName
     sport {
         id
         key
@@ -26,6 +28,11 @@ fragment Event on Event {
             odds
         }
     }
+    scoreUpdates {
+        id
+        name
+        score
+    }
 }
 
 query ListEvents {
@@ -46,5 +53,17 @@ subscription marketOptionUpdates {
         name
         odds
         lastUpdated
+    }
+}
+
+subscription scoreUpdates {
+    eventScoresUpdated {
+        ...Event
+    }
+}
+
+subscription eventStatusUpdates {
+    eventStatusUpdated {
+        ...Event
     }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
-import {EventFragment, MarketOptionUpdatesDocument} from "@/gql/documents.generated";
+import {EventFragment, MarketOptionUpdatesDocument, ScoreUpdatesDocument} from "@/gql/documents.generated";
 import {useSubscription} from '@apollo/client';
 import {useEffect, useState} from "react";
 import {MarketOption} from "@/gql/types.generated";
@@ -34,8 +34,17 @@ const EventHeader = styled.div`
   padding: .3em;
 `;
 const HeaderItem = styled.div`
+  display: flex;
+  flex-direction: column;
   text-align: center;
   max-width: 200px;
+`
+const HeaderSubItem = styled.div`
+  padding: .3em;
+`
+const HeaderSubItem2 = styled.div`
+  padding: .3em;
+  background-color: lightseagreen;
 `
 
 const OddsWrapper = styled.div`
@@ -110,6 +119,13 @@ export function ElapsedTime({startTime}: { startTime: string }) {
 
 type MarketOptionWithHistory = MarketOption & { history: string }
 
+function renderScore(event: EventFragment): string {
+  const getTeamScore = (teamName: string) => event?.scoreUpdates?.filter(s => s && s.name === teamName).reduce((acc, s) => acc + parseInt(s?.score ?? '0'), 0) ?? 0;
+  const homeScore = getTeamScore(event?.homeTeamName);
+  const awayScore = getTeamScore(event?.awayTeamName);
+  return `${homeScore} - ${awayScore}`;
+}
+
 export function EventList({events, live = false}: { events: EventFragment[], live?: boolean }) {
   const sorted = events.sort((a, b) => {
     const startA = new Date(a.startTime);
@@ -141,7 +157,14 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
                 {event.name}
               </HeaderItem>
               <HeaderItem>
-                {live ? <ElapsedTime startTime={event.startTime}/> : formatStartTime(event.startTime)}
+                <HeaderSubItem>{live ?
+                  <ElapsedTime startTime={event.startTime}/> : formatStartTime(event.startTime)}
+                </HeaderSubItem>
+                {live && (
+                  <HeaderSubItem2>
+                    {renderScore(event)}
+                  </HeaderSubItem2>
+                )}
               </HeaderItem>
             </EventHeader>
             <OddsWrapper>
@@ -165,28 +188,19 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
 export function LiveEventList({events}: { events: EventFragment[] }) {
   const [liveEvents, setLiveEvents] = useState<EventFragment[]>(events);
 
+  const {data: optionsUpdateData, error: optionsError} = useSubscription(MarketOptionUpdatesDocument,);
+  const {data: scoreUpdatesData, error: scoreError} = useSubscription(ScoreUpdatesDocument,);
 
-  const {data: subscriptionData, loading, error} = useSubscription(MarketOptionUpdatesDocument, {
-    onError: (error) => {
-      console.error("subscription error", error)
-    },
-    // onData: ({data}) => {
-    //   if (data?.data?.liveMarketOptionUpdated) {
-    //     console.log("update incoming...")
-    //   }
-    // },
-  });
-  if (loading) {
-    console.log("loading...")
-  }
+  const error = optionsError || scoreError;
   useEffect(() => {
     if (error) {
-      console.error(`Subscription error: ${error.message}`);
+      alert(`Subscription error: ${error.message}`);
     }
   }, [error]);
+
   useEffect(() => {
     let updated = false;
-    const handleMarketOptionUpdate = (currentEvents: EventFragment[], updatedMarketOptions: MarketOption[]) => {
+    const getUpdatedEvents = (currentEvents: EventFragment[], updatedMarketOptions: MarketOption[]) => {
       return currentEvents.map((event) => {
         const updatedMarkets = event?.markets?.map((market) => {
           if (market?.options) {
@@ -208,12 +222,31 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
       })
     };
 
-    if (subscriptionData) {
-      if (subscriptionData?.liveMarketOptionsUpdated) {
-        setLiveEvents(current => handleMarketOptionUpdate(current, subscriptionData.liveMarketOptionsUpdated as MarketOption[]));
+    if (optionsUpdateData) {
+      if (optionsUpdateData?.liveMarketOptionsUpdated) {
+        setLiveEvents(current => getUpdatedEvents(current, optionsUpdateData.liveMarketOptionsUpdated as MarketOption[]));
       }
     }
-  }, [subscriptionData]);
+  }, [optionsUpdateData]);
+
+  useEffect(() => {
+      const getUpdatedEvents = (currentEvents: EventFragment[], updatedEvent: EventFragment) => {
+        return currentEvents.map((currentEvent) => {
+          if (currentEvent.id === updatedEvent.id) {
+            return {
+              ...currentEvent,
+              scoreUpdates: [...(currentEvent.scoreUpdates ?? []), ...(updatedEvent.scoreUpdates ?? [])]
+            };
+          }
+          return currentEvent;
+        })
+      }
+      console.info("scoreUpdatesData", scoreUpdatesData)
+      if (scoreUpdatesData?.eventScoresUpdated) {
+        setLiveEvents(current => getUpdatedEvents(current, scoreUpdatesData?.eventScoresUpdated as EventFragment));
+      }
+    }
+    , [scoreUpdatesData]);
 
   return <EventList events={liveEvents} live={true}/>
 }

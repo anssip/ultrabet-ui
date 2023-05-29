@@ -43,10 +43,12 @@ export enum BetStatus {
 /** An Event represents a sports match or competition on which users can place bets. */
 export type Event = {
   __typename?: 'Event';
+  awayTeamName: Scalars['String'];
   /** Is this event completed? */
   completed: Scalars['Boolean'];
   /** The id of the event in the source system. */
   externalId?: Maybe<Scalars['String']>;
+  homeTeamName: Scalars['String'];
   id: Scalars['ID'];
   /** Is this event currently live? */
   isLive: Scalars['Boolean'];
@@ -249,6 +251,8 @@ export type Sport = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  eventScoresUpdated?: Maybe<Event>;
+  eventStatusUpdated?: Maybe<Event>;
   liveMarketOptionsUpdated?: Maybe<Array<Maybe<MarketOption>>>;
 };
 
