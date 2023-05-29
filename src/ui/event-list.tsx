@@ -10,7 +10,7 @@ import {
 import {useSubscription} from '@apollo/client';
 import {useEffect, useState} from "react";
 import {MarketOption} from "@/gql/types.generated";
-import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import {CSSTransition} from 'react-transition-group';
 import {keyframes} from '@emotion/react'
 
 const NoEventsNote = styled.p`
@@ -308,6 +308,7 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
           if (currentEvents.find((event) => event.id === updatedEvent.id)) {
             return currentEvents;
           }
+          console.log("new live event", updatedEvent);
           return [...currentEvents, updatedEvent];
         } else {
           return currentEvents.filter((event) => event.id !== updatedEvent.id);
