@@ -10,6 +10,8 @@ import {
 import {useSubscription} from '@apollo/client';
 import {useEffect, useState} from "react";
 import {MarketOption} from "@/gql/types.generated";
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import {css, keyframes} from '@emotion/react'
 
 const NoEventsNote = styled.p`
   text-align: center;
@@ -22,6 +24,14 @@ const Events = styled.div`
   flex-wrap: wrap;
 `
 
+const flash = keyframes`
+  from {
+    background-color: hotpink;
+  }
+  to {
+    background-color: initial;
+  }
+`;
 const EventWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +41,10 @@ const EventWrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
   padding: .5em 1em;
+
+  &.flash {
+    animation: ${flash} 2s;
+  }
 `;
 
 const EventHeader = styled.div`
@@ -135,7 +149,12 @@ function renderScore(event: EventFragment): string {
   return `${homeScore} - ${awayScore}`;
 }
 
-export function EventList({events, live = false}: { events: EventFragment[], live?: boolean }) {
+
+export function EventList({events, live = false, updatedEvents = []}: {
+  events: EventFragment[],
+  live?: boolean,
+  updatedEvents?: string[]
+}) {
   const sorted = events.sort((a, b) => {
     const startA = new Date(a.startTime);
     const startB = new Date(b.startTime);
@@ -161,34 +180,36 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
         }
 
         return (
-          <EventWrapper key={event.id}>
-            <EventHeader>
-              <HeaderItem>
-                {event.name}
-              </HeaderItem>
-              <HeaderItem>
-                <HeaderSubItem>{live ?
-                  <ElapsedTime startTime={event.startTime}/> : formatStartTime(event.startTime)}
-                </HeaderSubItem>
-                {live && (
-                  <HeaderSubItem2>
-                    {renderScore(event)}
-                  </HeaderSubItem2>
+          <CSSTransition key={event.id} timeout={500} classNames="flash">
+            <EventWrapper className={updatedEvents.includes(event.id) ? 'flash' : ''}>
+              <EventHeader>
+                <HeaderItem>
+                  {event.name}
+                </HeaderItem>
+                <HeaderItem>
+                  <HeaderSubItem>{live ?
+                    <ElapsedTime startTime={event.startTime}/> : formatStartTime(event.startTime)}
+                  </HeaderSubItem>
+                  {live && (
+                    <HeaderSubItem2>
+                      {renderScore(event)}
+                    </HeaderSubItem2>
+                  )}
+                </HeaderItem>
+              </EventHeader>
+              <OddsWrapper>
+                {options.map((option: MarketOptionWithHistory) =>
+                  (
+                    <OddsBox key={option?.id}>
+                      <OptionName>{option?.name} ({option?.id})</OptionName>
+                      <OddsValue>{option?.odds}</OddsValue>
+                      <OddsHistory>{option?.history ?? ''}</OddsHistory>
+                    </OddsBox>)
                 )}
-              </HeaderItem>
-            </EventHeader>
-            <OddsWrapper>
-              {options.map((option: MarketOptionWithHistory) =>
-                (
-                  <OddsBox key={option?.id}>
-                    <OptionName>{option?.name} ({option?.id})</OptionName>
-                    <OddsValue>{option?.odds}</OddsValue>
-                    <OddsHistory>{option?.history ?? ''}</OddsHistory>
-                  </OddsBox>)
-              )}
 
-            </OddsWrapper>
-          </EventWrapper>
+              </OddsWrapper>
+            </EventWrapper>
+          </CSSTransition>
         );
       })}
     </Events>
@@ -197,6 +218,7 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
 
 export function LiveEventList({events}: { events: EventFragment[] }) {
   const [liveEvents, setLiveEvents] = useState<EventFragment[]>(events);
+  const [updatedEvents, setUpdatedEvents] = useState<string[]>([]);
 
   const {data: scoreUpdatesData, error: scoreError} = useSubscription(ScoreUpdatesDocument);
   const {data: optionsUpdateData, error: optionsError} = useSubscription(MarketOptionUpdatesDocument);
@@ -209,17 +231,27 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
     }
   }, [error]);
 
+  const setClearUpdatedEvents = () => {
+    // Remove the updated event IDs from the state after the animation duration
+    setTimeout(() => {
+      setUpdatedEvents([]);
+    }, 2000);  // adjust this value according to the duration of your animation
+  }
+
   useEffect(() => {
-    let updated = false;
-    const getUpdatedEvents = (currentEvents: EventFragment[], updatedMarketOptions: MarketOption[]) => {
-      return currentEvents.map((event) => {
+    const getUpdatedEvents = (currentEvents: EventFragment[], updatedMarketOptions: MarketOption[]): {
+      newLiveEvents: EventFragment[],
+      updatedEvents: string[]
+    } => {
+      let updatedEvents: string[] = [];
+      const newLiveEvents = currentEvents.map((event) => {
         const updatedMarkets = event?.markets?.map((market) => {
           if (market?.options) {
             const updatedOptions = market.options.map((option) => {
               const updatedOption = updatedMarketOptions.find((updatedOption) => updatedOption.id === option?.id);
               if (updatedOption) {
-                // console.log("updating option", updatedOption);
-                updated = true
+                console.log("updating option", updatedOption);
+                updatedEvents.push(event.id);
                 const history = option?.odds !== updatedOption.odds ? `${option?.odds} -> ${updatedOption.odds}` : '';
                 return {...option, ...updatedOption, history};
               }
@@ -231,13 +263,21 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
         });
         return {...event, markets: updatedMarkets};
       })
+      return {newLiveEvents, updatedEvents}
     };
 
-    if (optionsUpdateData) {
-      if (optionsUpdateData?.liveMarketOptionsUpdated) {
-        setLiveEvents(current => getUpdatedEvents(current, optionsUpdateData.liveMarketOptionsUpdated as MarketOption[]));
-      }
+    if (optionsUpdateData?.liveMarketOptionsUpdated) {
+      setLiveEvents(current => {
+        const result = getUpdatedEvents(current, optionsUpdateData.liveMarketOptionsUpdated as MarketOption[])
+        if (result.updatedEvents.length > 0) {
+          setUpdatedEvents(result.updatedEvents)
+        }
+        return result.newLiveEvents
+      });
+      setClearUpdatedEvents();
+
     }
+
   }, [optionsUpdateData]);
 
   useEffect(() => {
@@ -256,6 +296,8 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
       console.info("scoreUpdatesData", scoreUpdatesData)
       if (scoreUpdatesData?.eventScoresUpdated) {
         setLiveEvents(current => getUpdatedEvents(current, scoreUpdatesData?.eventScoresUpdated as EventFragment));
+        setUpdatedEvents([scoreUpdatesData?.eventScoresUpdated?.id]);
+        setClearUpdatedEvents();
       }
     }
     , [scoreUpdatesData]);
@@ -274,9 +316,11 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
       console.info("statusUpdateData", statusUpdateData)
       if (statusUpdateData?.eventStatusUpdated) {
         setLiveEvents(current => getUpdatedEvents(current, statusUpdateData?.eventStatusUpdated as EventFragment));
+        setUpdatedEvents([statusUpdateData?.eventStatusUpdated?.id]);
+        setClearUpdatedEvents();
       }
     }
     , [statusUpdateData]);
-
-  return <EventList events={liveEvents} live={true}/>
+  console.log("updatedEvents", updatedEvents);
+  return <EventList events={liveEvents} updatedEvents={updatedEvents} live={true}/>
 }
