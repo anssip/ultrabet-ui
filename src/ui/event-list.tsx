@@ -11,7 +11,7 @@ import {useSubscription} from '@apollo/client';
 import {useEffect, useState} from "react";
 import {MarketOption} from "@/gql/types.generated";
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
-import {css, keyframes} from '@emotion/react'
+import {keyframes} from '@emotion/react'
 
 const NoEventsNote = styled.p`
   text-align: center;
@@ -249,7 +249,7 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
           if (market?.options) {
             const updatedOptions = market.options.map((option) => {
               const updatedOption = updatedMarketOptions.find((updatedOption) => updatedOption.id === option?.id);
-              if (updatedOption) {
+              if (updatedOption && updatedOption.odds !== option?.odds) {
                 console.log("updating option", updatedOption);
                 updatedEvents.push(event.id);
                 const history = option?.odds !== updatedOption.odds ? `${option?.odds} -> ${updatedOption.odds}` : '';
