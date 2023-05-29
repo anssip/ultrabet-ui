@@ -6,6 +6,10 @@ import {useSubscription} from '@apollo/client';
 import {useEffect, useState} from "react";
 import {MarketOption} from "@/gql/types.generated";
 
+const NoEventsNote = styled.p`
+  text-align: center;
+`
+
 const Events = styled.div`
   display: flex;
   flex-direction: row;
@@ -134,6 +138,7 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
     if (startA > startB) return live ? -1 : 1;
     return 0;
   });
+  if (events.length === 0) return (<NoEventsNote>No {live && 'live'} events at the moment</NoEventsNote>);
   return (
     <Events>
       {sorted.map((event) => {
