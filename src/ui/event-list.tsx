@@ -304,7 +304,7 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
 
   useEffect(() => {
       const getUpdatedEvents = (currentEvents: EventFragment[], updatedEvent: EventFragment) => {
-        if (updatedEvent.isLive) {
+        if (updatedEvent.isLive && !updatedEvent.completed) {
           if (currentEvents.find((event) => event.id === updatedEvent.id)) {
             return currentEvents;
           }
