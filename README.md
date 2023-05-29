@@ -42,6 +42,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - [x] Add GraphQL codegen
 - [x] Add context for Apollo client. Where to place this?
-- [ ] h2h lay odds rendering
+- [ ] Show sport in event list
+- [ ] Handle isLive updates
 - [ ] show some kind of notification when odds change
 - [ ] add to git

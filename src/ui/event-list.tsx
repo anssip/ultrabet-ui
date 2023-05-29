@@ -1,7 +1,12 @@
 'use client';
 
 import styled from '@emotion/styled';
-import {EventFragment, MarketOptionUpdatesDocument, ScoreUpdatesDocument} from "@/gql/documents.generated";
+import {
+  EventFragment,
+  EventStatusUpdatesDocument,
+  MarketOptionUpdatesDocument,
+  ScoreUpdatesDocument
+} from "@/gql/documents.generated";
 import {useSubscription} from '@apollo/client';
 import {useEffect, useState} from "react";
 import {MarketOption} from "@/gql/types.generated";
@@ -193,10 +198,11 @@ export function EventList({events, live = false}: { events: EventFragment[], liv
 export function LiveEventList({events}: { events: EventFragment[] }) {
   const [liveEvents, setLiveEvents] = useState<EventFragment[]>(events);
 
-  const {data: optionsUpdateData, error: optionsError} = useSubscription(MarketOptionUpdatesDocument,);
-  const {data: scoreUpdatesData, error: scoreError} = useSubscription(ScoreUpdatesDocument,);
+  const {data: scoreUpdatesData, error: scoreError} = useSubscription(ScoreUpdatesDocument);
+  const {data: optionsUpdateData, error: optionsError} = useSubscription(MarketOptionUpdatesDocument);
+  const {data: statusUpdateData, error: statusError} = useSubscription(EventStatusUpdatesDocument);
 
-  const error = optionsError || scoreError;
+  const error = optionsError || scoreError || statusError;
   useEffect(() => {
     if (error) {
       alert(`Subscription error: ${error.message}`);
@@ -212,7 +218,7 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
             const updatedOptions = market.options.map((option) => {
               const updatedOption = updatedMarketOptions.find((updatedOption) => updatedOption.id === option?.id);
               if (updatedOption) {
-                console.log("updating option", updatedOption);
+                // console.log("updating option", updatedOption);
                 updated = true
                 const history = option?.odds !== updatedOption.odds ? `${option?.odds} -> ${updatedOption.odds}` : '';
                 return {...option, ...updatedOption, history};
@@ -238,6 +244,7 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
       const getUpdatedEvents = (currentEvents: EventFragment[], updatedEvent: EventFragment) => {
         return currentEvents.map((currentEvent) => {
           if (currentEvent.id === updatedEvent.id) {
+            console.log("new score", updatedEvent);
             return {
               ...currentEvent,
               scoreUpdates: [...(currentEvent.scoreUpdates ?? []), ...(updatedEvent.scoreUpdates ?? [])]
@@ -252,6 +259,24 @@ export function LiveEventList({events}: { events: EventFragment[] }) {
       }
     }
     , [scoreUpdatesData]);
+
+  useEffect(() => {
+      const getUpdatedEvents = (currentEvents: EventFragment[], updatedEvent: EventFragment) => {
+        if (updatedEvent.isLive) {
+          if (currentEvents.find((event) => event.id === updatedEvent.id)) {
+            return currentEvents;
+          }
+          return [...currentEvents, updatedEvent];
+        } else {
+          return currentEvents.filter((event) => event.id !== updatedEvent.id);
+        }
+      }
+      console.info("statusUpdateData", statusUpdateData)
+      if (statusUpdateData?.eventStatusUpdated) {
+        setLiveEvents(current => getUpdatedEvents(current, statusUpdateData?.eventStatusUpdated as EventFragment));
+      }
+    }
+    , [statusUpdateData]);
 
   return <EventList events={liveEvents} live={true}/>
 }
