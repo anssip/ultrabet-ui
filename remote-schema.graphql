@@ -130,8 +130,8 @@ type Sport {
 }
 
 type Subscription {
-    eventScoresUpdated: Event
-    eventStatusUpdated: Event
+    eventScoresUpdated: [Event]
+    eventStatusUpdated: [Event]
     liveMarketOptionsUpdated: [MarketOption]
 }
 

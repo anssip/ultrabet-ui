@@ -251,8 +251,8 @@ export type Sport = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  eventScoresUpdated?: Maybe<Event>;
-  eventStatusUpdated?: Maybe<Event>;
+  eventScoresUpdated?: Maybe<Array<Maybe<Event>>>;
+  eventStatusUpdated?: Maybe<Array<Maybe<Event>>>;
   liveMarketOptionsUpdated?: Maybe<Array<Maybe<MarketOption>>>;
 };
 
