@@ -4,7 +4,7 @@ Demo betting frontend: https://ultrabet-ui.vercel.app
 
 * Shows in-play (live) events and upcoming events in different tabs
 * Live event odds and scores are update as they happen
-* The backend is in my repository called `ultrabet`
+* The backend is [in my repository called `ultrabet`](https://github.com/anssip/ultrabet)
 
 Screenshot from the demo below.
 
