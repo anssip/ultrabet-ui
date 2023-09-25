@@ -170,6 +170,7 @@ export function EventList({
     if (startA > startB) return live ? -1 : 1
     return 0
   })
+  console.log(`Total ${live ? 'live' : 'upcoming'} events: ${events.length}`, events)
   if (events.length === 0)
     return <NoEventsNote>No {live && 'live'} events at the moment</NoEventsNote>
   return (
