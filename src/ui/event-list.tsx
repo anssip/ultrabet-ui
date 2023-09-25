@@ -13,9 +13,15 @@ import { MarketOption } from '@/gql/types.generated'
 import { CSSTransition } from 'react-transition-group'
 import { keyframes } from '@emotion/react'
 import * as R from 'ramda'
+import Link from 'next/link'
 
-const NoEventsNote = styled.p`
+const NoEventsNote = styled.div`
   text-align: center;
+
+  > a {
+    color: #be8ec4;
+    font-weight: bold;
+  }
 `
 
 const Events = styled.div`
@@ -172,7 +178,11 @@ export function EventList({
   })
   console.log(`Total ${live ? 'live' : 'upcoming'} events: ${events.length}`, events)
   if (events.length === 0)
-    return <NoEventsNote>No {live && 'live'} events at the moment</NoEventsNote>
+    return (
+      <NoEventsNote>
+        No {live && 'live'} events at the moment. See <Link href="/upcoming">upcoming events</Link>
+      </NoEventsNote>
+    )
   return (
     <Events>
       {sorted.map((event) => {
