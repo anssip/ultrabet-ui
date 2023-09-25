@@ -1,20 +1,20 @@
-import type {CodegenConfig} from '@graphql-codegen/cli'
+import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'https://ultrabet-api.herokuapp.com/graphql',
-  documents: ["src/**/*.graphql"],
+  schema: 'https://betapi.anssipiirainen.com/graphql',
+  documents: ['src/**/*.graphql'],
   generates: {
-    "src/gql/types.generated.ts": {plugins: ["typescript"]},
-    "src/gql/": {
-      preset: "near-operation-file",
+    'src/gql/types.generated.ts': { plugins: ['typescript'] },
+    'src/gql/': {
+      preset: 'near-operation-file',
       presetConfig: {
-        extension: ".generated.ts",
-        baseTypesPath: "types.generated.ts",
+        extension: '.generated.ts',
+        baseTypesPath: 'types.generated.ts',
       },
-      plugins: ["typescript-operations", "typed-document-node"],
+      plugins: ['typescript-operations', 'typed-document-node'],
     },
   },
-};
+}
 
-export default config;
+export default config

@@ -16,7 +16,7 @@ fragment Event on Event {
     }
     isLive
     completed
-    markets(source: "betfair") {
+    markets {
         id
         isLive
         name
