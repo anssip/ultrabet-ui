@@ -6,6 +6,10 @@ Demo betting frontend: https://ultrabet-ui.vercel.app
 * Live event odds and scores are update as they happen
 * The backend is in my repository called `ultrabet`
 
+Screenshot from the demo below.
+
+![image](https://github.com/anssip/ultrabet/assets/271711/2d4cf52c-5283-484e-87a3-08863f92bc73)
+
 ## Getting Started
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped
