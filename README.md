@@ -10,7 +10,7 @@ Screenshot from the demo below.
 
 ![image](https://github.com/anssip/ultrabet/assets/271711/2d4cf52c-5283-484e-87a3-08863f92bc73)
 
-## Getting Started
+## Development
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped
 with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
@@ -25,9 +25,7 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## TODO
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and
-load Inter, a custom Google Font.
+- [ ] Bug: Event durations reset to zero
+- [ ] Add time zone selector --> show upcoming event starting times in selected time zone

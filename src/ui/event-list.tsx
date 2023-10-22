@@ -14,6 +14,7 @@ import { CSSTransition } from 'react-transition-group'
 import { keyframes } from '@emotion/react'
 import * as R from 'ramda'
 import Link from 'next/link'
+import { formatTime } from '@/ui/date-util'
 
 const NoEventsNote = styled.div`
   text-align: center;
@@ -114,7 +115,7 @@ function elapsedTime(startTime: string) {
 
 function formatStartTime(startTime: string) {
   const start = new Date(`${startTime}Z`)
-  return start.toLocaleDateString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  return formatTime(start)
 }
 
 export function ElapsedTime({ startTime }: { startTime: string }) {
@@ -180,7 +181,8 @@ export function EventList({
   if (events.length === 0)
     return (
       <NoEventsNote>
-        No {live && 'live'} events at the moment. See <Link href="/upcoming">upcoming events</Link>
+        No {live && 'live'} events at the moment. See{' '}
+        <Link href={`/${live ? 'upcoming' : ''}`}>{live ? 'upcoming' : 'live'} events</Link>
       </NoEventsNote>
     )
   return (
