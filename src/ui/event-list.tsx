@@ -171,7 +171,7 @@ export function EventList({
   updatedEvents?: string[]
 }) {
   const sorted = events
-    .filter((e) => e.isLive || new Date(e.startTime) > new Date())
+    // .filter((e) => e.isLive || new Date(e.startTime) > new Date())
     .sort((a, b) => {
       const startA = new Date(a.startTime)
       const startB = new Date(b.startTime)
