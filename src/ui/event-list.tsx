@@ -170,13 +170,15 @@ export function EventList({
   live?: boolean
   updatedEvents?: string[]
 }) {
-  const sorted = events.sort((a, b) => {
-    const startA = new Date(a.startTime)
-    const startB = new Date(b.startTime)
-    if (startA < startB) return live ? 1 : -1
-    if (startA > startB) return live ? -1 : 1
-    return 0
-  })
+  const sorted = events
+    .filter((e) => e.isLive || new Date(e.startTime) > new Date())
+    .sort((a, b) => {
+      const startA = new Date(a.startTime)
+      const startB = new Date(b.startTime)
+      if (startA < startB) return live ? 1 : -1
+      if (startA > startB) return live ? -1 : 1
+      return 0
+    })
   console.log(`Total ${live ? 'live' : 'upcoming'} events: ${events.length}`, events)
   if (events.length === 0)
     return (
