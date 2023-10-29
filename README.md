@@ -1,6 +1,6 @@
 # A sports betting website (proof of concept)
 
-Demo betting frontend: https://ultrabet-ui.vercel.app
+Demo betting frontend: https://www.parabolicbet.com/
 
 * Shows in-play (live) events and upcoming events in different tabs
 * Live event odds and scores are update as they happen
