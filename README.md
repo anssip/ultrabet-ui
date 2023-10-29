@@ -27,5 +27,4 @@ pnpm dev
 
 ## TODO
 
-- [ ] Bug: Event durations reset to zero
-- [ ] Add time zone selector --> show upcoming event starting times in selected time zone
+- [ ] Bet slip UI

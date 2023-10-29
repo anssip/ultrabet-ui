@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import styled from '@emotion/styled'
 import { formatTime } from '@/ui/date-util'
+import { useUser } from '@auth0/nextjs-auth0/client'
+import { useState } from 'react'
 
 const GlobalNavContainer = styled.div`
   width: 100%;
@@ -33,8 +35,41 @@ const Label = styled.div`
   font-weight: 200;
   color: white;
 `
+const MenuButton = styled.button`
+  background-color: transparent;
+  border: none;
+  font-weight: 200;
+  color: white;
+  padding: 0;
+  cursor: pointer;
+`
+const Popup = styled.div`
+  position: absolute;
+  background-color: #9a6cb4;
+  color: white;
+  padding: 1em;
+  margin-top: 0.5em;
+  margin-left: -0.5em;
+  border-radius: 0.4em;
+  font-weight: 200;
+`
+const MenuLink = styled(Link)`
+  font-weight: 200;
+`
 
 export default function GlobalNav() {
+  const { user, error, isLoading } = useUser()
+  const [userMenuVisible, setUserMenuVisible] = useState(false)
+  const handleUserMenuClick = () => {
+    setUserMenuVisible(!userMenuVisible)
+  }
+
+  function renderUserItem() {
+    if (isLoading) return <Label>Loading...</Label>
+    if (user) return <MenuButton onClick={handleUserMenuClick}>{user.name}</MenuButton>
+    return <MenuLink href={'/api/auth/login'}>Login</MenuLink>
+  }
+
   return (
     <GlobalNavContainer>
       <nav>
@@ -44,6 +79,12 @@ export default function GlobalNav() {
             <GlobalNavItem label="Upcoming" slug="/upcoming" />
           </NavItemGroup>
           <NavItemContainer active>
+            {renderUserItem()}
+            {userMenuVisible && (
+              <Popup>
+                <MenuLink href={'/api/auth/logout'}>Logout</MenuLink>
+              </Popup>
+            )}
             <Label>{formatTime(new Date())}</Label>
           </NavItemContainer>
         </MenuList>
