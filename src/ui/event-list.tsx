@@ -158,9 +158,7 @@ export function EventList({
               <div className={styles.oddsWrapper}>
                 {options.map((option: MarketOptionWithHistory) => (
                   <div key={option?.id} className={styles.oddsBox}>
-                    <div className={styles.optionName}>
-                      {option?.name} ({option?.id})
-                    </div>
+                    <div className={styles.optionName}>{option?.name}</div>
                     <SlipOptionForm option={option} />
                     <p className={styles.oddsHistory}>{option?.history ?? ''}</p>
                   </div>
