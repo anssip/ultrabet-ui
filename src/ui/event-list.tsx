@@ -1,7 +1,7 @@
 'use client'
 
 import { EventFragment } from '@/gql/documents.generated'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, MouseEvent } from 'react'
 import { MarketOption } from '@/gql/types.generated'
 import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
@@ -10,6 +10,7 @@ import styles from './event-list.module.css'
 // @ts-ignore
 import { useFormState, useFormStatus } from 'react-dom'
 import { addSlipOption } from '@/app/actions'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 function elapsedTime(startTime: string) {
   const start = new Date(`${startTime}Z`)
@@ -70,13 +71,27 @@ const initialSlipFormState = {
 }
 
 function SlipOptionForm({ option }: { option: MarketOption }) {
+  const { user } = useUser()
   const [slipFormState, slipFormAction] = useFormState(
-    addSlipOption.bind(null, option),
+    addSlipOption.bind(null, user ?? null, option),
     initialSlipFormState
   )
+  function handleClick(e: { preventDefault: () => void; stopPropagation: () => void }) {
+    if (!user) {
+      e.preventDefault()
+      e.stopPropagation()
+      console.log('redirecting to login')
+      return (window.location.href = '/api/auth/login')
+    }
+    slipFormAction.submit()
+  }
   return (
     <form action={slipFormAction}>
-      <button type={'submit'} className={`${styles.addSlipOptionButton} ${styles.oddsValue}`}>
+      <button
+        onClick={handleClick}
+        type={'submit'}
+        className={`${styles.addSlipOptionButton} ${styles.oddsValue}`}
+      >
         {option?.odds}
       </button>
       <p aria-live="polite" className="sr-only">
