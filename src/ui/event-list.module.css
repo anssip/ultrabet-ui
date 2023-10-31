@@ -1,0 +1,94 @@
+.noEventsNote {
+    text-align: center;
+}
+
+.noEventsNote > a {
+    color: #be8ec4;
+    font-weight: bold;
+}
+
+.events {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+@keyframes flash {
+    from {
+        background-color: hotpink;
+    }
+    to {
+        background-color: initial;
+    }
+}
+
+.eventWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    width: 400px;
+    border: 1px solid #ccc;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5em 1em;
+}
+
+.eventWrapper.flash {
+    animation: flash 2s;
+}
+
+.eventHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-weight: 300;
+    margin-bottom: 1em;
+    background-color: #ccc;
+    padding: 0.3em;
+}
+
+.headerItem {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    max-width: 200px;
+}
+
+.headerSubItem {
+    padding: 0.3em;
+}
+
+.headerSubItem2 {
+    padding: 0.3em;
+    background-color: lightseagreen;
+}
+
+.oddsWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.oddsBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+}
+
+.oddsValue {
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+.optionName {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+}
+
+.oddsHistory {
+    font-size: 10px;
+    color: #666;
+}
