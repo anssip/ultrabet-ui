@@ -7,6 +7,9 @@ import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
 import { formatTime } from '@/ui/date-util'
 import styles from './event-list.module.css'
+// @ts-ignore
+import { useFormState, useFormStatus } from 'react-dom'
+import { addSlipOption } from '@/app/actions'
 
 function elapsedTime(startTime: string) {
   const start = new Date(`${startTime}Z`)
@@ -60,6 +63,27 @@ function renderScore(event: EventFragment): string {
   const homeScore = getTeamScore(event?.homeTeamName)
   const awayScore = getTeamScore(event?.awayTeamName)
   return `${homeScore} - ${awayScore}`
+}
+
+const initialSlipFormState = {
+  message: null,
+}
+
+function SlipOptionForm({ option }: { option: MarketOption }) {
+  const [slipFormState, slipFormAction] = useFormState(
+    addSlipOption.bind(null, option),
+    initialSlipFormState
+  )
+  return (
+    <form action={slipFormAction}>
+      <button type={'submit'} className={`${styles.addSlipOptionButton} ${styles.oddsValue}`}>
+        {option?.odds}
+      </button>
+      <p aria-live="polite" className="sr-only">
+        {slipFormState?.message}
+      </p>
+    </form>
+  )
 }
 
 export function EventList({
@@ -137,7 +161,7 @@ export function EventList({
                     <div className={styles.optionName}>
                       {option?.name} ({option?.id})
                     </div>
-                    <div className={styles.oddsValue}>{option?.odds}</div>
+                    <SlipOptionForm option={option} />
                     <p className={styles.oddsHistory}>{option?.history ?? ''}</p>
                   </div>
                 ))}

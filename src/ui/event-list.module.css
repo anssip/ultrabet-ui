@@ -46,6 +46,7 @@
     margin-bottom: 1em;
     background-color: #ccc;
     padding: 0.3em;
+    height: 100px;
 }
 
 .headerItem {
@@ -74,7 +75,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px;
+    width: 90px;
 }
 
 .oddsValue {
@@ -86,9 +87,17 @@
     font-size: 11px;
     color: #666;
     text-align: center;
+    height: 1.5rem;
 }
 
 .oddsHistory {
     font-size: 10px;
     color: #666;
+}
+
+.addSlipOptionButton {
+    border: none;
+    cursor: pointer;
+    padding: 0.5em 1em 0.5em 1em;
+    background-color: #ddd;
 }

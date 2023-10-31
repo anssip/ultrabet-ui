@@ -1,51 +1,45 @@
-"use client";
+'use client'
 
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  SuspenseCache,
-} from "@apollo/client";
+import { ApolloLink, HttpLink, SuspenseCache } from '@apollo/client'
 import {
   ApolloNextAppProvider,
   NextSSRInMemoryCache,
   SSRMultipartLink,
-} from "@apollo/experimental-nextjs-app-support/ssr";
-import {BASE_URL, splitLink} from "@/lib/apollo-link";
+  // @ts-ignore
+  NextSSRApolloClient,
+} from '@apollo/experimental-nextjs-app-support/ssr'
+import { BASE_URL, splitLink } from '@/lib/apollo-link'
 
 function makeClient() {
   const httpLink = new HttpLink({
     uri: `${BASE_URL}/graphql`,
-  });
+  })
 
-  return new ApolloClient({
+  return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link:
-      typeof window === "undefined"
+      typeof window === 'undefined'
         ? ApolloLink.from([
-          // in a SSR environment, if you use multipart features like
-          // @defer, you need to decide how to handle these.
-          // This strips all interfaces with a `@defer` directive from your queries.
-          new SSRMultipartLink({
-            stripDefer: true,
-          }),
-          httpLink,
-        ])
+            // in a SSR environment, if you use multipart features like
+            // @defer, you need to decide how to handle these.
+            // This strips all interfaces with a `@defer` directive from your queries.
+            new SSRMultipartLink({
+              stripDefer: true,
+            }),
+            httpLink,
+          ])
         : splitLink(httpLink),
-  });
+  })
 }
 
 function makeSuspenseCache() {
-  return new SuspenseCache();
+  return new SuspenseCache()
 }
 
-export function ApolloWrapper({children}: React.PropsWithChildren) {
+export function ApolloWrapper({ children }: React.PropsWithChildren) {
   return (
-    <ApolloNextAppProvider
-      makeClient={makeClient}
-      makeSuspenseCache={makeSuspenseCache}
-    >
+    <ApolloNextAppProvider makeClient={makeClient} makeSuspenseCache={makeSuspenseCache}>
       {children}
     </ApolloNextAppProvider>
-  );
+  )
 }
