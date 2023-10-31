@@ -1,58 +1,15 @@
 'use client'
 
 import { EventFragment } from '@/gql/documents.generated'
-import { useEffect, useState, MouseEvent } from 'react'
 import { MarketOption } from '@/gql/types.generated'
 import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
-import { formatTime } from '@/ui/date-util'
 import styles from './event-list.module.css'
 // @ts-ignore
-import { useFormState, useFormStatus } from 'react-dom'
+import { useFormState } from 'react-dom'
 import { addSlipOption } from '@/app/actions'
 import { useUser } from '@auth0/nextjs-auth0/client'
-
-function elapsedTime(startTime: string) {
-  const start = new Date(`${startTime}Z`)
-  const now = new Date()
-  return now.getTime() - start.getTime()
-}
-
-function formatStartTime(startTime: string) {
-  const start = new Date(`${startTime}Z`)
-  return formatTime(start)
-}
-
-export function ElapsedTime({ startTime }: { startTime: string }) {
-  const [elapsed, setElapsed] = useState(elapsedTime(startTime))
-
-  function formatDuration(ms: number): string {
-    const padWithZero = (n: number): string => (n < 10 ? '0' + n : n.toString())
-
-    const seconds = Math.floor(ms / 1000)
-    const minutes = Math.floor(seconds / 60)
-    const hours = Math.floor(minutes / 60)
-
-    const remainingSeconds = seconds - minutes * 60
-    const remainingMinutes = minutes - hours * 60
-
-    return (
-      (hours > 0 ? padWithZero(hours) + ':' : '') +
-      (minutes > 0 || hours > 0 ? padWithZero(remainingMinutes) + ':' : '') +
-      padWithZero(remainingSeconds)
-    )
-  }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setElapsed(elapsedTime(startTime))
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [startTime])
-
-  return <div>{formatDuration(elapsed)}</div>
-}
+import { ElapsedTime } from '@/ui/elapsed-time'
 
 type MarketOptionWithHistory = MarketOption & { history: string }
 
@@ -83,7 +40,6 @@ function SlipOptionForm({ option }: { option: MarketOption }) {
       console.log('redirecting to login')
       return (window.location.href = '/api/auth/login')
     }
-    slipFormAction.submit()
   }
   return (
     <form action={slipFormAction}>
@@ -159,11 +115,7 @@ export function EventList({
                 </div>
                 <div className={styles.headerItem}>
                   <div className={styles.headerSubItem}>
-                    {live ? (
-                      <ElapsedTime startTime={event.startTime} />
-                    ) : (
-                      formatStartTime(event.startTime)
-                    )}
+                    <ElapsedTime live={live} startTime={event.startTime} />
                   </div>
                   {live && !event.sport.key.startsWith('tennis') && (
                     <div className={styles.headerSubItem2}>{renderScore(event)}</div>
