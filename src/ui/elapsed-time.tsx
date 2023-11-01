@@ -41,5 +41,5 @@ export function ElapsedTime({ live, startTime }: { live: boolean; startTime: str
     return () => clearInterval(interval)
   }, [startTime])
 
-  return <div>{live ? formatStartTime(startTime) : formatDuration(elapsed)}</div>
+  return <div>{live ? formatDuration(elapsed) : formatStartTime(startTime)}</div>
 }

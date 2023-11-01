@@ -6,10 +6,8 @@ import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
 import styles from './event-list.module.css'
 // @ts-ignore
-import { useFormState } from 'react-dom'
-import { addSlipOption } from '@/app/actions'
-import { useUser } from '@auth0/nextjs-auth0/client'
 import { ElapsedTime } from '@/ui/elapsed-time'
+import { SlipOptionForm } from '@/ui/slip-option-form'
 
 type MarketOptionWithHistory = MarketOption & { history: string }
 
@@ -23,40 +21,6 @@ function renderScore(event: EventFragment): string {
   return `${homeScore} - ${awayScore}`
 }
 
-const initialSlipFormState = {
-  message: null,
-}
-
-function SlipOptionForm({ option }: { option: MarketOption }) {
-  const { user } = useUser()
-  const [slipFormState, slipFormAction] = useFormState(
-    addSlipOption.bind(null, user ?? null, option),
-    initialSlipFormState
-  )
-  function handleClick(e: { preventDefault: () => void; stopPropagation: () => void }) {
-    if (!user) {
-      e.preventDefault()
-      e.stopPropagation()
-      console.log('redirecting to login')
-      return (window.location.href = '/api/auth/login')
-    }
-  }
-  return (
-    <form action={slipFormAction}>
-      <button
-        onClick={handleClick}
-        type={'submit'}
-        className={`${styles.addSlipOptionButton} ${styles.oddsValue}`}
-      >
-        {option?.odds}
-      </button>
-      <p aria-live="polite" className="sr-only">
-        {slipFormState?.message}
-      </p>
-    </form>
-  )
-}
-
 export function EventList({
   events,
   live = false,
@@ -66,16 +30,6 @@ export function EventList({
   live?: boolean
   updatedEvents?: string[]
 }) {
-  const sorted = events
-    // .filter((e) => e.isLive || new Date(e.startTime) > new Date())
-    .sort((a, b) => {
-      const startA = new Date(a.startTime)
-      const startB = new Date(b.startTime)
-      if (startA < startB) return live ? 1 : -1
-      if (startA > startB) return live ? -1 : 1
-      return 0
-    })
-  console.log(`Total ${live ? 'live' : 'upcoming'} events: ${events.length}`, events)
   if (events.length === 0)
     return (
       <div className={styles.noEventsNote}>
@@ -83,6 +37,14 @@ export function EventList({
         <Link href={`/${live ? 'upcoming' : ''}`}>{live ? 'upcoming' : 'live'} events</Link>
       </div>
     )
+  const sorted = events.sort((a, b) => {
+    const startA = new Date(a.startTime)
+    const startB = new Date(b.startTime)
+    if (startA < startB) return live ? 1 : -1
+    if (startA > startB) return live ? -1 : 1
+    return 0
+  })
+  // console.log(`Total ${live ? 'live' : 'upcoming'} events: ${events.length}`, events)
   return (
     <div className={styles.events}>
       {sorted.map((event) => {
