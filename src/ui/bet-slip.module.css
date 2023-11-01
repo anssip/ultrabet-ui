@@ -28,16 +28,47 @@
     padding: 20px;
 }
 
-.close-btn {
+.closebtn {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
+    top: -1px;
+    right: -1px;
+    border: #ccc 1px solid;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 15px;
+    /*background-color: #f0f0f0;*/
+    height: 28px;
+    width: 28px;
+    background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='6' viewBox='0 0 12 12'%3E%3Cpath fill='%23367A65' fill-rule='evenodd' d='M12 .784L11.243 0 6 5.431 .757 0 0 .784l5.243 5.432L6 7l.757-.784z'/%3E%3C/svg%3E") center center no-repeat;
+    background-size: contain;
+}
+
+.closebtn:hover {
+    background-color: #fff;
 }
 
 .options {
-    padding: 0 3rem;
+    padding: 0 1rem;
+}
+
+.options .option {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: .8rem;
+    color: #777;
+}
+
+.options .option .name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
 }

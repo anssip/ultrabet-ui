@@ -3,9 +3,8 @@ import { Inter } from 'next/font/google'
 import GlobalNav from '@/ui/global-nav'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { getSession, Session } from '@auth0/nextjs-auth0'
-import { MarketOption } from '@/gql/types.generated'
 import { kv } from '@vercel/kv'
-import BetSlip from '@/ui/bet-slip'
+import BetSlip, { Slip } from '@/ui/bet-slip'
 import React from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -15,22 +14,22 @@ export const metadata = {
   description: 'Where your bet gains go parabolic',
 }
 
-async function loadSlip(session: Session | null): Promise<MarketOption[]> {
-  if (!session) return Promise.resolve([])
-  return (await kv.smembers(`betslip:${session.user.sub}`)) ?? ([] as MarketOption[])
+async function loadSlip(session: Session | null): Promise<Slip> {
+  if (!session) return Promise.resolve({})
+  return (await kv.hgetall(`betslip:${session.user.sub}`)) ?? {}
 }
 
 // @ts-ignore
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = (await getSession()) ?? null
-  const slipOptions = await loadSlip(session)
+  const slip = await loadSlip(session)
   return (
     <html lang="en">
       <body className={inter.className}>
         <UserProvider>
           <GlobalNav />
           {children}
-          <BetSlip slipOptions={slipOptions ?? []} />
+          <BetSlip slip={slip ?? {}} />
         </UserProvider>
       </body>
     </html>
