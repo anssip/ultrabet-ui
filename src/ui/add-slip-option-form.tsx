@@ -19,7 +19,7 @@ type Props = {
   market: Market
 }
 
-export function SlipOptionForm({ option, event, market }: Props) {
+export function AddSlipOptionForm({ option, event, market }: Props) {
   const { user } = useUser()
   const betSlipOption: BetSlipOption = { ...option, eventName: event.name, marketName: market.name }
   const [slipFormState, slipFormAction] = useFormState(

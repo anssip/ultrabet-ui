@@ -5,13 +5,18 @@
     width: 300px;
     background-color: #fff;
     box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    height: 0;
-    transition: height 0.3s ease;
+    overflow-y: auto; /* Allows scrolling if the content overflows */
+    max-height: 100%; /* Ensures it doesn't grow beyond the height of the viewport */
+    transition: max-height 0.3s ease-out;
 }
 
-.betslip.open {
-    height: 400px;
+.open {
+    max-height: 80%; /* Example value, you can adjust based on your UI */
+}
+
+.collapsed {
+    max-height: 0;
+    overflow: hidden;
 }
 
 .tab {
@@ -24,7 +29,7 @@
     box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.content {
+.header {
     padding: 20px;
 }
 
@@ -36,7 +41,6 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 15px;
-    /*background-color: #f0f0f0;*/
     height: 28px;
     width: 28px;
     background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='6' viewBox='0 0 12 12'%3E%3Cpath fill='%23367A65' fill-rule='evenodd' d='M12 .784L11.243 0 6 5.431 .757 0 0 .784l5.243 5.432L6 7l.757-.784z'/%3E%3C/svg%3E") center center no-repeat;
@@ -48,7 +52,7 @@
 }
 
 .options {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
 }
 
 .options .option {
@@ -63,12 +67,37 @@
     color: #777;
 }
 
-.options .option .name {
+.options .option .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+    padding: 0;
+}
+
+.options .option .content {
+    margin-left: 25px;
+}
+
+.options .option .name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /*width: 90%;*/
+    flex-grow: 1;
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 0.3rem;
+    margin-left: 5px;
+}
+
+.iconButton {
+    border: none;
+    width: 20px;
+    height: 20px;
+    background-color: #f0f0f0;
+}
+
+.iconButton:hover {
+    background-color: #fff;
 }

@@ -7,7 +7,7 @@ import Link from 'next/link'
 import styles from './event-list.module.css'
 // @ts-ignore
 import { ElapsedTime } from '@/ui/elapsed-time'
-import { SlipOptionForm } from '@/ui/slip-option-form'
+import { AddSlipOptionForm } from '@/ui/add-slip-option-form'
 
 type MarketOptionWithHistory = MarketOption & { history: string }
 
@@ -88,7 +88,7 @@ export function EventList({
                 {options.map((option: MarketOptionWithHistory) => (
                   <div key={option?.id} className={styles.oddsBox}>
                     <div className={styles.optionName}>{option?.name}</div>
-                    <SlipOptionForm option={option} event={event} market={headToHeadMarket} />
+                    <AddSlipOptionForm option={option} event={event} market={headToHeadMarket} />
                     <p className={styles.oddsHistory}>{option?.history ?? ''}</p>
                   </div>
                 ))}

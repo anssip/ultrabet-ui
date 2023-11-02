@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import styles from './bet-slip.module.css'
 import { MarketOption } from '@/gql/types.generated'
+import { RemoveSlipOptionForm } from '@/ui/remove-slip-option-form'
 
 export type BetSlipOption = MarketOption & { stake?: number; marketName: string; eventName: string }
 
@@ -17,13 +18,13 @@ const BetSlip: React.FC<Props> = ({ slip }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className={`${styles.betslip} ${isOpen ? styles.open : ''}`}>
+    <div className={`${styles.betslip} ${isOpen ? styles.open : styles.collapsed}`}>
       {!isOpen && (
         <div className={styles.tab} onClick={() => setIsOpen(true)}>
           Bet Slip
         </div>
       )}
-      <div className={styles.content}>
+      <div className={styles.header}>
         {/* Your bet slip content goes here */}
         <button className={styles.closebtn} onClick={() => setIsOpen(false)}>
           {/*  caret down */}
@@ -35,12 +36,17 @@ const BetSlip: React.FC<Props> = ({ slip }) => {
             .map((optionIdStr) => slip[optionIdStr])
             .map((option) => (
               <li key={option.id} className={styles.option}>
-                <div className={styles.name}>
-                  <div>{option.name}</div>
-                  <div>{option.odds}</div>
+                <div className={styles.header}>
+                  <RemoveSlipOptionForm option={option} />
+                  <div className={styles.name}>
+                    <div>{option.name}</div>
+                    <div>{option.odds}</div>
+                  </div>
                 </div>
-                <div>{option.marketName}</div>
-                <div>{option.eventName}</div>
+                <div className={styles.content}>
+                  <div>{option.marketName}</div>
+                  <div>{option.eventName}</div>
+                </div>
               </li>
             ))}
         </ol>
