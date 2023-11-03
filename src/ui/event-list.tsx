@@ -7,7 +7,7 @@ import Link from 'next/link'
 import styles from './event-list.module.css'
 // @ts-ignore
 import { ElapsedTime } from '@/ui/elapsed-time'
-import { AddSlipOptionForm } from '@/ui/add-slip-option-form'
+import { AddSlipOptionForm } from '@/ui/bet-slip/add-slip-option-form'
 
 type MarketOptionWithHistory = MarketOption & { history: string }
 

@@ -32,7 +32,8 @@
     border: 1px solid #ccc;
     margin-left: auto;
     margin-right: auto;
-    padding: 0.5em 1em;
+    border-radius: 7px;
+    color: black;
 }
 
 .eventWrapper.flash {
@@ -43,9 +44,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-weight: 300;
+    font-weight: 600;
+    color: #555;
     margin-bottom: 1em;
-    background-color: #ccc;
+    background-color: linen;
     padding: .5em 1em;
 }
 
@@ -62,25 +64,28 @@
 
 .headerSubItem2 {
     padding: 0.3em;
-    background-color: lightseagreen;
+    background-color: white;
 }
 
 .oddsWrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 0.5em 0.5em 0.5em;
 }
 
 .oddsBox {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 33%;
     /*width: 90px;*/
 }
 
 .oddsValue {
     margin-top: 8px;
     font-weight: bold;
+    border-radius: 5px;
 }
 
 .optionName {

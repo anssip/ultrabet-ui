@@ -4,7 +4,7 @@ import GlobalNav from '@/ui/global-nav'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { getSession, Session } from '@auth0/nextjs-auth0'
 import { kv } from '@vercel/kv'
-import BetSlip, { Slip } from '@/ui/bet-slip'
+import BetSlip, { Slip } from '@/ui/bet-slip/bet-slip'
 import React from 'react'
 
 const inter = Inter({ subsets: ['latin'] })

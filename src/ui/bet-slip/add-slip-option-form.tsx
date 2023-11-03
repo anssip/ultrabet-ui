@@ -7,7 +7,7 @@ import { addSlipOption } from '@/app/actions'
 import styles from '@/ui/event-list.module.css'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { EventFragment } from '@/gql/documents.generated'
-import { BetSlipOption } from '@/ui/bet-slip'
+import { BetSlipOption } from '@/ui/bet-slip/bet-slip'
 
 const initialSlipFormState = {
   message: null,
