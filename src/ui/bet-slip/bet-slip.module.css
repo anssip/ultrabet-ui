@@ -75,7 +75,6 @@
 }
 
 .options .right {
-    width: 260px
 }
 
 .options .option {
@@ -141,4 +140,11 @@ input.stake {
     justify-content: space-between;
     width: 100%;
     padding: 1rem 0;
+    margin-left: -10px;
+}
+
+.betForm {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
