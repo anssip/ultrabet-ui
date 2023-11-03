@@ -33,7 +33,7 @@ const BetSlip: React.FC<Props> = ({ slip }) => {
         </button>
       </div>
       <div className={styles.options}>
-        <ol>
+        <ol className={styles.column}>
           {Object.keys(slip)
             .map((optionIdStr) => slip[optionIdStr])
             .map((option) => (

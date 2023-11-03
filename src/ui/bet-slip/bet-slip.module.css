@@ -68,21 +68,26 @@
     flex-direction: row;
 }
 
+.options .column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 .options .right {
-    flex-grow: 1;
+    width: 260px
 }
 
 .options .option {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 100%;
-    align-items: flex-start;
-    padding: 10px 0;
+    margin: 10px 0;
     border-bottom: 1px solid #eee;
     font-size: .8rem;
     color: #777;
-    height: 80px
+    height: 100px;
+    align-items: flex-end;
 }
 
 .options .option .header {
@@ -94,14 +99,14 @@
 }
 
 .options .option .content {
-    margin-left: 25px;
+    padding-left: 5px;
+    width: 100%;
 }
 
 .options .option .name {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /*width: 90%;*/
     flex-grow: 1;
     font-size: 1.2rem;
     font-weight: 600;
@@ -118,4 +123,22 @@
 
 .iconButton:hover {
     background-color: #fff;
+}
+
+input.stake {
+    width: 50%;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 5px;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem 0;
 }

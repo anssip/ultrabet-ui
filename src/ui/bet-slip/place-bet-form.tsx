@@ -5,6 +5,7 @@ import { useUser } from '@auth0/nextjs-auth0/client'
 import { useFormState, useFormStatus } from 'react-dom'
 import { placeBet } from '@/app/actions'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
+import globals from '@/ui/globals.module.css'
 import React from 'react'
 import { Slip } from '@/ui/bet-slip/bet-slip'
 
@@ -15,7 +16,11 @@ type Props = {
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <button type={'submit'} aria-disabled={pending}>
+    <button
+      type={'submit'}
+      aria-disabled={pending}
+      className={`${globals.button} ${globals.primary}`}
+    >
       Place bet
     </button>
   )
@@ -34,7 +39,7 @@ export function PlaceBetForm({ slip }: Props) {
 
   return (
     <form action={betFormAction}>
-      <ol className={styles.right}>
+      <ol className={`${styles.right} ${styles.column}`}>
         {Object.keys(slip)
           .map((optionIdStr) => slip[optionIdStr])
           .map((option) => (
@@ -50,6 +55,7 @@ export function PlaceBetForm({ slip }: Props) {
                 <div>{option.eventName}</div>
               </div>
               <input
+                className={styles.stake}
                 type="number"
                 name={`${option.id}-stake`}
                 id={`${option.id}-stake`}
@@ -62,7 +68,9 @@ export function PlaceBetForm({ slip }: Props) {
           ))}
       </ol>
 
-      <SubmitButton />
+      <div className={styles.actions}>
+        <SubmitButton />
+      </div>
       <p aria-live="polite" className="sr-only">
         {betFormState?.message}
       </p>
