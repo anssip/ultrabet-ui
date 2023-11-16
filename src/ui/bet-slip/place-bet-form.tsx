@@ -6,7 +6,7 @@ import { useFormState, useFormStatus } from 'react-dom'
 import { placeBet } from '@/app/actions'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
-import React from 'react'
+import React, { useState } from 'react'
 import { Slip } from '@/ui/bet-slip/bet-slip'
 import { MarketOption } from '@/gql/types.generated'
 
@@ -14,13 +14,14 @@ type Props = {
   slip: Slip
 }
 
-function SubmitButton() {
+function SubmitButton({ onClick }: { onClick: () => Promise<void> }) {
   const { pending } = useFormStatus()
   return (
     <button
       type={'submit'}
       aria-disabled={pending}
       className={`${globals.button} ${globals.primary}`}
+      onClick={onClick}
     >
       Place bet
     </button>
@@ -47,11 +48,18 @@ function getLongBetName(length: number) {
 }
 
 export function PlaceBetForm({ slip }: Props) {
+  const [slipWithStakes, setSlipWithStakes] = useState<Slip>(slip)
+
   const { user } = useUser()
-  const [betFormState, betFormAction] = useFormState(
-    placeBet.bind(null, user ?? null, slip),
-    initialState
-  )
+  // const [betFormState, betFormAction] = useFormState(
+  //   placeBet.bind(null, user ?? null, slip),
+  //   initialState
+  // )
+  const placeBet = async (): Promise<void> => {
+    // TODO: get stake values from the form and set into the slip
+    await fetch('/api/slip', { method: 'POST', body: JSON.stringify(slip) })
+  }
+
   const options = [...Object.keys(slip)]
 
   function renderOption(
@@ -84,7 +92,7 @@ export function PlaceBetForm({ slip }: Props) {
   }
 
   return (
-    <form action={betFormAction} className={styles.betForm}>
+    <form className={styles.betForm}>
       <ol className={`${styles.right} ${styles.column}`}>
         {options.map((optionIdStr) => slip[optionIdStr]).map(renderOption)}
         {options.length > 1 &&
@@ -96,13 +104,13 @@ export function PlaceBetForm({ slip }: Props) {
             name: getLongBetName(options.length),
           })}
       </ol>
-
-      <div className={styles.actions}>
-        <SubmitButton />
-      </div>
-      <p aria-live="polite" className="sr-only">
-        {betFormState?.message}
-      </p>
+      {options.length > 0 ? (
+        <div className={styles.actions}>
+          <SubmitButton onClick={placeBet} />
+        </div>
+      ) : (
+        'Click on the odds boxes to add one or more bets to your slip'
+      )}
     </form>
   )
 }

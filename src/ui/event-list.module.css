@@ -106,3 +106,7 @@
     padding: 0.5em 1em 0.5em 1em;
     background-color: #ddd;
 }
+
+.addSlipOptionButton:hover {
+    background-color: rgb(255, 105, 180, 0.7);
+}
