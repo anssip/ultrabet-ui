@@ -9,10 +9,11 @@ import {
   NextSSRApolloClient,
 } from '@apollo/experimental-nextjs-app-support/ssr'
 import { BASE_URL, splitLink } from '@/lib/apollo-link'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
-function makeClient() {
+const makeClient = (isAuthenticated: boolean) => () => {
   const httpLink = new HttpLink({
-    uri: `${BASE_URL}/graphql`,
+    uri: `${BASE_URL}/${isAuthenticated ? 'private/graphql' : 'graphql'}`,
   })
 
   return new NextSSRApolloClient({
@@ -33,5 +34,7 @@ function makeClient() {
 }
 
 export function ApolloWrapper({ children }: React.PropsWithChildren) {
-  return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>
+  const { user } = useUser()
+  console.log('ApolloWrapper user', user)
+  return <ApolloNextAppProvider makeClient={makeClient(!!user)}>{children}</ApolloNextAppProvider>
 }

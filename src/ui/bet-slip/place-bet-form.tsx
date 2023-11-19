@@ -3,11 +3,10 @@
 import { useUser } from '@auth0/nextjs-auth0/client'
 // @ts-ignore
 import { useFormState, useFormStatus } from 'react-dom'
-import { placeBet } from '@/app/actions'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
-import React, { useState } from 'react'
-import { Slip } from '@/ui/bet-slip/bet-slip'
+import React, { useEffect, useState } from 'react'
+import { BetSlipOption, Slip } from '@/ui/bet-slip/bet-slip'
 import { MarketOption } from '@/gql/types.generated'
 
 type Props = {
@@ -49,22 +48,57 @@ function getLongBetName(length: number) {
 
 export function PlaceBetForm({ slip }: Props) {
   const [slipWithStakes, setSlipWithStakes] = useState<Slip>(slip)
+  const optionIds = Object.keys(slip)
+  const [longOption, setLongOption] = useState<BetSlipOption | null>(null)
+
+  useEffect(() => {
+    const ids = Object.keys(slip)
+    setLongOption({
+      odds: ids.map((optionId) => slip[optionId]).reduce((acc, o) => acc * o.odds, 1),
+      marketName: '',
+      eventName: '',
+      id: 'long',
+      name: getLongBetName(ids.length),
+      stake: 0,
+    })
+  }, [slip])
+
+  useEffect(() => {
+    // update slipWithStakes when slip changes
+    const newSlipWithStakes = Object.keys(slip).reduce((acc, optionId) => {
+      const option = slip[optionId]
+      return { ...acc, [optionId]: { ...option, stake: slipWithStakes[optionId]?.stake ?? 0 } }
+    }, slipWithStakes)
+
+    if (Object.keys(newSlipWithStakes).length !== Object.keys(slipWithStakes).length) {
+      setSlipWithStakes(newSlipWithStakes)
+    }
+  }, [slip, slipWithStakes])
 
   const { user } = useUser()
-  // const [betFormState, betFormAction] = useFormState(
-  //   placeBet.bind(null, user ?? null, slip),
-  //   initialState
-  // )
   const placeBet = async (): Promise<void> => {
-    // TODO: get stake values from the form and set into the slip
-    await fetch('/api/slip', { method: 'POST', body: JSON.stringify(slip) })
+    await fetch('/api/slip', {
+      method: 'POST',
+      body: JSON.stringify({ singles: slipWithStakes, long: longOption }),
+    })
   }
 
-  const options = [...Object.keys(slip)]
+  function getStake(slip: Slip, optionId: string) {
+    const option = slip[optionId]
+    return option?.stake ?? 0
+  }
+
+  function setStake(slip: Slip, option: BetSlipOption, stake: number): void {
+    if (option.id === 'long') {
+      return setLongOption({ ...option, stake })
+    }
+    setSlipWithStakes({ ...slip, [option.id]: { ...option, stake } })
+  }
 
   function renderOption(
     option: MarketOption & { stake?: number; marketName: string; eventName: string }
   ) {
+    if (!option) return null
     return (
       <li key={option.id} className={styles.option}>
         <div className={styles.header}>
@@ -83,9 +117,13 @@ export function PlaceBetForm({ slip }: Props) {
           name={`${option.id}-stake`}
           id={`${option.id}-stake`}
           min={0}
-          step={0.01}
+          step={1}
           placeholder="Enter stake"
           required
+          value={option.id === 'long' ? longOption?.stake : getStake(slipWithStakes, option.id)}
+          onChange={(e) => {
+            setStake(slipWithStakes, option, parseFloat(e.target.value))
+          }}
         />
       </li>
     )
@@ -94,17 +132,10 @@ export function PlaceBetForm({ slip }: Props) {
   return (
     <form className={styles.betForm}>
       <ol className={`${styles.right} ${styles.column}`}>
-        {options.map((optionIdStr) => slip[optionIdStr]).map(renderOption)}
-        {options.length > 1 &&
-          renderOption({
-            odds: options.map((optionId) => slip[optionId]).reduce((acc, o) => acc * o.odds, 1),
-            marketName: '',
-            eventName: '',
-            id: 'long',
-            name: getLongBetName(options.length),
-          })}
+        {optionIds.map((optionIdStr) => slipWithStakes[optionIdStr]).map(renderOption)}
+        {optionIds.length > 1 && longOption && renderOption(longOption)}
       </ol>
-      {options.length > 0 ? (
+      {optionIds.length > 0 ? (
         <div className={styles.actions}>
           <SubmitButton onClick={placeBet} />
         </div>

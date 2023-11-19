@@ -8,7 +8,6 @@ import { PlaceBetForm } from '@/ui/bet-slip/place-bet-form'
 
 export type BetSlipOption = MarketOption & { stake?: number; marketName: string; eventName: string }
 
-// dictionary of string keys to MarketOption values
 export type Slip = { [key: string]: BetSlipOption }
 
 type Props = {

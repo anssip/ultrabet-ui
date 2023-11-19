@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Apollo Fullstack Tutorial": {
-        "url": "https://ultrabet-api.herokuapp.com/graphql",
+        "url": "https://betapi.anssipiirainen.com/graphql",
         "headers": {
           "user-agent": "JS GraphQL"
         },

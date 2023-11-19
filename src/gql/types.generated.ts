@@ -18,12 +18,10 @@ export type Bet = {
   betOptions?: Maybe<Array<Maybe<BetOption>>>;
   createdAt: Scalars['String'];
   id: Scalars['ID'];
-  marketOptionId: Scalars['ID'];
   potentialWinnings: Scalars['Float'];
   stake: Scalars['Float'];
   status: BetStatus;
   user?: Maybe<User>;
-  userId: Scalars['ID'];
 };
 
 export type BetOption = {
@@ -33,11 +31,24 @@ export type BetOption = {
   marketOption: MarketOption;
 };
 
+export type BetOptionInput = {
+  marketOptionId: Scalars['ID'];
+  stake: Scalars['Float'];
+};
+
 export enum BetStatus {
   Canceled = 'CANCELED',
   Lost = 'LOST',
   Pending = 'PENDING',
   Won = 'WON'
+}
+
+/** https://chat.openai.com/share/92b7bc9f-6fc6-4f57-9a4e-f217270ad271 */
+export enum BetType {
+  Parlay = 'PARLAY',
+  Single = 'SINGLE',
+  /**  same as long bet or accumulator */
+  System = 'SYSTEM'
 }
 
 /** An Event represents a sports match or competition on which users can place bets. */
@@ -114,7 +125,10 @@ export type Mutation = {
   createMarketOption?: Maybe<MarketOption>;
   createUser?: Maybe<User>;
   depositFunds?: Maybe<Wallet>;
+  /** Places a bet on the provided market options. */
   placeBet?: Maybe<Bet>;
+  /** Place multiple single bets, one for each option provided. */
+  placeSingleBets?: Maybe<Array<Maybe<Bet>>>;
   withdrawFunds?: Maybe<Wallet>;
 };
 
@@ -145,7 +159,6 @@ export type MutationCreateMarketOptionArgs = {
 /**  Mutations */
 export type MutationCreateUserArgs = {
   email: Scalars['String'];
-  password: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -159,9 +172,15 @@ export type MutationDepositFundsArgs = {
 
 /**  Mutations */
 export type MutationPlaceBetArgs = {
+  betType: BetType;
   marketOptions: Array<Scalars['ID']>;
   stake: Scalars['Float'];
-  userId: Scalars['ID'];
+};
+
+
+/**  Mutations */
+export type MutationPlaceSingleBetsArgs = {
+  options: Array<BetOptionInput>;
 };
 
 
@@ -278,7 +297,6 @@ export type User = {
   bets?: Maybe<Array<Maybe<Bet>>>;
   email: Scalars['String'];
   id: Scalars['ID'];
-  password: Scalars['String'];
   username: Scalars['String'];
   wallet?: Maybe<Wallet>;
 };

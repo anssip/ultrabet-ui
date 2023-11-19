@@ -10,12 +10,10 @@ type Bet {
     betOptions: [BetOption]
     createdAt: String!
     id: ID!
-    marketOptionId: ID!
     potentialWinnings: Float!
     stake: Float!
     status: BetStatus!
     user: User
-    userId: ID!
 }
 
 type BetOption {
@@ -90,9 +88,12 @@ type Mutation {
     createEvent(name: String!, sport: String!, startTime: String!): Event
     createMarket(eventId: ID!, name: String!): Market
     createMarketOption(marketId: ID!, name: String!, odds: Float!): MarketOption
-    createUser(email: String!, password: String!, username: String!): User
+    createUser(email: String!, username: String!): User
     depositFunds(amount: Float!, userId: ID!): Wallet
-    placeBet(marketOptions: [ID!]!, stake: Float!, userId: ID!): Bet
+    "Places a bet on the provided market options."
+    placeBet(betType: BetType!, marketOptions: [ID!]!, stake: Float!): Bet
+    "Place multiple single bets, one for each option provided."
+    placeSingleBets(options: [BetOptionInput!]!): [Bet]
     withdrawFunds(amount: Float!, userId: ID!): Wallet
 }
 
@@ -147,7 +148,6 @@ type User {
     bets: [Bet]
     email: String!
     id: ID!
-    password: String!
     username: String!
     wallet: Wallet
 }
@@ -167,6 +167,14 @@ enum BetStatus {
     WON
 }
 
+"https://chat.openai.com/share/92b7bc9f-6fc6-4f57-9a4e-f217270ad271"
+enum BetType {
+    PARLAY
+    SINGLE
+    " same as long bet or accumulator"
+    SYSTEM
+}
+
 enum TransactionType {
     BET_PLACED
     BET_REFUNDED
@@ -177,3 +185,8 @@ enum TransactionType {
 
 "A slightly refined version of RFC-3339 compliant DateTime Scalar"
 scalar DateTime
+
+input BetOptionInput {
+    marketOptionId: ID!
+    stake: Float!
+}

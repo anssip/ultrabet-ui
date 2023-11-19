@@ -67,3 +67,17 @@ subscription eventStatusUpdates {
         ...Event
     }
 }
+
+mutation placeBet($betType: BetType!, $marketOptions: [ID!]!, $stake: Float!) {
+    placeBet(betType: $betType, marketOptions: $marketOptions, stake: $stake) {
+        id
+        status
+    }
+}
+mutation placeSingleBets($options: [BetOptionInput!]!) {
+    placeSingleBets(options: $options) {
+        id
+        status
+    }
+}
+

@@ -3,14 +3,19 @@ import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rs
 import { BASE_URL, splitLink } from '@/lib/apollo-link'
 // @ts-ignore
 
-export const { getClient } = registerApolloClient(() => {
-  const httpLink = new HttpLink({
-    uri: `${BASE_URL}/graphql`,
-    fetchOptions: { revalidate: 10 },
+// TODO: this creates a new client (and new cache) every time, fix that
+export const getClient = (isAuthenticated: boolean = false) => {
+  const { getClient } = registerApolloClient(() => {
+    const uri = `${BASE_URL}/${isAuthenticated ? 'private/graphql' : 'graphql'}`
+    console.log(`uri, is authenticated? ${isAuthenticated}`, uri)
+    const httpLink = new HttpLink({
+      uri,
+      fetchOptions: { revalidate: 10 },
+    })
+    return new ApolloClient({
+      cache: new InMemoryCache(),
+      link: splitLink(httpLink),
+    })
   })
-
-  return new ApolloClient({
-    cache: new InMemoryCache(),
-    link: splitLink(httpLink),
-  })
-})
+  return getClient()
+}

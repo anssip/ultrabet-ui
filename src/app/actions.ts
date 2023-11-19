@@ -11,7 +11,7 @@ export async function addSlipOption(user: UserProfile | null, option: BetSlipOpt
   revalidatePath('/events')
 }
 
-export async function removeSlipOption(user: UserProfile | null, option: MarketOption) {
+export async function removeSlipOption(user: { sub: string } | null, option: MarketOption) {
   console.log(`removing slip option from user ${user?.sub}`, option.id)
   await kv.hdel(`betslip:${user?.sub}`, option.id)
   revalidatePath('/events')
