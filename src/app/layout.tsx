@@ -6,6 +6,7 @@ import { getSession, Session } from '@auth0/nextjs-auth0'
 import { kv } from '@vercel/kv'
 import BetSlip, { Slip } from '@/ui/bet-slip/bet-slip'
 import React from 'react'
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <GlobalNav />
           {children}
           <BetSlip slip={slip ?? {}} />
+          <Analytics />
         </UserProvider>
       </body>
     </html>
