@@ -27,7 +27,7 @@ function DeleteButton() {
 export function RemoveSlipOptionForm({ option }: Props) {
   const { user } = useUser()
   const [slipFormState, slipFormAction] = useFormState(
-    removeSlipOption.bind(null, user ?? null, option),
+    removeSlipOption.bind(null, { sub: user?.sub ?? '' }, option),
     initialSlipFormState
   )
   return (
