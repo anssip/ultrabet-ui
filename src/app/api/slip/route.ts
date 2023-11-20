@@ -5,8 +5,6 @@ import { getClient } from '@/lib/client'
 import { PlaceBetDocument, PlaceSingleBetsDocument } from '@/gql/documents.generated'
 import { BetType } from '@/gql/types.generated'
 import { BetSlipOption, Slip } from '@/ui/bet-slip/bet-slip'
-import { revalidatePath } from 'next/cache'
-import { removeSlipOption } from '@/app/actions'
 
 // https://github.com/auth0/nextjs-auth0/blob/main/EXAMPLES.md#app-router-1
 export const GET = withApiAuthRequired(async function myApiRoute(req) {
@@ -21,8 +19,7 @@ export const GET = withApiAuthRequired(async function myApiRoute(req) {
 
 async function clearSlip(options: BetSlipOption[], sub: string) {
   console.log(`clearing slip for user ${sub}`, options)
-  await Promise.all(options.map((option) => removeSlipOption({ sub }, option)))
-  revalidatePath('/events')
+  await Promise.all(options.map((option) => kv.hdel(`betslip:${sub}`, option.id)))
 }
 
 export const POST = withApiAuthRequired(async function postSlipRoute(req) {
@@ -39,7 +36,7 @@ export const POST = withApiAuthRequired(async function postSlipRoute(req) {
 
   try {
     const client = getClient(true)
-    const data = await Promise.all([
+    const [placeBetData, placeSingleBetsData] = await Promise.all([
       long.stake ?? 0 > 0
         ? client.mutate({
             mutation: PlaceBetDocument,
@@ -72,11 +69,15 @@ export const POST = withApiAuthRequired(async function postSlipRoute(req) {
           })
         : Promise.resolve(null),
     ])
-    console.log('got response data', JSON.stringify(data, null, 2))
+    console.log('got response data', JSON.stringify({ placeBetData, placeSingleBetsData }, null, 2))
 
     const session = await getSession(req, res)
     await clearSlip([...betOptions, long], session?.user.sub)
-    return NextResponse.json({ success: true, data }, res)
+
+    const longBet = placeBetData?.data?.placeBet
+    const singleBets = placeSingleBetsData?.data?.placeSingleBets
+    // res.status(200).json({ success: true, data: { singles: singleBets, long: longBet } })
+    return NextResponse.json({ success: true, data: { singles: singleBets, long: longBet } })
   } catch (error) {
     console.error('error placing bet', error)
     // @ts-ignore

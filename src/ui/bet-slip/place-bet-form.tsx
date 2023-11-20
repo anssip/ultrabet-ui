@@ -7,13 +7,24 @@ import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
 import React, { useEffect, useState } from 'react'
 import { BetSlipOption, Slip } from '@/ui/bet-slip/bet-slip'
-import { MarketOption } from '@/gql/types.generated'
+import { Bet, MarketOption } from '@/gql/types.generated'
+import { RemoveSlipOptionForm } from '@/ui/bet-slip/remove-slip-option-form'
+import { useRouter } from 'next/navigation'
+
+export type CreatedBets = {
+  singles: Bet[]
+  long?: Bet[]
+}
 
 type Props = {
   slip: Slip
 }
 
-function SubmitButton({ onClick }: { onClick: () => Promise<void> }) {
+function SubmitButton({
+  onClick,
+}: {
+  onClick: (e: { preventDefault: () => void; stopPropagation: () => void }) => void
+}) {
   const { pending } = useFormStatus()
   return (
     <button
@@ -50,6 +61,8 @@ export function PlaceBetForm({ slip }: Props) {
   const [slipWithStakes, setSlipWithStakes] = useState<Slip>(slip)
   const optionIds = Object.keys(slip)
   const [longOption, setLongOption] = useState<BetSlipOption | null>(null)
+  const [createdBetsCount, setCreatedBetsCount] = useState(0)
+  const router = useRouter()
 
   useEffect(() => {
     const ids = Object.keys(slip)
@@ -76,10 +89,24 @@ export function PlaceBetForm({ slip }: Props) {
   }, [slip, slipWithStakes])
 
   const { user } = useUser()
-  const placeBet = async (): Promise<void> => {
-    await fetch('/api/slip', {
+  const placeBet = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    fetch('/api/slip', {
       method: 'POST',
       body: JSON.stringify({ singles: slipWithStakes, long: longOption }),
+    }).then(async (response) => {
+      if (response.ok) {
+        const bets = await response.json()
+        const count = bets.data.singles.length + (bets.data.long ? 1 : 0)
+        router.refresh()
+        setCreatedBetsCount(count)
+
+        setTimeout(() => {
+          setCreatedBetsCount(0)
+        }, 3000)
+      }
     })
   }
 
@@ -129,19 +156,40 @@ export function PlaceBetForm({ slip }: Props) {
     )
   }
 
+  if (createdBetsCount > 0) {
+    return (
+      <p>
+        {createdBetsCount} bet {createdBetsCount > 1 ? 's were' : 'was'} placed!
+      </p>
+    )
+  }
+
   return (
-    <form className={styles.betForm}>
-      <ol className={`${styles.right} ${styles.column}`}>
-        {optionIds.map((optionIdStr) => slipWithStakes[optionIdStr]).map(renderOption)}
-        {optionIds.length > 1 && longOption && renderOption(longOption)}
+    <>
+      <ol className={styles.column}>
+        {Object.keys(slip)
+          .map((optionIdStr) => slip[optionIdStr])
+          .map((option) => (
+            <li key={option.id} className={styles.option}>
+              <div className={styles.header}>
+                <RemoveSlipOptionForm option={option} />
+              </div>
+            </li>
+          ))}
       </ol>
-      {optionIds.length > 0 ? (
-        <div className={styles.actions}>
-          <SubmitButton onClick={placeBet} />
-        </div>
-      ) : (
-        'Click on the odds boxes to add one or more bets to your slip'
-      )}
-    </form>
+      <form className={styles.betForm}>
+        <ol className={`${styles.right} ${styles.column}`}>
+          {optionIds.map((optionIdStr) => slipWithStakes[optionIdStr]).map(renderOption)}
+          {optionIds.length > 1 && longOption && renderOption(longOption)}
+        </ol>
+        {optionIds.length > 0 ? (
+          <div className={styles.actions}>
+            <SubmitButton onClick={placeBet} />
+          </div>
+        ) : (
+          'Click on the odds boxes to add one or more bets to your slip'
+        )}
+      </form>
+    </>
   )
 }

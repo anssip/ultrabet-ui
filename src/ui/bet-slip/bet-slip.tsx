@@ -26,23 +26,9 @@ const BetSlip: React.FC<Props> = ({ slip }) => {
         Bet Slip
       </div>
       <div className={styles.header}>
-        {/* Your bet slip content goes here */}
-        <button className={styles.closebtn} onClick={() => setIsOpen(false)}>
-          {/*  caret down */}
-        </button>
+        <button className={styles.closebtn} onClick={() => setIsOpen(false)}></button>
       </div>
       <div className={styles.options}>
-        <ol className={styles.column}>
-          {Object.keys(slip)
-            .map((optionIdStr) => slip[optionIdStr])
-            .map((option) => (
-              <li key={option.id} className={styles.option}>
-                <div className={styles.header}>
-                  <RemoveSlipOptionForm option={option} />
-                </div>
-              </li>
-            ))}
-        </ol>
         <PlaceBetForm slip={slip} />
       </div>
     </div>
