@@ -36,6 +36,7 @@ export default function GlobalNav() {
           <li className={styles.navItemGroup}>
             <GlobalNavItem label="In-play" slug="/" />
             <GlobalNavItem label="Upcoming" slug="/upcoming" />
+            {user && <GlobalNavItem label="My Bets" slug="/bets" />}
           </li>
           <li className={`${styles.navItemContainer} ${styles.active}`}>
             {renderUserItem()}

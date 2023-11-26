@@ -2,7 +2,7 @@
 
 import { useUser } from '@auth0/nextjs-auth0/client'
 // @ts-ignore
-import { useFormState, useFormStatus } from 'react-dom'
+import { useFormStatus } from 'react-dom'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
 import React, { useEffect, useState } from 'react'
@@ -10,6 +10,7 @@ import { BetSlipOption, Slip } from '@/ui/bet-slip/bet-slip'
 import { Bet, MarketOption } from '@/gql/types.generated'
 import { RemoveSlipOptionForm } from '@/ui/bet-slip/remove-slip-option-form'
 import { useRouter } from 'next/navigation'
+import { getLongBetName } from '@/lib/util'
 
 export type CreatedBets = {
   singles: Bet[]
@@ -40,21 +41,6 @@ function SubmitButton({
 
 const initialState = {
   message: null,
-}
-
-function getLongBetName(length: number) {
-  const names = new Map([
-    [2, 'Double'],
-    [3, 'Treble'],
-    [4, 'Fourfold'],
-    [5, 'Fivefold'],
-    [6, 'Sixfold'],
-    [7, 'Sevenfold'],
-    [8, 'Eightfold'],
-    [9, 'Ninefold'],
-    [10, 'Tenfold'],
-  ])
-  return names.get(length) ?? `${length}-fold`
 }
 
 export function PlaceBetForm({ slip }: Props) {

@@ -47,6 +47,37 @@ query ListLiveEvents {
     }
 }
 
+
+query ListBets {
+    listBets {
+        id
+        betOptions {
+            id
+            marketOption {
+                id
+                name
+                odds
+                market {
+                    id
+                    name
+                    event {
+                        id
+                        awayTeamName
+                        completed
+                        homeTeamName
+                    }
+                }
+            }
+        }
+        stake
+        potentialWinnings
+        createdAt
+        status
+    }
+}
+
+
+
 subscription marketOptionUpdates {
     liveMarketOptionsUpdated {
         id

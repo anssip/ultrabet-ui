@@ -1,0 +1,66 @@
+.main {
+    padding: 0;
+    margin: 0;
+    background-color: #555555;
+}
+
+.header {
+    color: white;
+}
+
+.betCard {
+    width: 100%;
+    padding: 0 2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.betItem {
+    margin: 1em 0;
+    padding: 10px;
+    color: white;
+    background-color: #3b4752;
+}
+
+.betHeader {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.betDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin: 1em 0;
+    border-bottom: 1px solid yellow;
+}
+
+.marketOption {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.2rem;
+}
+
+.smallText {
+    font-size: 0.8rem;
+    font-weight: 200;
+}
+
+.eventName {
+    padding: 0.5em;
+}
+
+.numbers {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1em;
+}
+
+.number {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}

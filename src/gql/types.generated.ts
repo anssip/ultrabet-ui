@@ -230,12 +230,6 @@ export type QueryGetUserArgs = {
 
 
 /**  Queries */
-export type QueryListBetsArgs = {
-  userId: Scalars['ID'];
-};
-
-
-/**  Queries */
 export type QueryListLiveMarketsArgs = {
   eventId: Scalars['ID'];
 };
