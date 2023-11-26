@@ -16,14 +16,3 @@ export async function removeSlipOption(user: { sub: string } | null, option: Mar
   await kv.hdel(`betslip:${user?.sub}`, option.id)
   revalidatePath('/events')
 }
-
-export async function placeBet(
-  user: UserProfile | null,
-  slip: Slip,
-  prevState: any,
-  data: FormData
-) {
-  console.log(`placing bet for user ${user?.sub}`, data)
-  await Promise.all(Object.keys(slip).map((optionId) => kv.hdel(`betslip:${user?.sub}`, optionId)))
-  revalidatePath('/events')
-}

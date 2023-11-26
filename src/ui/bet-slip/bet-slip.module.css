@@ -148,3 +148,7 @@ input.stake {
     flex-direction: column;
     flex-grow: 1;
 }
+
+.submitting {
+    opacity: 0.5;
+}

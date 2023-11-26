@@ -1,8 +1,6 @@
 'use client'
 
 import { useUser } from '@auth0/nextjs-auth0/client'
-// @ts-ignore
-import { useFormStatus } from 'react-dom'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
 import React, { useEffect, useState } from 'react'
@@ -23,18 +21,19 @@ type Props = {
 
 function SubmitButton({
   onClick,
+  loading,
 }: {
   onClick: (e: { preventDefault: () => void; stopPropagation: () => void }) => void
+  loading: boolean
 }) {
-  const { pending } = useFormStatus()
   return (
     <button
       type={'submit'}
-      aria-disabled={pending}
-      className={`${globals.button} ${globals.primary}`}
+      aria-disabled={loading}
+      className={`${globals.button} ${globals.primary} ${loading ? styles.submitting : ''}`}
       onClick={onClick}
     >
-      Place bet
+      {loading ? 'Hold on...' : 'Place bet'}
     </button>
   )
 }
@@ -49,6 +48,7 @@ export function PlaceBetForm({ slip }: Props) {
   const [longOption, setLongOption] = useState<BetSlipOption | null>(null)
   const [createdBetsCount, setCreatedBetsCount] = useState(0)
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const ids = Object.keys(slip)
@@ -78,14 +78,16 @@ export function PlaceBetForm({ slip }: Props) {
   const placeBet = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
     e.preventDefault()
     e.stopPropagation()
-
+    setLoading(true)
     fetch('/api/slip', {
       method: 'POST',
       body: JSON.stringify({ singles: slipWithStakes, long: longOption }),
     }).then(async (response) => {
+      console.log('got response', response)
+      setLoading(false)
       if (response.ok) {
         const bets = await response.json()
-        const count = bets.data.singles.length + (bets.data.long ? 1 : 0)
+        const count = (bets.data.singles?.length ?? 0) + (bets.data.long ? 1 : 0)
         router.refresh()
         setCreatedBetsCount(count)
 
@@ -145,7 +147,8 @@ export function PlaceBetForm({ slip }: Props) {
   if (createdBetsCount > 0) {
     return (
       <p>
-        {createdBetsCount} bet {createdBetsCount > 1 ? 's were' : 'was'} placed!
+        {createdBetsCount > 1 ? createdBetsCount : 'Your'} bet
+        {createdBetsCount > 1 ? 's were' : ' was'} placed!
       </p>
     )
   }
@@ -170,7 +173,7 @@ export function PlaceBetForm({ slip }: Props) {
         </ol>
         {optionIds.length > 0 ? (
           <div className={styles.actions}>
-            <SubmitButton onClick={placeBet} />
+            <SubmitButton onClick={placeBet} loading={loading} />
           </div>
         ) : (
           'Click on the odds boxes to add one or more bets to your slip'
