@@ -6,9 +6,12 @@ Demo betting frontend: https://www.parabolicbet.com/
 * Live event odds and scores are update as they happen
 * The backend is [in my repository called `ultrabet`](https://github.com/anssip/ultrabet)
 
-Screenshot from the demo below.
+Screenshots below. [See it live here](https://www.parabolicbet.com/).
 
-![image](https://github.com/anssip/ultrabet/assets/271711/2d4cf52c-5283-484e-87a3-08863f92bc73)
+<img width="1287" alt="Screenshot 2023-11-26 at 15 52 51" src="https://github.com/anssip/ultrabet-ui/assets/271711/38cc235d-1cbe-4903-a5b2-a049e59fee30">
+
+<img width="824" alt="Screenshot 2023-11-26 at 15 52 05" src="https://github.com/anssip/ultrabet-ui/assets/271711/3f914d06-bc1c-4cd8-a28a-e3e4c70cdbb9">
+
 
 ## Development
 
