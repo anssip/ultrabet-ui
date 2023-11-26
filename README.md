@@ -1,4 +1,4 @@
-# A sports betting website (proof of concept)
+# A sports betting webapp
 
 Demo betting frontend: https://www.parabolicbet.com/
 
