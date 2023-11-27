@@ -5,6 +5,7 @@ import React, { Suspense } from 'react'
 import { getAccessToken } from '@auth0/nextjs-auth0'
 import { Bet, BetOption, Maybe } from '@/gql/types.generated'
 import { getLongBetName } from '@/lib/util'
+import { redirect } from 'next/navigation'
 
 export const revalidate = 60
 // export const dynamic = 'force-dynamic'
@@ -38,15 +39,27 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
         </div>
         <div className={styles.number}>
           <div className={styles.smallText}>To Return</div>
-          <div>€{bet.potentialWinnings}</div>
+          <div>€{Number(bet.potentialWinnings).toFixed(2)}</div>
         </div>
       </div>
     </div>
   )
 }
 
-async function BetList() {
-  const { accessToken } = await getAccessToken()
+async function fetchAccessToken() {
+  try {
+    const { accessToken } = await getAccessToken()
+    return accessToken
+  } catch (e) {
+    return null
+  }
+}
+
+export default async function Page() {
+  const accessToken = await fetchAccessToken()
+  if (!accessToken) {
+    redirect('/login')
+  }
   const data = await getClient(true).query({
     query: ListBetsDocument,
     context: {
@@ -55,23 +68,14 @@ async function BetList() {
       },
     },
   })
-
   const bets: Bet[] = data.data.listBets as Bet[]
 
-  return bets?.map((bet) => (
-    <div key={bet.id} className={styles.betCard}>
-      <BetListItem bet={bet} />
-    </div>
-  ))
-}
-
-export default async function Page() {
   return (
     <main className={styles.main}>
       <h1 className={styles.header}>My Bets</h1>
-      <Suspense fallback={<div>Loading...</div>}>
-        <BetList />
-      </Suspense>
+      {bets?.map((bet) => (
+        <BetListItem key={bet.id} bet={bet} />
+      ))}
     </main>
   )
 }
