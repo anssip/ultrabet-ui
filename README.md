@@ -30,4 +30,8 @@ pnpm dev
 
 ## TODO
 
-- [ ] Bet slip UI
+- [x] Bug: does not accept a long bet only without any singles
+- [x] Show some loading indicator when placing a bet
+- [ [ Add a loading skeleton for the bets view
+- [ ] Fix the background color of the bets page
+- [x] Bet slip UI
