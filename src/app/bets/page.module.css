@@ -23,6 +23,9 @@
 }
 
 .betHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     font-weight: bold;
     margin-bottom: 5px;
 }
@@ -33,6 +36,31 @@
     gap: 0.5em;
     margin: 1em 0;
     border-bottom: 1px solid yellow;
+}
+
+.betMeta {
+    font-size: 0.8rem;
+    font-weight: 200;
+}
+
+.status {
+    font-weight: 900;
+}
+
+.status-pending {
+    color: ghostwhite;
+}
+
+.status-lost {
+    color: red;
+}
+
+.status-won {
+    color: greenyellow;
+}
+
+.status-canceled {
+    color: darkgray;
 }
 
 .marketOption {

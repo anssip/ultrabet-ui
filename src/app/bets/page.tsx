@@ -6,9 +6,12 @@ import { getAccessToken } from '@auth0/nextjs-auth0'
 import { Bet, BetOption, Maybe } from '@/gql/types.generated'
 import { getLongBetName } from '@/lib/util'
 import { redirect } from 'next/navigation'
+import { formatTime } from '@/ui/date-util'
 
 export const revalidate = 60
 // export const dynamic = 'force-dynamic'
+
+function betStatus(bet: Bet) {}
 
 const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   const betType = getLongBetName(bet.betOptions?.length ?? 1)
@@ -16,7 +19,12 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   const betOptions = bet.betOptions?.map((option: Maybe<BetOption>) => (
     <div key={option?.id} className={styles.betDetails}>
       <div className={styles.marketOption}>
-        <div>{option?.marketOption?.name}</div>
+        <div>
+          <span className={styles.status + ' ' + styles[`status-${bet.status.toLowerCase()}`]}>
+            o
+          </span>{' '}
+          {option?.marketOption?.name}
+        </div>
         <div>{option?.marketOption.odds}</div>
       </div>
       <div className={`${styles.eventName} ${styles.smallText}`}>
@@ -29,7 +37,10 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   return (
     <div className={styles.betItem}>
       <div className={styles.betHeader}>
-        €{bet.stake} {betType}
+        <div>
+          €{bet.stake} {betType}
+        </div>
+        <div className={styles.betMeta}>Placed {formatTime(new Date(bet.createdAt))}</div>
       </div>
       {betOptions}
       <div className={styles.numbers}>
