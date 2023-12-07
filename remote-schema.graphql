@@ -11,6 +11,7 @@ type Bet {
     createdAt: String!
     id: ID!
     potentialWinnings: Float!
+    result: BetResult
     stake: Float!
     status: BetStatus!
     user: User
@@ -20,6 +21,7 @@ type BetOption {
     bet: Bet!
     id: Int!
     marketOption: MarketOption!
+    result: BetResult
 }
 
 "An Event represents a sports match or competition on which users can place bets."
@@ -35,6 +37,7 @@ type Event {
     isLive: Boolean!
     markets(source: String): [Market]
     name: String!
+    result: EventResult
     scoreUpdates: [ScoreUpdate]
     sport: Sport!
     startTime: String!
@@ -94,6 +97,7 @@ type Mutation {
     placeBet(betType: BetType!, marketOptions: [ID!]!, stake: Float!): Bet
     "Place multiple single bets, one for each option provided."
     placeSingleBets(options: [BetOptionInput!]!): [Bet]
+    updateResult(eventId: ID!): Event
     withdrawFunds(amount: Float!, userId: ID!): Wallet
 }
 
@@ -102,12 +106,12 @@ type Query {
     getBet(id: ID!): Bet
     getEvent(id: ID!): Event
     getMarket(id: ID!): Market
-    getUser(id: ID!): User
     listBets: [Bet]
     listEvents: [Event]
     listLiveEvents: [Event]
     listLiveMarkets(eventId: ID!): [Market]
     listMarkets(eventId: ID!): [Market]
+    me: User
 }
 
 type ScoreUpdate {
@@ -146,9 +150,10 @@ type Transaction {
 
 type User {
     bets: [Bet]
-    email: String!
+    email: String
+    externalId: String
     id: ID!
-    username: String!
+    username: String
     wallet: Wallet
 }
 
@@ -157,7 +162,13 @@ type Wallet {
     id: ID!
     transactions: [Transaction]
     user: User
-    userId: ID!
+}
+
+enum BetResult {
+    CANCELED
+    LOST
+    PENDING
+    WON
 }
 
 enum BetStatus {
@@ -173,6 +184,12 @@ enum BetType {
     SINGLE
     " same as long bet or accumulator"
     SYSTEM
+}
+
+enum EventResult {
+    AWAY_TEAM_WIN
+    DRAW
+    HOME_TEAM_WIN
 }
 
 enum TransactionType {

@@ -1,0 +1,8 @@
+schema: remote-schema.graphql
+extensions:
+  endpoints:
+    Apollo Fullstack Tutorial:
+      url: https://betapi.anssipiirainen.com/graphql
+      headers:
+        user-agent: JS GraphQL
+      introspect: true

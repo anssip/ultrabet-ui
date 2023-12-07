@@ -57,7 +57,7 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   )
 }
 
-async function fetchAccessToken() {
+export async function fetchAccessToken() {
   try {
     const { accessToken } = await getAccessToken()
     return accessToken

@@ -56,3 +56,8 @@
 .menuLink {
     font-weight: 200;
 }
+
+.balance {
+    display: inline;
+    color: yellow;
+}

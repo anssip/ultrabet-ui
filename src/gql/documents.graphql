@@ -35,6 +35,19 @@ fragment Event on Event {
     }
 }
 
+query me {
+    me {
+        id
+        externalId
+        username
+        email
+        wallet {
+            id
+            balance
+        }
+    }
+}
+
 query ListEvents {
     listEvents {
         ...Event

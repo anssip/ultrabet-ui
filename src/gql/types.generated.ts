@@ -19,6 +19,7 @@ export type Bet = {
   createdAt: Scalars['String'];
   id: Scalars['ID'];
   potentialWinnings: Scalars['Float'];
+  result?: Maybe<BetResult>;
   stake: Scalars['Float'];
   status: BetStatus;
   user?: Maybe<User>;
@@ -29,12 +30,20 @@ export type BetOption = {
   bet: Bet;
   id: Scalars['Int'];
   marketOption: MarketOption;
+  result?: Maybe<BetResult>;
 };
 
 export type BetOptionInput = {
   marketOptionId: Scalars['ID'];
   stake: Scalars['Float'];
 };
+
+export enum BetResult {
+  Canceled = 'CANCELED',
+  Lost = 'LOST',
+  Pending = 'PENDING',
+  Won = 'WON'
+}
 
 export enum BetStatus {
   Canceled = 'CANCELED',
@@ -65,6 +74,7 @@ export type Event = {
   isLive: Scalars['Boolean'];
   markets?: Maybe<Array<Maybe<Market>>>;
   name: Scalars['String'];
+  result?: Maybe<EventResult>;
   scoreUpdates?: Maybe<Array<Maybe<ScoreUpdate>>>;
   sport: Sport;
   startTime: Scalars['String'];
@@ -75,6 +85,12 @@ export type Event = {
 export type EventMarketsArgs = {
   source?: InputMaybe<Scalars['String']>;
 };
+
+export enum EventResult {
+  AwayTeamWin = 'AWAY_TEAM_WIN',
+  Draw = 'DRAW',
+  HomeTeamWin = 'HOME_TEAM_WIN'
+}
 
 /**
  * A Market represents a specific betting opportunity within an event.
@@ -129,6 +145,7 @@ export type Mutation = {
   placeBet?: Maybe<Bet>;
   /** Place multiple single bets, one for each option provided. */
   placeSingleBets?: Maybe<Array<Maybe<Bet>>>;
+  updateResult?: Maybe<Event>;
   withdrawFunds?: Maybe<Wallet>;
 };
 
@@ -185,6 +202,12 @@ export type MutationPlaceSingleBetsArgs = {
 
 
 /**  Mutations */
+export type MutationUpdateResultArgs = {
+  eventId: Scalars['ID'];
+};
+
+
+/**  Mutations */
 export type MutationWithdrawFundsArgs = {
   amount: Scalars['Float'];
   userId: Scalars['ID'];
@@ -196,12 +219,12 @@ export type Query = {
   getBet?: Maybe<Bet>;
   getEvent?: Maybe<Event>;
   getMarket?: Maybe<Market>;
-  getUser?: Maybe<User>;
   listBets?: Maybe<Array<Maybe<Bet>>>;
   listEvents?: Maybe<Array<Maybe<Event>>>;
   listLiveEvents?: Maybe<Array<Maybe<Event>>>;
   listLiveMarkets?: Maybe<Array<Maybe<Market>>>;
   listMarkets?: Maybe<Array<Maybe<Market>>>;
+  me?: Maybe<User>;
 };
 
 
@@ -219,12 +242,6 @@ export type QueryGetEventArgs = {
 
 /**  Queries */
 export type QueryGetMarketArgs = {
-  id: Scalars['ID'];
-};
-
-
-/**  Queries */
-export type QueryGetUserArgs = {
   id: Scalars['ID'];
 };
 
@@ -289,9 +306,10 @@ export enum TransactionType {
 export type User = {
   __typename?: 'User';
   bets?: Maybe<Array<Maybe<Bet>>>;
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  externalId?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  username: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
   wallet?: Maybe<Wallet>;
 };
 
@@ -301,5 +319,4 @@ export type Wallet = {
   id: Scalars['ID'];
   transactions?: Maybe<Array<Maybe<Transaction>>>;
   user?: Maybe<User>;
-  userId: Scalars['ID'];
 };

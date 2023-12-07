@@ -6,8 +6,13 @@ import { formatTime } from '@/ui/date-util'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { useState } from 'react'
 import styles from './global-nav.module.css'
+import { User } from '@/gql/types.generated'
 
-export default function GlobalNav() {
+export type Props = {
+  bettingUser: User | null
+}
+
+export default function GlobalNav({ bettingUser }: Props) {
   const { user, isLoading } = useUser()
   const [userMenuVisible, setUserMenuVisible] = useState(false)
   const handleUserMenuClick = () => {
@@ -18,9 +23,12 @@ export default function GlobalNav() {
     if (isLoading) return <div className={styles.label}>Loading...</div>
     if (user)
       return (
-        <button className={styles.menuButton} onClick={handleUserMenuClick}>
-          {user.name}
-        </button>
+        <>
+          <button className={styles.menuButton} onClick={handleUserMenuClick}>
+            {user.name}
+          </button>
+          <div className={styles.balance}> €{bettingUser?.wallet?.balance ?? 0}</div>
+        </>
       )
     return (
       <Link className={styles.menuLink} href={'/api/auth/login'}>
