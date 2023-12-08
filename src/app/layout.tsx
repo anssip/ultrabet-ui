@@ -10,6 +10,8 @@ import { Analytics } from '@vercel/analytics/react'
 import { getClient } from '@/lib/client'
 import { ListBetsDocument, MeDocument } from '@/gql/documents.generated'
 import { fetchAccessToken } from '@/app/bets/page'
+import { User } from '@/gql/types.generated'
+import { redirect } from 'next/navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,28 +25,43 @@ async function loadSlip(session: Session | null): Promise<Slip> {
   return (await kv.hgetall(`betslip:${session.user.sub}`)) ?? {}
 }
 
+async function getBettingUser(accessToken: string | undefined | null): Promise<User | null> {
+  try {
+    const response = accessToken
+      ? await getClient(true).query({
+          query: MeDocument,
+          context: {
+            headers: {
+              authorization: `Bearer ${accessToken}`,
+            },
+          },
+        })
+      : null
+    return response?.data?.me ?? null
+  } catch (e) {
+    console.error(e)
+    return null
+  }
+}
+
 // @ts-ignore
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = (await getSession()) ?? null
   const slip = await loadSlip(session)
 
   const accessToken = await fetchAccessToken()
-  const meResponse = accessToken
-    ? await getClient(true).query({
-        query: MeDocument,
-        context: {
-          headers: {
-            authorization: `Bearer ${accessToken}`,
-          },
-        },
-      })
-    : null
+  const me = accessToken ? await getBettingUser(accessToken) : null
+
+  if (accessToken && !me) {
+    console.info('redirecting to login')
+    redirect('/api/auth/login')
+  }
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <UserProvider>
-          <GlobalNav bettingUser={meResponse?.data?.me ?? null} />
+          <GlobalNav bettingUser={me} />
           {children}
           <BetSlip slip={slip ?? {}} />
           <Analytics />

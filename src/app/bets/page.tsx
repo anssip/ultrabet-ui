@@ -69,7 +69,8 @@ export async function fetchAccessToken() {
 export default async function Page() {
   const accessToken = await fetchAccessToken()
   if (!accessToken) {
-    redirect('/login')
+    console.info('No access token, redirecting to login')
+    redirect('/api/auth/login')
   }
   const data = await getClient(true).query({
     query: ListBetsDocument,
