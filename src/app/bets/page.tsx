@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation'
 import { formatTime } from '@/ui/date-util'
 
 export const revalidate = 60
+
 // export const dynamic = 'force-dynamic'
 
 function betStatus(bet: Bet) {}
@@ -17,12 +18,10 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   const betType = getLongBetName(bet.betOptions?.length ?? 1)
 
   const betOptions = bet.betOptions?.map((option: Maybe<BetOption>) => (
-    <div key={option?.id} className={styles.betDetails}>
+    <li key={option?.id} className={styles.betDetails}>
       <div className={styles.marketOption}>
         <div>
-          <span className={styles.status + ' ' + styles[`status-${bet.status.toLowerCase()}`]}>
-            o
-          </span>{' '}
+          <span className={styles.status + ' ' + styles[`status-${bet.status.toLowerCase()}`]} />
           {option?.marketOption?.name}
         </div>
         <div>{option?.marketOption.odds}</div>
@@ -31,7 +30,7 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
         {option?.marketOption.market?.event?.homeTeamName} vs{' '}
         {option?.marketOption.market?.event?.awayTeamName}
       </div>
-    </div>
+    </li>
   ))
 
   return (
@@ -42,7 +41,7 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
         </div>
         <div className={styles.betMeta}>Placed {formatTime(new Date(bet.createdAt))}</div>
       </div>
-      {betOptions}
+      <ul>{betOptions}</ul>
       <div className={styles.numbers}>
         <div className={styles.number}>
           <div className={styles.smallText}>Stake</div>

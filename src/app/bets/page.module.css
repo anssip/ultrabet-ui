@@ -20,6 +20,7 @@
     color: white;
     background-color: #3b4752;
     flex: 1;
+    border: 1px solid rgb(255, 255, 0, 0.4);
 }
 
 .betHeader {
@@ -27,15 +28,14 @@
     flex-direction: row;
     justify-content: space-between;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin: 1em 1.5em;
 }
 
 .betDetails {
-    display: flex;
-    flex-direction: column;
+    list-style: none;
+    position: relative;
     gap: 0.5em;
-    margin: 1em 0;
-    border-bottom: 1px solid yellow;
+    margin: 0.2em 1.5em;
 }
 
 .betMeta {
@@ -43,24 +43,42 @@
     font-weight: 200;
 }
 
-.status {
-    font-weight: 900;
+/*.status::before {*/
+/*    content: "•";*/
+/*    position: absolute;*/
+/*    left: -20px;*/
+/*    top: -10px;*/
+/*    font-size: 1.7em;*/
+/*}*/
+
+.status::before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    left: -20px;
+    top: 5px;
+    border: 1px solid darkgray;
+    border-radius: 50%;
 }
+
 
 .status-pending {
     color: ghostwhite;
 }
 
-.status-lost {
-    color: red;
+.status-lost::before {
+    background-color: red;
+    border: 2px solid red;
 }
 
-.status-won {
-    color: greenyellow;
+.status-won::before {
+    background-color: greenyellow;
+    border: 2px solid greenyellow;
 }
 
-.status-canceled {
-    color: darkgray;
+.status-canceled::before {
+    border: 2px solid darkgray;
 }
 
 .marketOption {
@@ -85,6 +103,9 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 1em;
+    margin: 0 1.5em;
+    border-top: 1px solid yellow;
+    padding-top: 0.5em
 }
 
 .number {
