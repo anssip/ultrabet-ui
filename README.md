@@ -30,6 +30,7 @@ pnpm dev
 
 ## TODO
 
+- [ ] Fix global styling
 - [x] Bug: does not accept a long bet only without any singles
 - [x] Show some loading indicator when placing a bet
 - [x[ Add a loading skeleton for the bets view
