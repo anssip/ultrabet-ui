@@ -66,6 +66,7 @@ query ListBets {
         id
         betOptions {
             id
+            status
             marketOption {
                 id
                 name

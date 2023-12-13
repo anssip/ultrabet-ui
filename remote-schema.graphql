@@ -11,7 +11,6 @@ type Bet {
     createdAt: String!
     id: ID!
     potentialWinnings: Float!
-    result: BetResult
     stake: Float!
     status: BetStatus!
     user: User
@@ -21,7 +20,7 @@ type BetOption {
     bet: Bet!
     id: Int!
     marketOption: MarketOption!
-    result: BetResult
+    status: BetStatus
 }
 
 "An Event represents a sports match or competition on which users can place bets."
@@ -162,13 +161,6 @@ type Wallet {
     id: ID!
     transactions: [Transaction]
     user: User
-}
-
-enum BetResult {
-    CANCELED
-    LOST
-    PENDING
-    WON
 }
 
 enum BetStatus {

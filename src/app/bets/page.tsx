@@ -1,9 +1,9 @@
 import { getClient } from '@/lib/client'
 import { ListBetsDocument } from '@/gql/documents.generated'
 import styles from './page.module.css'
-import React, { Suspense } from 'react'
+import React from 'react'
 import { getAccessToken } from '@auth0/nextjs-auth0'
-import { Bet, BetOption, Maybe } from '@/gql/types.generated'
+import { Bet, BetOption, BetStatus, Maybe } from '@/gql/types.generated'
 import { getLongBetName } from '@/lib/util'
 import { redirect } from 'next/navigation'
 import { formatTime } from '@/ui/date-util'
@@ -17,11 +17,17 @@ function betStatus(bet: Bet) {}
 const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   const betType = getLongBetName(bet.betOptions?.length ?? 1)
 
+  const betWinLabel = (status: BetStatus): string => {
+    return status === BetStatus.Won ? 'Won' : 'To Return'
+  }
+
   const betOptions = bet.betOptions?.map((option: Maybe<BetOption>) => (
     <li key={option?.id} className={styles.betDetails}>
       <div className={styles.marketOption}>
         <div>
-          <span className={styles.status + ' ' + styles[`status-${bet.status.toLowerCase()}`]} />
+          <span
+            className={styles.status + ' ' + styles[`status-${option?.status?.toLowerCase()}`]}
+          />
           {option?.marketOption?.name}
         </div>
         <div>{option?.marketOption.odds}</div>
@@ -48,7 +54,7 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
           <div>€{bet.stake}</div>
         </div>
         <div className={styles.number}>
-          <div className={styles.smallText}>To Return</div>
+          <div className={styles.smallText}>{betWinLabel(bet.status)}</div>
           <div>€{Number(bet.potentialWinnings).toFixed(2)}</div>
         </div>
       </div>

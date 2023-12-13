@@ -19,7 +19,6 @@ export type Bet = {
   createdAt: Scalars['String'];
   id: Scalars['ID'];
   potentialWinnings: Scalars['Float'];
-  result?: Maybe<BetResult>;
   stake: Scalars['Float'];
   status: BetStatus;
   user?: Maybe<User>;
@@ -30,20 +29,13 @@ export type BetOption = {
   bet: Bet;
   id: Scalars['Int'];
   marketOption: MarketOption;
-  result?: Maybe<BetResult>;
+  status?: Maybe<BetStatus>;
 };
 
 export type BetOptionInput = {
   marketOptionId: Scalars['ID'];
   stake: Scalars['Float'];
 };
-
-export enum BetResult {
-  Canceled = 'CANCELED',
-  Lost = 'LOST',
-  Pending = 'PENDING',
-  Won = 'WON'
-}
 
 export enum BetStatus {
   Canceled = 'CANCELED',
