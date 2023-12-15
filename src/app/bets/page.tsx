@@ -28,7 +28,7 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
           <span
             className={styles.status + ' ' + styles[`status-${option?.status?.toLowerCase()}`]}
           />
-          {option?.marketOption?.name}{' '}
+          {option?.marketOption?.name}
           <span className={styles.smallestText}>{option?.marketOption.id}</span>
         </div>
         <div>{option?.marketOption.odds}</div>

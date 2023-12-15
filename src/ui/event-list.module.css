@@ -78,6 +78,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     width: 33%;
     /*width: 90px;*/
 }
@@ -89,15 +90,17 @@
 }
 
 .optionName {
-    font-size: 11px;
-    color: #666;
+    font-size: 0.7rem;
+    color: #222;
     text-align: center;
-    height: 1.5rem;
+    min-height: 1.5rem;
 }
 
 .oddsHistory {
+    margin-top: 2px;
     font-size: 10px;
     color: #666;
+    height: 10px;
 }
 
 .addSlipOptionButton {

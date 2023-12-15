@@ -89,7 +89,7 @@ export function EventList({
                   <div key={option?.id} className={styles.oddsBox}>
                     <div className={styles.optionName}>{option?.name}</div>
                     <AddSlipOptionForm option={option} event={event} market={headToHeadMarket} />
-                    <p className={styles.oddsHistory}>{option?.history ?? ''}</p>
+                    <div className={styles.oddsHistory}>{option?.history ?? ''}</div>
                   </div>
                 ))}
               </div>
