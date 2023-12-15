@@ -176,7 +176,9 @@ export function PlaceBetForm({ slip }: Props) {
             <SubmitButton onClick={placeBet} loading={loading} />
           </div>
         ) : (
-          'Click on the odds boxes to add one or more bets to your slip'
+          <div className={styles.empty}>
+            Click on the odds to add one or more bets to your slip!
+          </div>
         )}
       </form>
     </>
