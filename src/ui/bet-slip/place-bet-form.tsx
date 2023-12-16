@@ -84,6 +84,7 @@ export function PlaceBetForm({ slip }: Props) {
       body: JSON.stringify({ singles: slipWithStakes, long: longOption }),
     }).then(async (response) => {
       console.log('got response', response)
+      setSlipWithStakes({})
       setLoading(false)
       if (response.ok) {
         const bets = await response.json()

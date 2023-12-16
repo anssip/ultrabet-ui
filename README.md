@@ -30,6 +30,7 @@ pnpm dev
 
 ## TODO
 
+- [ ] Show scores in bets view for live bets 
 - [ ] Fix global styling
 - [x] Bug: does not accept a long bet only without any singles
 - [x] Show some loading indicator when placing a bet
