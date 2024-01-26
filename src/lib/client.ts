@@ -6,7 +6,10 @@ import { BASE_URL, splitLink } from '@/lib/apollo-link'
 // TODO: this creates a new client (and new cache) every time, fix that
 export const getClient = (isAuthenticated: boolean = false) => {
   const { getClient } = registerApolloClient(() => {
-    const uri = `${BASE_URL}/${isAuthenticated ? 'private/graphql' : 'graphql'}`
+    const uri =
+      (isAuthenticated
+        ? process.env.NEXT_PUBLIC_BETTING_API_URL
+        : process.env.NEXT_PUBLIC_API_URL) + '/graphql'
     console.log(`uri, is authenticated? ${isAuthenticated}`, uri)
     const httpLink = new HttpLink({
       uri,

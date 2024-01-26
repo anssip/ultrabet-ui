@@ -13,7 +13,10 @@ import { useUser } from '@auth0/nextjs-auth0/client'
 
 const makeClient = (isAuthenticated: boolean) => () => {
   const httpLink = new HttpLink({
-    uri: `${BASE_URL}/${isAuthenticated ? 'private/graphql' : 'graphql'}`,
+    uri:
+      (isAuthenticated
+        ? process.env.NEXT_PUBLIC_BETTING_API_URL
+        : process.env.NEXT_PUBLIC_API_URL) + '/graphql',
   })
 
   return new NextSSRApolloClient({

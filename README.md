@@ -30,6 +30,7 @@ pnpm dev
 
 ## TODO
 
+- [ ] Show gravatars (url is in Auth0)
 - [ ] Show scores in bets view for live bets 
 - [ ] Fix global styling
 - [x] Bug: does not accept a long bet only without any singles
