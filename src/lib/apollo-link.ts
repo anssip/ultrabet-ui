@@ -3,11 +3,9 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
-export const BASE_URL = process.env.API_BASE_URL ?? 'https://betapi.anssipiirainen.com'
-
 export const wsLink = new GraphQLWsLink(
   createClient({
-    url: `${BASE_URL}/subscriptions`.replace(/^https*/, 'wss'),
+    url: `${process.env.NEXT_PUBLIC_API_URL}/subscriptions`.replace(/^https*/, 'wss'),
   })
 )
 export const splitLink = (httpLink: HttpLink) =>

@@ -8,7 +8,7 @@ import {
   // @ts-ignore
   NextSSRApolloClient,
 } from '@apollo/experimental-nextjs-app-support/ssr'
-import { BASE_URL, splitLink } from '@/lib/apollo-link'
+import { splitLink } from '@/lib/apollo-link'
 import { useUser } from '@auth0/nextjs-auth0/client'
 
 const makeClient = (isAuthenticated: boolean) => () => {

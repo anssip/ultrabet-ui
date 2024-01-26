@@ -1,6 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc'
-import { BASE_URL, splitLink } from '@/lib/apollo-link'
+import { splitLink } from '@/lib/apollo-link'
 // @ts-ignore
 
 // TODO: this creates a new client (and new cache) every time, fix that
