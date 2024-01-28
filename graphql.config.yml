@@ -1,8 +1,8 @@
 schema: remote-schema.graphql
 extensions:
   endpoints:
-    Apollo Fullstack Tutorial:
-      url: https://betapi.anssipiirainen.com/graphql
+    Parabolic Betting API:
+      url: https://parabolic-snowy-cloud-5094.fly.dev/graphql
       headers:
         user-agent: JS GraphQL
       introspect: true

@@ -7,12 +7,9 @@ import { Bet, BetOption, BetStatus, Maybe } from '@/gql/types.generated'
 import { getLongBetName } from '@/lib/util'
 import { redirect } from 'next/navigation'
 import { formatTime } from '@/ui/date-util'
+import { renderScore } from '@/ui/event-util'
 
 export const revalidate = 60
-
-// export const dynamic = 'force-dynamic'
-
-function betStatus(bet: Bet) {}
 
 const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   const betType = getLongBetName(bet.betOptions?.length ?? 1)
@@ -21,24 +18,35 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
     return status === BetStatus.Won ? 'Won' : 'To Return'
   }
 
-  const betOptions = bet.betOptions?.map((option: Maybe<BetOption>) => (
-    <li key={option?.id} className={styles.betDetails}>
-      <div className={styles.marketOption}>
-        <div>
-          <span
-            className={styles.status + ' ' + styles[`status-${option?.status?.toLowerCase()}`]}
-          />
-          {option?.marketOption?.name}
-          <span className={styles.smallestText}>{option?.marketOption.id}</span>
+  const betOptions = bet.betOptions?.map((option: Maybe<BetOption>) => {
+    const event = option?.marketOption.market?.event
+    return (
+      <li key={option?.id} className={styles.betDetails}>
+        <div className={styles.marketOption}>
+          <div>
+            <span
+              className={styles.status + ' ' + styles[`status-${option?.status?.toLowerCase()}`]}
+            />
+            {option?.marketOption?.name}
+            <span className={styles.smallestText}>{option?.marketOption.id}</span>
+          </div>
+          <div>{option?.marketOption.odds}</div>
         </div>
-        <div>{option?.marketOption.odds}</div>
-      </div>
-      <div className={`${styles.eventName} ${styles.smallText}`}>
-        {option?.marketOption.market?.event?.homeTeamName} vs{' '}
-        {option?.marketOption.market?.event?.awayTeamName}
-      </div>
-    </li>
-  ))
+        <div className={`${styles.eventName} ${styles.smallText}`}>
+          {option?.marketOption.market?.event?.homeTeamName} vs{' '}
+          {option?.marketOption.market?.event?.awayTeamName}
+          {event && !event.sport?.key.startsWith('tennis') && (
+            <span className={styles.score}>
+              {renderScore(event)}{' '}
+              <span className={styles.live}>
+                {!event?.result && event.isLive && !event.completed ? ' live' : ''}
+              </span>
+            </span>
+          )}
+        </div>
+      </li>
+    )
+  })
 
   return (
     <div className={styles.betItem}>

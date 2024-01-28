@@ -73,3 +73,13 @@ export const getUpdatedEventsForNewEventStatuses = (
     (event) => !completedLiveEvents.find((completedEvent) => completedEvent.id === event.id)
   )
 }
+
+export function renderScore(event: EventFragment): string {
+  const getTeamScore = (teamName: string) =>
+    event?.scoreUpdates
+      ?.filter((s) => s && s.name === teamName)
+      .reduce((acc, s) => acc + parseInt(s?.score ?? '0'), 0) ?? 0
+  const homeScore = getTeamScore(event?.homeTeamName)
+  const awayScore = getTeamScore(event?.awayTeamName)
+  return `${homeScore} - ${awayScore}`
+}

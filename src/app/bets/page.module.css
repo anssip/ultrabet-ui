@@ -92,6 +92,17 @@
     padding: 0.5em;
 }
 
+.score {
+    padding: 1em;
+    color: yellow;
+    .live {
+        text-transform: uppercase;
+        font-family: monospace;
+        color: lightyellow;
+        padding-left: 0.5rem;
+    }
+}
+
 .numbers {
     display: flex;
     flex-direction: row;

@@ -5,6 +5,7 @@ fragment Event on Event {
     startTime
     homeTeamName
     awayTeamName
+    result
     sport {
         id
         key
@@ -75,10 +76,7 @@ query ListBets {
                     id
                     name
                     event {
-                        id
-                        awayTeamName
-                        completed
-                        homeTeamName
+                        ...Event
                     }
                 }
             }

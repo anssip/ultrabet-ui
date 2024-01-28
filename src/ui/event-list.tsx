@@ -8,18 +8,9 @@ import styles from './event-list.module.css'
 // @ts-ignore
 import { ElapsedTime } from '@/ui/elapsed-time'
 import { AddSlipOptionForm } from '@/ui/bet-slip/add-slip-option-form'
+import { renderScore } from '@/ui/event-util'
 
 type MarketOptionWithHistory = MarketOption & { history: string }
-
-function renderScore(event: EventFragment): string {
-  const getTeamScore = (teamName: string) =>
-    event?.scoreUpdates
-      ?.filter((s) => s && s.name === teamName)
-      .reduce((acc, s) => acc + parseInt(s?.score ?? '0'), 0) ?? 0
-  const homeScore = getTeamScore(event?.homeTeamName)
-  const awayScore = getTeamScore(event?.awayTeamName)
-  return `${homeScore} - ${awayScore}`
-}
 
 export function EventList({
   events,

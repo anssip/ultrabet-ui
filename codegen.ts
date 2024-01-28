@@ -2,7 +2,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'https://betapi.anssipiirainen.com/graphql',
+  schema: 'https://parabolic-snowy-cloud-5094.fly.dev/graphql',
   documents: ['src/**/*.graphql'],
   generates: {
     'src/gql/types.generated.ts': { plugins: ['typescript'] },
