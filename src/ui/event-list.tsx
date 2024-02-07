@@ -12,6 +12,14 @@ import { renderScore } from '@/ui/event-util'
 
 type MarketOptionWithHistory = MarketOption & { history: string }
 
+const eventCompare = (live: boolean) => (a: EventFragment, b: EventFragment) => {
+  const startA = new Date(a.startTime)
+  const startB = new Date(b.startTime)
+  if (startA < startB) return live ? 1 : -1
+  if (startA > startB) return live ? -1 : 1
+  return 0
+}
+
 export function EventList({
   events,
   live = false,
@@ -28,19 +36,11 @@ export function EventList({
         <Link href={`/${live ? 'upcoming' : ''}`}>{live ? 'upcoming' : 'live'} events</Link>
       </div>
     )
-  const sorted = events.sort((a, b) => {
-    const startA = new Date(a.startTime)
-    const startB = new Date(b.startTime)
-    if (startA < startB) return live ? 1 : -1
-    if (startA > startB) return live ? -1 : 1
-    return 0
-  })
-  // console.log(`Total ${live ? 'live' : 'upcoming'} events: ${events.length}`, events)
   return (
     <div className={styles.events}>
-      {sorted.map((event) => {
+      {events.sort(eventCompare(live)).map((event: EventFragment) => {
         if (!event) return null
-        // TODO: show all markets
+
         const headToHeadMarket = event?.markets?.find((market) =>
           ['h2h', 'h2h_lay'].includes(market?.name ?? '')
         )
@@ -49,9 +49,9 @@ export function EventList({
           console.log('no h2h market')
           return null
         }
-        let options = headToHeadMarket.options as MarketOptionWithHistory[]
-        if (options.length !== 2) {
-          options = [options[0], options[2], options[1]]
+        let h2hOptions = headToHeadMarket.options as MarketOptionWithHistory[]
+        if (h2hOptions.length !== 2) {
+          h2hOptions = [h2hOptions[0], h2hOptions[2], h2hOptions[1]]
         }
 
         return (
@@ -76,7 +76,7 @@ export function EventList({
                 </div>
               </div>
               <div className={styles.oddsWrapper}>
-                {options.map((option: MarketOptionWithHistory) => (
+                {h2hOptions.map((option: MarketOptionWithHistory) => (
                   <div key={option?.id} className={styles.oddsBox}>
                     <div className={styles.optionName}>{option?.name}</div>
                     <AddSlipOptionForm option={option} event={event} market={headToHeadMarket} />
