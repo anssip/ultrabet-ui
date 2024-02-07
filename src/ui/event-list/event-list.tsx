@@ -6,8 +6,8 @@ import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
 import styles from './event-list.module.css'
 // @ts-ignore
-import { ElapsedTime } from '@/ui/elapsed-time'
-import { AddSlipOptionForm } from '@/ui/bet-slip/add-slip-option-form'
+import { ElapsedTime } from '@/ui/event-list/elapsed-time'
+import { AddSlipOptionForm } from '@/ui/event-list/add-slip-option-form'
 import { renderScore } from '@/ui/event-util'
 
 type MarketOptionWithHistory = MarketOption & { history: string }

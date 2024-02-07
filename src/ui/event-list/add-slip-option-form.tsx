@@ -4,7 +4,7 @@ import { Market, MarketOption } from '@/gql/types.generated'
 // @ts-ignore
 import { useFormState } from 'react-dom'
 import { addSlipOption } from '@/app/actions'
-import styles from '@/ui/event-list.module.css'
+import styles from './event-list.module.css'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { EventFragment } from '@/gql/documents.generated'
 import { BetSlipOption } from '@/ui/bet-slip/bet-slip'

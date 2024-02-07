@@ -1,7 +1,7 @@
 import { getClient } from '@/lib/client'
 import { EventFragment, ListLiveEventsDocument } from '@/gql/documents.generated'
 import styles from '../page.module.css'
-import { LiveEventList } from '@/ui/live-event-list'
+import { LiveEventList } from '@/ui/event-list/live-event-list'
 import React from 'react'
 
 export const revalidate = 60

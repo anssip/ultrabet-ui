@@ -1,6 +1,6 @@
 import { getClient } from '@/lib/client'
 import { EventFragment, ListEventsDocument } from '@/gql/documents.generated'
-import { EventList } from '@/ui/event-list'
+import { EventList } from '@/ui/event-list/event-list'
 import styles from '../page.module.css'
 
 export const revalidate = 60

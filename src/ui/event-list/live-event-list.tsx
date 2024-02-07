@@ -9,8 +9,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useSubscription } from '@apollo/client'
 import { MarketOption } from '@/gql/types.generated'
-import * as R from 'ramda'
-import { EventList } from '@/ui/event-list'
+import { EventList } from '@/ui/event-list/event-list'
 import {
   getUpdatedEventsForNewEventStatuses,
   getUpdatedEventsForNewMarketOptions,
