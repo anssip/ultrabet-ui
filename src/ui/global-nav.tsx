@@ -13,6 +13,7 @@ export type Props = {
 }
 
 export default function GlobalNav({ bettingUser }: Props) {
+  const path = usePathname()
   const { user, isLoading } = useUser()
   const [userMenuVisible, setUserMenuVisible] = useState(false)
   const handleUserMenuClick = () => {
@@ -36,14 +37,14 @@ export default function GlobalNav({ bettingUser }: Props) {
       </Link>
     )
   }
-
+  const inUpcomingPage = path.includes('upcoming')
   return (
     <div className={styles.globalNavContainer}>
       <nav>
         <ul className={styles.menuList}>
           <li className={styles.navItemGroup}>
-            <GlobalNavItem label="In-play" slug="/" />
-            <GlobalNavItem label="Upcoming" slug="/upcoming" />
+            <GlobalNavItem label="In-play" slug="/h2h" isActive={!inUpcomingPage} />
+            <GlobalNavItem label="Upcoming" slug="/upcoming/h2h" isActive={inUpcomingPage} />
             {user && <GlobalNavItem label="My Bets" slug="/bets" />}
           </li>
           <li className={`${styles.navItemContainer} ${styles.active}`}>
@@ -63,11 +64,15 @@ export default function GlobalNav({ bettingUser }: Props) {
   )
 }
 
-function GlobalNavItem({ label, slug }: { label: string; slug: string }) {
-  const path = usePathname()
-  console.log('segment', path)
-  const isActive = slug === path
-
+function GlobalNavItem({
+  label,
+  slug,
+  isActive,
+}: {
+  label: string
+  slug: string
+  isActive?: boolean
+}) {
   return (
     <Link
       className={`${styles.menuLink} ${isActive ? styles.active : ''} ${styles.navItemContainer}`}

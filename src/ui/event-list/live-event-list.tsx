@@ -16,7 +16,13 @@ import {
   getUpdatedEventsForNewScores,
 } from '@/ui/event-util'
 
-export function LiveEventList({ events }: { events: EventFragment[] }) {
+export function LiveEventList({
+  events,
+  marketName,
+}: {
+  events: EventFragment[]
+  marketName: string
+}) {
   const [liveEvents, setLiveEvents] = useState<EventFragment[]>(events)
   const [updatedEvents, setUpdatedEvents] = useState<string[]>([])
 
@@ -81,5 +87,12 @@ export function LiveEventList({ events }: { events: EventFragment[] }) {
       )
     }
   }, [statusUpdateData])
-  return <EventList events={liveEvents} updatedEvents={updatedEvents} live={true} />
+  return (
+    <EventList
+      events={liveEvents}
+      updatedEvents={updatedEvents}
+      live={true}
+      marketName={marketName}
+    />
+  )
 }

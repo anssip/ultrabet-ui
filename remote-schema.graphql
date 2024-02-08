@@ -72,6 +72,7 @@ A MarketOption represents a specific choice or outcome within a market
 that users can bet on. Each market typically has two or more options to choose from.
 """
 type MarketOption {
+    description: String
     id: ID!
     """
 
@@ -82,6 +83,7 @@ type MarketOption {
     market: Market
     name: String!
     odds: Float!
+    point: Float
 }
 
 " Mutations"

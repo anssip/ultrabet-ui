@@ -12,6 +12,7 @@
     flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
+    margin-top: 1em;
 }
 
 @keyframes flash {

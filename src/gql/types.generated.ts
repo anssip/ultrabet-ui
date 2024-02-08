@@ -113,6 +113,7 @@ export type Market = {
  */
 export type MarketOption = {
   __typename?: 'MarketOption';
+  description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   /**
    * When was this Market last updated? Used to track when the odds were last
@@ -122,6 +123,7 @@ export type MarketOption = {
   market?: Maybe<Market>;
   name: Scalars['String'];
   odds: Scalars['Float'];
+  point?: Maybe<Scalars['Float']>;
 };
 
 /**  Mutations */

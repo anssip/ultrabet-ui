@@ -1,6 +1,6 @@
 'use client'
 
-import { EventFragment } from '@/gql/documents.generated'
+import { EventFragment, MarketFragment } from '@/gql/documents.generated'
 import { MarketOption } from '@/gql/types.generated'
 import { CSSTransition } from 'react-transition-group'
 import Link from 'next/link'
@@ -9,8 +9,9 @@ import styles from './event-list.module.css'
 import { ElapsedTime } from '@/ui/event-list/elapsed-time'
 import { AddSlipOptionForm } from '@/ui/event-list/add-slip-option-form'
 import { renderScore } from '@/ui/event-util'
+import { Market } from './market'
 
-type MarketOptionWithHistory = MarketOption & { history: string }
+export type MarketOptionWithHistory = MarketOption & { history: string }
 
 const eventCompare = (live: boolean) => (a: EventFragment, b: EventFragment) => {
   const startA = new Date(a.startTime)
@@ -22,10 +23,12 @@ const eventCompare = (live: boolean) => (a: EventFragment, b: EventFragment) => 
 
 export function EventList({
   events,
+  marketName,
   live = false,
   updatedEvents = [],
 }: {
   events: EventFragment[]
+  marketName: string
   live?: boolean
   updatedEvents?: string[]
 }) {
@@ -40,18 +43,15 @@ export function EventList({
     <div className={styles.events}>
       {events.sort(eventCompare(live)).map((event: EventFragment) => {
         if (!event) return null
+        const selectedMarket = event?.markets?.find((market) => market?.name === marketName)
 
-        const headToHeadMarket = event?.markets?.find((market) =>
-          ['h2h', 'h2h_lay'].includes(market?.name ?? '')
-        )
-
-        if (!headToHeadMarket?.options) {
-          console.log('no h2h market')
+        if (!selectedMarket?.options) {
+          console.log(`market ${marketName} has no options`)
           return null
         }
-        let h2hOptions = headToHeadMarket.options as MarketOptionWithHistory[]
-        if (h2hOptions.length !== 2) {
-          h2hOptions = [h2hOptions[0], h2hOptions[2], h2hOptions[1]]
+        let options = selectedMarket.options as MarketOptionWithHistory[]
+        if (options.length !== 2) {
+          options = [options[0], options[2], options[1]]
         }
 
         return (
@@ -76,13 +76,7 @@ export function EventList({
                 </div>
               </div>
               <div className={styles.oddsWrapper}>
-                {h2hOptions.map((option: MarketOptionWithHistory) => (
-                  <div key={option?.id} className={styles.oddsBox}>
-                    <div className={styles.optionName}>{option?.name}</div>
-                    <AddSlipOptionForm option={option} event={event} market={headToHeadMarket} />
-                    <div className={styles.oddsHistory}>{option?.history ?? ''}</div>
-                  </div>
-                ))}
+                <Market event={event} market={selectedMarket} />
               </div>
             </div>
           </CSSTransition>

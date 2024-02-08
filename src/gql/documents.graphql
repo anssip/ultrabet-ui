@@ -1,3 +1,18 @@
+fragment Market on Market {
+    id
+    name
+    source
+    lastUpdated
+    isLive
+    options {
+        id
+        name
+        odds
+        point
+        description
+    }
+}
+
 fragment Event on Event {
     id
     externalId
@@ -18,16 +33,7 @@ fragment Event on Event {
     isLive
     completed
     markets {
-        id
-        isLive
-        name
-        source
-        lastUpdated
-        options {
-            id
-            name
-            odds
-        }
+        ...Market
     }
     scoreUpdates {
         id
@@ -72,6 +78,8 @@ query ListBets {
                 id
                 name
                 odds
+                point
+                description
                 market {
                     id
                     name
