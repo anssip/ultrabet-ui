@@ -75,6 +75,9 @@ export const getUpdatedEventsForNewEventStatuses = (
 }
 
 export function renderScore(event: EventFragment): string {
+  if (!event?.scoreUpdates?.length) {
+    return '0 - 0'
+  }
   const getTeamScore = (
     teamName: string // get maximum from the array
   ) =>
