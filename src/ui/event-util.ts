@@ -75,10 +75,15 @@ export const getUpdatedEventsForNewEventStatuses = (
 }
 
 export function renderScore(event: EventFragment): string {
-  const getTeamScore = (teamName: string) =>
-    event?.scoreUpdates
-      ?.filter((s) => s && s.name === teamName)
-      .reduce((acc, s) => acc + parseInt(s?.score ?? '0'), 0) ?? 0
+  const getTeamScore = (
+    teamName: string // get maximum from the array
+  ) =>
+    Math.max(
+      ...(event?.scoreUpdates
+        ?.filter((s) => s && s.name === teamName)
+        .map((s) => parseInt(s?.score ?? '0')) ?? [0])
+    )
+
   const homeScore = getTeamScore(event?.homeTeamName)
   const awayScore = getTeamScore(event?.awayTeamName)
   return `${homeScore} - ${awayScore}`
