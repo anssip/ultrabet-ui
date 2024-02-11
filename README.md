@@ -30,10 +30,14 @@ pnpm dev
 
 ## TODO
 
+See the [complete roadmap here](https://github.com/anssip/ultrabet?tab=readme-ov-file#roadmap)
+
+- [ ] Spreads (handicap) market
+- [ ] Event view that shows all markets and options for an event
 - [ ] Show gravatars (url is in Auth0)
-- [x] Show scores in bets view
 - [ ] Update live scores in bets view
 - [ ] Fix global styling
+- [x] Show scores in bets view
 - [x] Bug: does not accept a long bet only without any singles
 - [x] Show some loading indicator when placing a bet
 - [x[ Add a loading skeleton for the bets view
