@@ -9,6 +9,7 @@ import { Bet, MarketOption } from '@/gql/types.generated'
 import { RemoveSlipOptionForm } from '@/ui/bet-slip/remove-slip-option-form'
 import { useRouter } from 'next/navigation'
 import { getLongBetName } from '@/lib/util'
+import { getOptionPointLabel, getSpreadOptionLabel } from '@/ui/event-util'
 
 export type CreatedBets = {
   singles: Bet[]
@@ -55,7 +56,7 @@ export function PlaceBetForm({ slip }: Props) {
     setLongOption({
       odds: ids.map((optionId) => slip[optionId]).reduce((acc, o) => acc * o.odds, 1),
       marketName: '',
-      eventName: '',
+      event: null,
       id: 'long',
       name: getLongBetName(ids.length),
       stake: 0,
@@ -111,21 +112,25 @@ export function PlaceBetForm({ slip }: Props) {
     setSlipWithStakes({ ...slip, [option.id]: { ...option, stake } })
   }
 
-  function renderOption(
-    option: MarketOption & { stake?: number; marketName: string; eventName: string }
-  ) {
+  function renderOption(option: BetSlipOption) {
     if (!option) return null
     return (
       <li key={option.id} className={styles.option}>
         <div className={styles.header}>
           <div className={styles.name}>
-            <div>{option.name}</div>
+            <div>
+              {option.name} {getOptionPointLabel(option, option.marketName)}
+            </div>
             <div>{option.odds.toFixed(2)}</div>
           </div>
         </div>
         <div className={styles.content}>
           <div>{option.marketName}</div>
-          <div>{option.eventName}</div>
+          <div>
+            {/*TODO: following could be a separate component. Similar stuff is rendered also in the bets page.*/}
+            {option.event?.homeTeamName} {getSpreadOptionLabel(option.event, true)} vs{' '}
+            {option.event?.awayTeamName} {getSpreadOptionLabel(option.event, false)}
+          </div>
         </div>
         <input
           className={styles.stake}

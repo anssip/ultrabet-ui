@@ -43,15 +43,17 @@ export function EventList({
     <div className={styles.events}>
       {events.sort(eventCompare(live)).map((event: EventFragment) => {
         if (!event) return null
-        const selectedMarket = event?.markets?.find((market) => market?.name === marketName)
+        const selectedMarket = event?.markets?.find(
+          (market) =>
+            market?.name === marketName &&
+            (market.name === 'spreads'
+              ? market.options?.find((option) => option?.point !== 0)
+              : true)
+        )
 
         if (!selectedMarket?.options) {
-          console.log(`market ${marketName} has no options`)
+          console.log(`Event '${event.name}' market '${marketName}' has no options`)
           return null
-        }
-        let options = selectedMarket.options as MarketOptionWithHistory[]
-        if (options.length !== 2) {
-          options = [options[0], options[2], options[1]]
         }
 
         return (

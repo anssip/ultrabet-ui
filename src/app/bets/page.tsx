@@ -7,7 +7,7 @@ import { Bet, BetOption, BetStatus, Maybe } from '@/gql/types.generated'
 import { getLongBetName } from '@/lib/util'
 import { redirect } from 'next/navigation'
 import { formatTime } from '@/ui/date-util'
-import { renderScore } from '@/ui/event-util'
+import { getOptionPointLabel, getSpreadOptionLabel, renderScore } from '@/ui/event-util'
 
 export const revalidate = 60
 
@@ -17,8 +17,8 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   const betWinLabel = (status: BetStatus): string => {
     return status === BetStatus.Won ? 'Won' : 'To Return'
   }
-
-  const betOptions = bet.betOptions?.map((option: Maybe<BetOption>) => {
+  const options = bet.betOptions?.filter((option) => !!option) as BetOption[]
+  const betOptions = options.map((option: BetOption) => {
     const event = option?.marketOption.market?.event
     return (
       <li key={option?.id} className={styles.betDetails}>
@@ -27,14 +27,21 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
             <span
               className={styles.status + ' ' + styles[`status-${option?.status?.toLowerCase()}`]}
             />
-            {option?.marketOption?.name} {option?.marketOption?.point}{' '}
+            {option?.marketOption?.name}{' '}
+            {option &&
+              getOptionPointLabel(
+                option.marketOption ?? null,
+                option.marketOption?.market?.name ?? 'totals'
+              )}{' '}
             <span className={styles.smallestText}>{option?.marketOption.id}</span>
           </div>
           <div>{option?.marketOption.odds}</div>
         </div>
         <div className={`${styles.eventName} ${styles.smallText}`}>
-          {option?.marketOption.market?.event?.homeTeamName} vs{' '}
-          {option?.marketOption.market?.event?.awayTeamName}
+          {option?.marketOption.market?.event?.homeTeamName}{' '}
+          {getSpreadOptionLabel(option.marketOption.market?.event ?? null, true)} vs{' '}
+          {option?.marketOption.market?.event?.awayTeamName}{' '}
+          {getSpreadOptionLabel(option.marketOption.market?.event ?? null, false)}
           {event && !event.sport?.key.startsWith('tennis') && (
             <span className={styles.score}>
               {renderScore(event)}{' '}

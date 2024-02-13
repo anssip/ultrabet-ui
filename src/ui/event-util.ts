@@ -1,6 +1,7 @@
 import { EventFragment } from '@/gql/documents.generated'
-import { MarketOption } from '@/gql/types.generated'
+import { BetOption, MarketOption } from '@/gql/types.generated'
 import * as R from 'ramda'
+import { BetSlipOption } from '@/ui/bet-slip/bet-slip'
 
 export const getUpdatedEventsForNewMarketOptions = (
   currentEvents: EventFragment[],
@@ -90,4 +91,28 @@ export function renderScore(event: EventFragment): string {
   const homeScore = getTeamScore(event?.homeTeamName)
   const awayScore = getTeamScore(event?.awayTeamName)
   return `${homeScore} - ${awayScore}`
+}
+
+export function getOptionPointLabel(
+  option: {
+    point?: number | null
+    description?: string | null
+  } | null,
+  marketName: string
+): string {
+  if (!option) return ''
+  if (!option.point) return ''
+  if (marketName === 'totals') return `${option.point}`
+  return option.point > 0 ? `+${option.point}` : `${option.point}`
+}
+
+export function getSpreadOptionLabel(event: EventFragment | null, homeTeam: boolean) {
+  if (!event) return ''
+  const spreadMarket = event.markets?.find((m) => m?.name === 'spreads')
+  if (!spreadMarket) return ''
+  const teamOption = spreadMarket.options?.find(
+    (o) => o?.name === (homeTeam ? event.homeTeamName : event.awayTeamName)
+  )
+  if (!teamOption) return ''
+  return getOptionPointLabel(teamOption, spreadMarket.name)
 }

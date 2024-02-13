@@ -20,7 +20,8 @@ export function PageNav({ prefix }: { prefix: string }) {
   return (
     <nav className={styles.nav}>
       <NavLink label="1x2" slug={`h2h`} />
-      <NavLink slug={`totals`} label="Match Goals" />
+      <NavLink slug="spreads" label="Handicap" />
+      <NavLink slug="totals" label="Match Goals" />
     </nav>
   )
 }

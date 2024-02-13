@@ -95,6 +95,11 @@
     color: #222;
     text-align: center;
     min-height: 1.5rem;
+
+    .point {
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
 }
 
 .oddsHistory {
