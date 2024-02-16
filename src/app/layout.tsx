@@ -1,6 +1,5 @@
-import './globals.css'
 import { Inter } from 'next/font/google'
-import GlobalNav from '@/ui/global-nav'
+import TopBar from '@/ui/top-bar'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { getSession, Session } from '@auth0/nextjs-auth0'
 import { kv } from '@vercel/kv'
@@ -59,11 +58,33 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/base-min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+          integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css"
+      />
       <body className={inter.className}>
         <UserProvider>
-          <GlobalNav bettingUser={me} />
-          {children}
-          <BetSlip slip={slip ?? {}} />
+          <div className="pure-g">
+            <TopBar bettingUser={me} />
+            {children}
+            <BetSlip slip={slip ?? {}} />
+          </div>
           <Analytics />
         </UserProvider>
       </body>

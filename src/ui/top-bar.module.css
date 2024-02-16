@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    width: 100%;
+    background-color: #e4caf2;
+    color: white;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1em;
+    gap: 1em;
+    height: 3rem;
+}
+
+.container a, .container li {
+    font-weight: 300;
+    color: black;
+}
+
+.label {
+    background-color: transparent;
+    border: none;
+    font-weight: 200;
+    color: black;
+}
+
+.balance {
+    display: inline;
+    color: mediumvioletred;
+}

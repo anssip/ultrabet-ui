@@ -32,6 +32,7 @@ pnpm dev
 
 See the [complete roadmap here](https://github.com/anssip/ultrabet?tab=readme-ov-file#roadmap)
 
+- [ ] Add loading state for add to slip action
 - [ ] Spreads (handicap) market
 - [ ] Event view that shows all markets and options for an event
 - [ ] Show gravatars (url is in Auth0)
