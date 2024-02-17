@@ -80,11 +80,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       />
       <body className={inter.className}>
         <UserProvider>
-          <div className="pure-g">
-            <TopBar bettingUser={me} />
-            {children}
-            <BetSlip slip={slip ?? {}} />
-          </div>
+          <TopBar bettingUser={me} />
+          {children}
+          <BetSlip slip={slip ?? {}} />
           <Analytics />
         </UserProvider>
       </body>

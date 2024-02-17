@@ -1,28 +1,107 @@
 .container {
-    display: flex;
-    width: 100%;
     background-color: #e4caf2;
-    color: white;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0 1em;
+    margin-bottom: 1em;
+    -webkit-font-smoothing: antialiased;
+    height: 2.1em;
+    overflow: visible;
+    -webkit-transition: height 0.5s;
+    -moz-transition: height 0.5s;
+    -ms-transition: height 0.5s;
+    transition: height 0.5s;
+}
+
+.profileActions {
+    display: flex;
+    flex-direction: row;
     gap: 1em;
-    height: 3rem;
+    align-items: center;
 }
 
 .container a, .container li {
-    font-weight: 300;
     color: black;
 }
 
 .label {
-    background-color: transparent;
     border: none;
-    font-weight: 200;
+    font-weight: 300;
     color: black;
+    display: inline;
 }
 
 .balance {
     display: inline;
     color: mediumvioletred;
+    margin-right: 0.5em;
+}
+
+
+.open {
+    height: 14em;
+}
+
+.profileActions {
+    text-align: right;
+}
+
+.accountInfo {
+    padding-right: 1em !important;
+}
+
+.toggle {
+    width: 34px;
+    height: 34px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+}
+
+.toggle .bar {
+    background-color: #777;
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 100px;
+    position: absolute;
+    top: 18px;
+    right: 7px;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.toggle .bar:first-child {
+    -webkit-transform: translateY(-6px);
+    -moz-transform: translateY(-6px);
+    -ms-transform: translateY(-6px);
+    transform: translateY(-6px);
+}
+
+.x .bar {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.x .bar:first-child {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+@media (max-width: 47.999em) {
+    .profileActions {
+        text-align: left;
+    }
+
+    .toggle {
+        display: block;
+    }
+
+    .container {
+        overflow: hidden;
+    }
 }
