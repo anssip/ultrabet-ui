@@ -1,5 +1,5 @@
 import { Inter } from 'next/font/google'
-import TopBar from '@/ui/top-bar'
+import TopBar from '@/ui/top-bar/top-bar'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { getSession, Session } from '@auth0/nextjs-auth0'
 import { kv } from '@vercel/kv'
