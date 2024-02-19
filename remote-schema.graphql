@@ -112,6 +112,7 @@ type Query {
     listLiveEvents: [Event]
     listLiveMarkets(eventId: ID!): [Market]
     listMarkets(eventId: ID!): [Market]
+    listSports: [Sport]
     me: User
 }
 
@@ -126,7 +127,9 @@ type ScoreUpdate {
 type Sport {
     "Is this sport in season at the moment?"
     active: Boolean!
+    activeEventCount: Int
     description: String!
+    events: [Event]
     group: String!
     "Does this sport have outright markets?"
     hasOutrights: Boolean!

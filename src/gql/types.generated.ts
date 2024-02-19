@@ -218,6 +218,7 @@ export type Query = {
   listLiveEvents?: Maybe<Array<Maybe<Event>>>;
   listLiveMarkets?: Maybe<Array<Maybe<Market>>>;
   listMarkets?: Maybe<Array<Maybe<Market>>>;
+  listSports?: Maybe<Array<Maybe<Sport>>>;
   me?: Maybe<User>;
 };
 
@@ -264,7 +265,9 @@ export type Sport = {
   __typename?: 'Sport';
   /** Is this sport in season at the moment? */
   active: Scalars['Boolean'];
+  activeEventCount?: Maybe<Scalars['Int']>;
   description: Scalars['String'];
+  events?: Maybe<Array<Maybe<Event>>>;
   group: Scalars['String'];
   /** Does this sport have outright markets? */
   hasOutrights: Scalars['Boolean'];

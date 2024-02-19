@@ -66,7 +66,7 @@ export default function TopBar({ bettingUser }: Props) {
   }, [toggleHorizontalTimeout, toggleMenu])
 
   return (
-    <div ref={menuRef} className={`${styles.container} pure-g`} id="menu">
+    <div ref={menuRef} className={`${styles.container} pure-g`} id="topmenu">
       <div className="pure-u-1 pure-u-md-1-3">
         <div className="pure-menu">
           <Link href="#" className="pure-menu-heading custom-brand">

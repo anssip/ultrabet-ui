@@ -7,10 +7,11 @@ import BetSlip, { Slip } from '@/ui/bet-slip/bet-slip'
 import React from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { getClient } from '@/lib/client'
-import { ListBetsDocument, MeDocument } from '@/gql/documents.generated'
+import { ListBetsDocument, ListSportsDocument, MeDocument } from '@/gql/documents.generated'
 import { fetchAccessToken } from '@/app/bets/page'
-import { User } from '@/gql/types.generated'
+import { Sport, User } from '@/gql/types.generated'
 import { redirect } from 'next/navigation'
+import { SideMenu } from '@/ui/side-menu/side-menu'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -56,6 +57,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     redirect('/api/auth/login')
   }
 
+  const data = await getClient(false).query({
+    query: ListSportsDocument,
+  })
+  const sports = data.data.listSports as Sport[]
+  console.log(`Fetched ${sports.length} sports`)
+
   return (
     <html lang="en">
       <head>
@@ -69,21 +76,31 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
           crossOrigin="anonymous"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css"
+        />
+        <link rel="stylesheet" href="global.css" />
+        <script src="ui.js" async></script>
       </head>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css"
-      />
+
       <body className={inter.className}>
         <UserProvider>
           <TopBar bettingUser={me} />
-          {children}
-          <BetSlip slip={slip ?? {}} />
-          <Analytics />
+          <div id="layout">
+            <SideMenu sports={sports} />
+
+            <div id="layout">
+              {children}
+              <BetSlip slip={slip ?? {}} />
+            </div>
+
+            <Analytics />
+          </div>
         </UserProvider>
       </body>
     </html>

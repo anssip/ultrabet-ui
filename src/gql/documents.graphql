@@ -42,6 +42,16 @@ fragment Event on Event {
     }
 }
 
+fragment Sport on Sport {
+    id
+    title
+    active
+    group
+    description
+    hasOutrights
+    activeEventCount
+}
+
 query me {
     me {
         id
@@ -96,7 +106,11 @@ query ListBets {
     }
 }
 
-
+query listSports {
+    listSports {
+        ...Sport
+    }
+}
 
 subscription marketOptionUpdates {
     liveMarketOptionsUpdated {
@@ -125,6 +139,7 @@ mutation placeBet($betType: BetType!, $marketOptions: [ID!]!, $stake: Float!) {
         status
     }
 }
+
 mutation placeSingleBets($options: [BetOptionInput!]!) {
     placeSingleBets(options: $options) {
         id
