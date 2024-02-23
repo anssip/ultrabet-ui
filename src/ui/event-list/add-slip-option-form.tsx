@@ -8,6 +8,7 @@ import styles from './event-list.module.css'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { EventFragment } from '@/gql/documents.generated'
 import { BetSlipOption } from '@/ui/bet-slip/bet-slip'
+import { getOptionPointLabel } from '@/ui/event-util'
 
 const initialSlipFormState = {
   message: null,

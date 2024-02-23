@@ -13,6 +13,7 @@
     width: 100%;
     flex-wrap: wrap;
     margin-top: 1em;
+    gap: 1em;
 }
 
 @keyframes flash {
@@ -27,14 +28,11 @@
 .eventWrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     margin-bottom: 16px;
-    width: 400px;
     border: 1px solid #ccc;
-    margin-left: auto;
-    margin-right: auto;
     border-radius: 7px;
     color: black;
+    min-width: 400px;
 }
 
 .eventWrapper.flash {
@@ -44,8 +42,8 @@
 .eventHeader {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    font-weight: 600;
+    justify-content: center;
+    /*font-weight: 600;*/
     color: #555;
     margin-bottom: 1em;
     background-color: linen;
@@ -70,18 +68,34 @@
 
 .oddsWrapper {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 0.5em 0.5em 0.5em;
+    align-items: flex-end;
+    padding: 0 2em;
+}
+
+.market {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+}
+
+.marketName {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #222;
+    text-align: center;
+    min-height: 1.5rem;
 }
 
 .oddsBox {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 33%;
-    /*width: 90px;*/
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 1px solid #421c57;
+    margin-top: 1em;
+    padding-top: 1em;
 }
 
 .oddsValue {
@@ -91,7 +105,7 @@
 }
 
 .optionName {
-    font-size: 0.7rem;
+    font-size: 1rem;
     color: #222;
     text-align: center;
     min-height: 1.5rem;
@@ -111,8 +125,8 @@
 
 .addSlipOptionButton {
     cursor: pointer;
-    padding: 0.5em 1em 0.5em 1em;
-    background-color: #ddd;
+    padding: 0.5em 2em 0.5em 2em;
+    background-color: #e4caf2;
     color: black;
     border: none;
 }

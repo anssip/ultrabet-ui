@@ -65,14 +65,14 @@ query me {
     }
 }
 
-query ListEvents {
-    listEvents {
+query ListLiveEvents {
+    listLiveEvents {
         ...Event
     }
 }
 
-query ListLiveEvents {
-    listLiveEvents {
+query ListEventsBySport($group: String!) {
+    eventsBySportGroup(group: $group) {
         ...Event
     }
 }

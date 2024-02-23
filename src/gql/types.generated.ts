@@ -210,16 +210,26 @@ export type MutationWithdrawFundsArgs = {
 /**  Queries */
 export type Query = {
   __typename?: 'Query';
+  /** List events available for betting in the specified sport group. Lists both live an upcoming events. */
+  eventsBySportGroup?: Maybe<Array<Maybe<Event>>>;
   getBet?: Maybe<Bet>;
   getEvent?: Maybe<Event>;
   getMarket?: Maybe<Market>;
   listBets?: Maybe<Array<Maybe<Bet>>>;
+  /** List upcoming events available for betting. */
   listEvents?: Maybe<Array<Maybe<Event>>>;
+  /** List live events available for betting. */
   listLiveEvents?: Maybe<Array<Maybe<Event>>>;
   listLiveMarkets?: Maybe<Array<Maybe<Market>>>;
   listMarkets?: Maybe<Array<Maybe<Market>>>;
   listSports?: Maybe<Array<Maybe<Sport>>>;
   me?: Maybe<User>;
+};
+
+
+/**  Queries */
+export type QueryEventsBySportGroupArgs = {
+  group: Scalars['String'];
 };
 
 

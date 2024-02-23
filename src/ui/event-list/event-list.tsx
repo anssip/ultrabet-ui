@@ -32,13 +32,9 @@ export function EventList({
   live?: boolean
   updatedEvents?: string[]
 }) {
+  console.log('marketName', marketName)
   if (events.length === 0)
-    return (
-      <div className={styles.noEventsNote}>
-        No {live && 'live'} events at the moment. See{' '}
-        <Link href={`/${live ? 'upcoming' : ''}`}>{live ? 'upcoming' : 'live'} events</Link>
-      </div>
-    )
+    return <div className={styles.noEventsNote}>No {live && 'live'} events at the moment.</div>
   return (
     <div className={styles.events}>
       {events.sort(eventCompare(live)).map((event: EventFragment) => {
@@ -65,8 +61,8 @@ export function EventList({
             >
               <div className={styles.eventHeader}>
                 <div className={styles.headerItem}>
-                  <div className={styles.headerSubItem}>{event.name}</div>
                   <div className={styles.headerSubItem}>{event.sport.title}</div>
+                  {/*<div className={styles.headerSubItem}>{event.name}</div>*/}
                 </div>
                 <div className={styles.headerItem}>
                   <div className={styles.headerSubItem}>
@@ -78,7 +74,7 @@ export function EventList({
                 </div>
               </div>
               <div className={styles.oddsWrapper}>
-                <Market event={event} market={selectedMarket} />
+                <Market event={event} market={selectedMarket} live={live} />
               </div>
             </div>
           </CSSTransition>

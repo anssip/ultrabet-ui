@@ -104,11 +104,15 @@ type Mutation {
 
 " Queries"
 type Query {
+    "List events available for betting in the specified sport group. Lists both live an upcoming events."
+    eventsBySportGroup(group: String!): [Event]
     getBet(id: ID!): Bet
     getEvent(id: ID!): Event
     getMarket(id: ID!): Market
     listBets: [Bet]
+    "List upcoming events available for betting."
     listEvents: [Event]
+    "List live events available for betting."
     listLiveEvents: [Event]
     listLiveMarkets(eventId: ID!): [Market]
     listMarkets(eventId: ID!): [Market]

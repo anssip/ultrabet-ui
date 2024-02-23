@@ -1,4 +1,5 @@
 import { Sport } from '@/gql/types.generated'
+import Link from 'next/link'
 
 export type Props = {
   sports: Sport[]
@@ -11,6 +12,10 @@ export function SideMenu({ sports }: Props) {
     acc.set(sport.group, sports)
     return acc
   }, new Map<string, Sport[]>())
+
+  function activeEventCount(sports: Sport[]) {
+    return sports.reduce((acc: number, sport: Sport) => acc + (sport.activeEventCount ?? 0), 0)
+  }
 
   return (
     <>
@@ -25,12 +30,12 @@ export function SideMenu({ sports }: Props) {
           </a>
 
           <ul className="pure-menu-list">
-            {[...groups.keys()].map((group) => (
+            {[...groups.entries()].map(([group, sports]) => (
               <li key={group} className="pure-menu-item">
                 {/* TODO: change to selectable links */}
-                <a href={`/events/${group}`} className="pure-menu-link">
-                  {group}
-                </a>
+                <Link href={`/events/${group}`} className="pure-menu-link">
+                  {group} ({activeEventCount(sports)})
+                </Link>
               </li>
             ))}
 

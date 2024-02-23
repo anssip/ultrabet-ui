@@ -57,12 +57,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     redirect('/api/auth/login')
   }
 
-  const data = await getClient(false).query({
-    query: ListSportsDocument,
-  })
-  const sports = data.data.listSports as Sport[]
-  console.log(`Fetched ${sports.length} sports`)
-
   return (
     <html lang="en">
       <head>
@@ -84,21 +78,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css"
         />
-        <link rel="stylesheet" href="global.css" />
-        <script src="ui.js" async></script>
       </head>
 
       <body className={inter.className}>
         <UserProvider>
           <TopBar bettingUser={me} />
           <div id="layout">
-            <SideMenu sports={sports} />
-
+            {/*// TODO: move side menu to events layout*/}
             <div id="layout">
               {children}
               <BetSlip slip={slip ?? {}} />
             </div>
-
             <Analytics />
           </div>
         </UserProvider>

@@ -2,11 +2,6 @@ body {
     color: #777;
 }
 
-.pure-img-responsive {
-    max-width: 100%;
-    height: auto;
-}
-
 /*
 Add transition to containers so they can push in and out.
 */
@@ -29,12 +24,12 @@ This is the parent `<div>` that contains the menu and the content area.
     padding-left: 0;
 }
 #layout.active #menu {
-    left: 150px;
-    width: 150px;
+    left: 190px;
+    width: 190px;
 }
 
 #layout.active .menu-link {
-    left: 150px;
+    left: 190px;
 }
 /*
 The content `<div>` is where all your content goes.
@@ -80,14 +75,14 @@ appears on the left side of the page.
 */
 
 #menu {
-    margin-left: -150px; /* "#menu" width */
-    width: 150px;
+    margin-left: -190px; /* "#menu" width */
+    width: 190px;
     position: fixed;
     top: 2.1em;
     left: 0;
     bottom: 0;
     z-index: 1000; /* so the menu or its navicon stays above all content */
-    background: #191818;
+    background: #421c57;
     overflow-y: auto;
 }
 /*
@@ -128,7 +123,7 @@ This styles the selected menu item `<li>`.
 */
 #menu .pure-menu-selected,
 #menu .pure-menu-heading {
-    background: #1f8dd6;
+    background: #8d86d5;
 }
 /*
 This styles a link within a selected menu item `<li>`.
@@ -216,21 +211,21 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     }
 
     #layout {
-        padding-left: 150px; /* left col width "#menu" */
+        padding-left: 100px; /* left col width "#menu" */
         left: 0;
     }
     #menu {
-        left: 150px;
+        left: 190px;
     }
 
     .menu-link {
         position: fixed;
-        left: 150px;
+        left: 190px;
         display: none;
     }
 
     #layout.active .menu-link {
-        left: 150px;
+        left: 190px;
     }
 }
 
@@ -243,6 +238,6 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     */
     #layout.active {
         position: relative;
-        left: 150px;
+        left: 190px;
     }
 }
