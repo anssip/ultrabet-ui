@@ -10,12 +10,10 @@ export const revalidate = 60
 // export const dynamic = 'force-dynamic'
 
 export default async function Page({ params }: { params: { group: string; market: string } }) {
-  console.log('params', params)
   const data = await getClient().query({
     query: ListEventsBySportDocument,
-    variables: { group: params.group },
+    variables: { group: decodeURIComponent(params.group) },
   })
-  console.log('data', data)
   const events = data.data.eventsBySportGroup as EventFragment[]
   const liveEvents = events.filter((event) => event.isLive)
   const upcomingEvents = events.filter((event) => !event.isLive)

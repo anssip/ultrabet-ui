@@ -32,12 +32,6 @@ export function Market({
 
   if (market.name === 'h2h' || market.name === 'h2h_lay' || market.name === 'spreads') {
     const h2hOptions = ['1', 'x', '2']
-    const names = sortedOptions.map((option) => (
-      <div key={option?.id} className={styles.optionName}>
-        {option?.name}{' '}
-        <span className={styles.point}>{getOptionPointLabel(option, market.name)}</span>
-      </div>
-    ))
     const options = sortedOptions.map((option, i: number) => (
       <div key={option?.id}>
         {market.name === 'spreads' ? getOptionPointLabel(option, market.name) : h2hOptions[i]}

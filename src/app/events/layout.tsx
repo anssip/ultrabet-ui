@@ -14,8 +14,8 @@ export default async function EventsLayout({ children }: { children: React.React
   return (
     <>
       <head>
-        <link rel="stylesheet" href="global.css" />
-        <script src="ui.js" async></script>
+        <link rel="stylesheet" href="/global.css" />
+        <script src="/ui.js" async></script>
       </head>
       <ApolloWrapper>
         <SideMenu sports={sports} />
