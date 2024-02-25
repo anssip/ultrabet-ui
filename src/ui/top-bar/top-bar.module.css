@@ -1,5 +1,6 @@
 .container {
-    background-color: #e4caf2;
+    background-color: var(--pink-lavender);
+    color: var(--black);
     -webkit-font-smoothing: antialiased;
     height: 2.1em;
     overflow: visible;
@@ -29,7 +30,7 @@
 
 .balance {
     display: inline;
-    color: mediumvioletred;
+    color: var(--egyptian-blue);
     margin-right: 0.5em;
 }
 
