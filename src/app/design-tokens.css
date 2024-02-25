@@ -1,0 +1,41 @@
+:root {
+    --egyptian-blue: hsla(227, 75%, 38%, 1);
+    --peach-yellow: hsla(41, 87%, 82%, 1);
+    --salmon: hsla(9, 93%, 72%, 1);
+    --light-blue: hsla(196, 49%, 81%, 1);
+    --pink-lavender: hsla(314, 48%, 82%, 1);
+    --off-white: hsla(0, 0%, 96%, 1);
+    --white: hsla(0, 0%, 100%, 1);
+    --black: hsla(0, 0%, 0%, 1);
+
+    --spacing-small: 4px;
+    --spacing-medium: 8px;
+    --spacing-large: 12px;
+    --spacing-x-large: 20px;
+    --duration-paused: paused;
+    --duration-slow: 3s;
+    --duration-fast: 500ms;
+    --easing-easeInSine: cubic-bezier(0.12, 0, 0.39, 0);
+    --easing-easeOutSine: cubic-bezier(0.61, 1, 0.88, 1)500ms;
+    --radius-circle: 50%;
+    --radius-large: 8px;
+    --radius-small: 2px;
+    --opacity-opacity-25: 0.25;
+    --opacity-opacity-50: 0.5;
+    --opacity-opacity-75: 0.75;
+    --shadow-level-1: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);;
+    --shadow-level-2: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);;
+    --shadow-level-3: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.20);
+    --media-query-max-width-mobile: 600px;
+    --media-query-max-width-tablet: 1024px;
+    --font-family-body: Arial, Helvetica, sans-serif;
+    --font-family-headings: Palatino Linotype, serif;
+    --font-size-caption: 12px;
+    --font-size-body: 16px;
+    --font-size-headings: 26px;
+    --letter-spacing-dense: -1px;
+    --letter-spacing-double: 2px;
+    --line-height-heading: 1.25;
+    --line-height-reset: 1;
+    --line-height-text: 1.5
+}

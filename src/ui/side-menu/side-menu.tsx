@@ -25,11 +25,15 @@ export function SideMenu({ sports }: Props) {
 
       <div id="menu">
         <div className="pure-menu">
-          <a className={`pure-menu-heading`} href="#company">
-            Sports
-          </a>
-
           <ul className="pure-menu-list">
+            {/*TODO: handle selection by checking if the URL contains the sport group */}
+
+            <li className="pure-menu-item">
+              <Link href={`/events/all`} className="pure-menu-link">
+                FULL LIST (
+                {[...groups.values()].reduce((acc, sports) => acc + activeEventCount(sports), 0)})
+              </Link>
+            </li>
             {[...groups.entries()].map(([group, sports]) => (
               <li key={group} className="pure-menu-item">
                 {/* TODO: change to selectable links */}

@@ -12,6 +12,9 @@ import { fetchAccessToken } from '@/app/bets/page'
 import { Sport, User } from '@/gql/types.generated'
 import { redirect } from 'next/navigation'
 import { SideMenu } from '@/ui/side-menu/side-menu'
+import './global-layout.css'
+import './design-tokens.css'
+import './utilities.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -60,6 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <head>
+        <title>Parabolic Bet</title>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/base-min.css"
@@ -84,7 +88,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <UserProvider>
           <TopBar bettingUser={me} />
           <div id="layout">
-            {/*// TODO: move side menu to events layout*/}
             <div id="layout">
               {children}
               <BetSlip slip={slip ?? {}} />

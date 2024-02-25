@@ -7,13 +7,24 @@
     font-weight: bold;
 }
 
+.content {
+    background-color: var(--light-blue);
+    padding: 1em;
+    margin-bottom: 1em;
+    box-shadow: var(--shadow-level-3);
+    border-radius: var(--radius-large);
+}
+
+
 .events {
     display: flex;
     flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
     margin-top: 1em;
-    gap: 1em;
+    gap: var(--spacing-medium);
+    justify-content: flex-start;
+    margin-bottom: 1em;
 }
 
 @keyframes flash {
@@ -28,11 +39,12 @@
 .eventWrapper {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
+    /*margin-bottom: 16px;*/
     border: 1px solid #ccc;
-    border-radius: 7px;
+    border-radius: var(--radius-large);
     color: black;
-    min-width: 400px;
+    min-width: 430px;
+    background-color: var(--off-white);
 }
 
 .eventWrapper.flash {
@@ -44,10 +56,12 @@
     flex-direction: row;
     justify-content: center;
     /*font-weight: 600;*/
-    color: #555;
+    color: var(--black);
+    background-color: var(--peach-yellow);
     margin-bottom: 1em;
-    background-color: linen;
     padding: .5em 1em;
+    border-top-left-radius: var(--radius-large);
+    border-top-right-radius: var(--radius-large);
 }
 
 .headerItem {
@@ -117,10 +131,11 @@
 }
 
 .oddsHistory {
-    margin-top: 2px;
     font-size: 10px;
     color: #666;
     height: 10px;
+    margin-top: -15px;
+    padding-bottom: 2px;
 }
 
 .addSlipOptionButton {

@@ -4,6 +4,7 @@ import React from 'react'
 import { getClient } from '@/lib/client'
 import { ListSportsDocument } from '@/gql/documents.generated'
 import { Sport } from '@/gql/types.generated'
+import { PageNav } from '@/ui/page-nav'
 
 export default async function EventsLayout({ children }: { children: React.ReactNode }) {
   const data = await getClient(false).query({
@@ -14,7 +15,7 @@ export default async function EventsLayout({ children }: { children: React.React
   return (
     <>
       <head>
-        <link rel="stylesheet" href="/global.css" />
+        {/*<link rel="stylesheet" href="/styles/global.css" />*/}
         <script src="/ui.js" async></script>
       </head>
       <ApolloWrapper>

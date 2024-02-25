@@ -44,7 +44,7 @@ The content `<div>` is where all your content goes.
 
 .header {
     margin: 0;
-    color: #333;
+    color: var(--off-white);
     text-align: center;
     padding: 2.5em 2em 0;
     border-bottom: 1px solid #eee;
@@ -82,14 +82,14 @@ appears on the left side of the page.
     left: 0;
     bottom: 0;
     z-index: 1000; /* so the menu or its navicon stays above all content */
-    background: #421c57;
+    background: var(--egyptian-blue);
     overflow-y: auto;
 }
 /*
 All anchors inside the menu should be styled like this.
 */
 #menu a {
-    color: #999;
+    color: var(--off-white);
     border: none;
     padding: 0.6em 0 0.6em 0.6em;
 }
@@ -108,14 +108,15 @@ Add that light border to separate items into groups.
 */
 #menu .pure-menu ul,
 #menu .pure-menu .menu-item-divided {
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--off-white);
 }
 /*
 Change color of the anchor links on hover/focus.
 */
 #menu .pure-menu li a:hover,
 #menu .pure-menu li a:focus {
-    background: #333;
+    background: var(--light-blue);
+    color: var(--black);
 }
 
 /*
@@ -123,13 +124,14 @@ This styles the selected menu item `<li>`.
 */
 #menu .pure-menu-selected,
 #menu .pure-menu-heading {
-    background: #8d86d5;
+    background: var(--pink-lavender);
+    color: var(--black);
 }
 /*
 This styles a link within a selected menu item `<li>`.
 */
 #menu .pure-menu-selected a {
-    color: #fff;
+    color: var(--black);
 }
 
 /*
@@ -137,7 +139,7 @@ This styles the menu heading.
 */
 #menu .pure-menu-heading {
     font-size: 110%;
-    color: #fff;
+    color: var(--white);
     margin: 0;
 }
 
@@ -157,7 +159,7 @@ small screens.
     display: block; /* show this only on small screens */
     top: 3.4em;
     left: 0; /* "#menu width" */
-    background: #000;
+    background: var(--black);
     background: rgba(0,0,0,0.7);
     font-size: 10px; /* change this value to increase/decrease button size */
     z-index: 10;
@@ -168,7 +170,7 @@ small screens.
 
 .menu-link:hover,
 .menu-link:focus {
-    background: #000;
+    background: var(--black);
 }
 
 .menu-link span {
@@ -179,7 +181,7 @@ small screens.
 .menu-link span,
 .menu-link span:before,
 .menu-link span:after {
-    background-color: #fff;
+    background-color: var(--white);
     pointer-events: none;
     width: 100%;
     height: 0.2em;
@@ -211,8 +213,9 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     }
 
     #layout {
-        padding-left: 100px; /* left col width "#menu" */
+        padding-left: 95px; /* left col width "#menu" */
         left: 0;
+        width: 90%
     }
     #menu {
         left: 190px;

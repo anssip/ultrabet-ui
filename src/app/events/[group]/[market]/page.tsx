@@ -5,11 +5,13 @@ import { LiveEventList } from '@/ui/event-list/live-event-list'
 import React from 'react'
 import { PageNav } from '@/ui/page-nav'
 import { EventList } from '@/ui/event-list/event-list'
+import classnames from 'classnames'
 
 export const revalidate = 60
 // export const dynamic = 'force-dynamic'
 
 export default async function Page({ params }: { params: { group: string; market: string } }) {
+  console.log('group', params.group)
   const data = await getClient().query({
     query: ListEventsBySportDocument,
     variables: { group: decodeURIComponent(params.group) },
@@ -19,10 +21,9 @@ export default async function Page({ params }: { params: { group: string; market
   const upcomingEvents = events.filter((event) => !event.isLive)
 
   return (
-    <main>
-      <h1 className={styles.header}>Live now</h1>
+    <main className={classnames(styles.eventsContainer)}>
+      <PageNav prefix={`/events/${params.group}`} />
       <LiveEventList events={liveEvents} marketName={params.market} />
-      <h1 className={styles.header}>Upcoming</h1>
       <EventList events={upcomingEvents} marketName={params.market} />
     </main>
   )

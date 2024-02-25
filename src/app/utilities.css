@@ -1,0 +1,43 @@
+.bg-dark {
+    background-color: var(--egyptian-blue)
+}
+
+.bg-light {
+    background-color: var(--light-blue)
+}
+
+.bg-primary {
+    background-color: var(--peach-yellow)
+}
+
+.bg-secondary {
+    background-color: var(--pink-lavender)
+}
+
+.bg-danger {
+    background-color: var(--salmon)
+}
+
+.text-dark {
+    color: var(--black)
+}
+
+.text-mid {
+    background-color: var(--off-white)
+}
+
+.text-light {
+    color: var(--white)
+}
+
+.text-danger {
+    color: var(--salmon)
+}
+
+.text-secondary {
+    color: var(--light-blue)
+}
+
+.text-primary {
+    color: var(--egyptian-blue)
+}

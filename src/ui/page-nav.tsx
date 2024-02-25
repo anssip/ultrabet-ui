@@ -24,12 +24,13 @@ export function NavLink({
   )
 }
 
+// TODO: replace with pure menu
 export function PageNav({ prefix }: { prefix: string }) {
   return (
     <nav className={styles.nav}>
-      <NavLink slug="/events/h2h" label="1x2" />
-      <NavLink slug="/events/spreads" label="Handicap" />
-      <NavLink slug="/events/totals" label="Match Goals" />
+      <NavLink slug={`${prefix}/h2h`} label="1x2" />
+      <NavLink slug={`${prefix}/spreads`} label="Handicap" />
+      <NavLink slug={`${prefix}/totals`} label="Match Goals" />
     </nav>
   )
 }
