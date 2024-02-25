@@ -30,6 +30,15 @@ export function Market({
     )
   })
 
+  function renderOptions(options: JSX.Element[]) {
+    return (
+      <div className={styles.market}>
+        <div className={styles.marketName}>{event.name}</div>
+        <div className={styles.oddsBox}>{options}</div>
+      </div>
+    )
+  }
+
   if (market.name === 'h2h' || market.name === 'h2h_lay' || market.name === 'spreads') {
     const h2hOptions = ['1', 'x', '2']
     const options = sortedOptions.map((option, i: number) => (
@@ -43,29 +52,23 @@ export function Market({
         )}
       </div>
     ))
-    return (
-      <div className={styles.market}>
-        <div className={styles.marketName}>{event.name}</div>
-        <div className={styles.oddsBox}>{options}</div>
-      </div>
-    )
+    return renderOptions(options)
   }
   if (market.name === 'totals') {
-    return sortedOptions.map((option) => (
+    const options = sortedOptions.map((option) => (
       <div key={option?.id}>
         <div className={styles.optionName}>
           {option?.name} {option?.point}
         </div>
-        <div className={styles.oddsBox}>
-          <AddSlipOptionForm option={option!} event={event} market={market} />
-          {live && (
-            <div className={styles.oddsHistory}>
-              {(option as MarketOptionWithHistory).history ?? ''}
-            </div>
-          )}
-        </div>
+        <AddSlipOptionForm option={option!} event={event} market={market} />
+        {live && (
+          <div className={styles.oddsHistory}>
+            {(option as MarketOptionWithHistory).history ?? ''}
+          </div>
+        )}
       </div>
     ))
+    return renderOptions(options)
   }
 
   return <div></div>
