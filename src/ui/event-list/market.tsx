@@ -33,7 +33,7 @@ export function Market({
   function renderOptions(options: JSX.Element[]) {
     return (
       <div className={styles.market}>
-        <div className={styles.marketName}>{event.name}</div>
+        <div className={styles.eventName}>{event.name}</div>
         <div className={styles.oddsBox}>{options}</div>
       </div>
     )

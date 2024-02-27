@@ -107,8 +107,21 @@ query ListBets {
 }
 
 query listSports {
-    listSports {
+    listSports(group: "all") {
         ...Sport
+    }
+}
+
+fragment SportWithEvents on Sport {
+    ...Sport
+    events {
+        ...Event
+    }
+}
+
+query listSportsWithEvents($group: String!) {
+    listSports(group: $group) {
+        ...SportWithEvents
     }
 }
 

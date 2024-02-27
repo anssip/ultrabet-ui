@@ -215,6 +215,8 @@ export type Query = {
   getBet?: Maybe<Bet>;
   getEvent?: Maybe<Event>;
   getMarket?: Maybe<Market>;
+  /** List all events available for betting. Lists both live an upcoming events. */
+  listAllEvents?: Maybe<Array<Maybe<Event>>>;
   listBets?: Maybe<Array<Maybe<Bet>>>;
   /** List upcoming events available for betting. */
   listEvents?: Maybe<Array<Maybe<Event>>>;
@@ -222,6 +224,7 @@ export type Query = {
   listLiveEvents?: Maybe<Array<Maybe<Event>>>;
   listLiveMarkets?: Maybe<Array<Maybe<Market>>>;
   listMarkets?: Maybe<Array<Maybe<Market>>>;
+  /** List sports by group. */
   listSports?: Maybe<Array<Maybe<Sport>>>;
   me?: Maybe<User>;
 };
@@ -262,6 +265,12 @@ export type QueryListMarketsArgs = {
   eventId: Scalars['ID'];
 };
 
+
+/**  Queries */
+export type QueryListSportsArgs = {
+  group?: InputMaybe<Scalars['String']>;
+};
+
 export type ScoreUpdate = {
   __typename?: 'ScoreUpdate';
   event: Event;
@@ -277,6 +286,7 @@ export type Sport = {
   active: Scalars['Boolean'];
   activeEventCount?: Maybe<Scalars['Int']>;
   description: Scalars['String'];
+  /** List all events available for betting in this sport. */
   events?: Maybe<Array<Maybe<Event>>>;
   group: Scalars['String'];
   /** Does this sport have outright markets? */

@@ -37,13 +37,14 @@ export function EventList({
   console.log('marketName', marketName)
   if (events.length === 0)
     return (
-      <h4 className="text-danger">
+      <h4 className="text-primary">
         {events.length === 0 &&
           (live ? 'No live events at the moment.' : 'No upcoming events at the moment.')}
       </h4>
     )
 
   return (
+    // TODO: Extract a Card component
     <div className={styles.content}>
       <h2 className="text-primary">{live ? 'Live now' : 'Upcoming'}</h2>
       <div className={styles.events}>

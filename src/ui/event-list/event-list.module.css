@@ -43,7 +43,7 @@
     border: 1px solid #ccc;
     border-radius: var(--radius-large);
     color: black;
-    min-width: 430px;
+    width: 430px;
     background-color: var(--off-white);
 }
 
@@ -95,12 +95,14 @@
     text-align: center;
 }
 
-.marketName {
+.eventName {
     font-size: 1.2rem;
-    font-weight: 600;
-    color: #222;
+    font-weight: 400;
+    color: var(--black);
     text-align: center;
     min-height: 1.5rem;
+    max-width: 400px;
+    word-wrap: break-word;
 }
 
 .oddsBox {
