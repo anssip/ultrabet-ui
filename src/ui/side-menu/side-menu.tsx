@@ -27,7 +27,7 @@ export function SideMenu({ sports }: Props) {
         <div className="pure-menu">
           <ul className="pure-menu-list">
             <li className="pure-menu-item">
-              <Link href={`/events/all`} className="pure-menu-link">
+              <Link href={`/all`} className="pure-menu-link">
                 FULL LIST (
                 {[...groups.values()].reduce((acc, sports) => acc + activeEventCount(sports), 0)})
               </Link>
@@ -35,7 +35,7 @@ export function SideMenu({ sports }: Props) {
             {[...groups.entries()].map(([group, sports]) => (
               <li key={group} className="pure-menu-item">
                 {/* TODO: change to selectable links */}
-                <Link href={`/events/${group}`} className="pure-menu-link">
+                <Link href={`/${group}`} className="pure-menu-link">
                   {group} ({activeEventCount(sports)})
                 </Link>
               </li>

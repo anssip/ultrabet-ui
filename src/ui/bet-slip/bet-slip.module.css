@@ -2,7 +2,7 @@
     position: fixed;
     bottom: 2em;
     right: 2em;
-    width: 300px;
+    width: 400px;
     background-color: #fff;
     box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
     overflow-y: auto; /* Allows scrolling if the content overflows */

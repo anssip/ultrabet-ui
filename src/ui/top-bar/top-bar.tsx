@@ -91,7 +91,7 @@ export default function TopBar({ bettingUser }: Props) {
         <div className="pure-menu pure-menu-horizontal custom-can-transform">
           <ul className="pure-menu-list">
             <li className="pure-menu-item">
-              <NavLink className="pure-menu-link" slug={'/events'} label="Events" />
+              <NavLink className="pure-menu-link" slug={'/'} label="Events" />
             </li>
             <li className="pure-menu-item">
               <NavLink className="pure-menu-link" slug={'/bets'} label="My Bets" />
