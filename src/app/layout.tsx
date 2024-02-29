@@ -8,13 +8,13 @@ import React from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { getClient } from '@/lib/client'
 import { ListBetsDocument, ListSportsDocument, MeDocument } from '@/gql/documents.generated'
-import { fetchAccessToken } from '@/app/bets/page'
 import { Sport, User } from '@/gql/types.generated'
 import { redirect } from 'next/navigation'
 import { SideMenu } from '@/ui/side-menu/side-menu'
 import './global-layout.css'
 import './design-tokens.css'
 import './utilities.css'
+import { fetchAccessToken } from '@/lib/util'
 
 const inter = Inter({ subsets: ['latin'] })
 

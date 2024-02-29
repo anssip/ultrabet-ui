@@ -4,7 +4,7 @@ import styles from './page.module.css'
 import React from 'react'
 import { getAccessToken } from '@auth0/nextjs-auth0'
 import { Bet, BetOption, BetStatus, Maybe } from '@/gql/types.generated'
-import { getLongBetName } from '@/lib/util'
+import { fetchAccessToken, getLongBetName } from '@/lib/util'
 import { redirect } from 'next/navigation'
 import { formatTime } from '@/ui/date-util'
 import { getOptionPointLabel, getSpreadOptionLabel, renderScore } from '@/ui/event-util'
@@ -76,15 +76,6 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
       </div>
     </div>
   )
-}
-
-export async function fetchAccessToken() {
-  try {
-    const { accessToken } = await getAccessToken()
-    return accessToken
-  } catch (e) {
-    return null
-  }
 }
 
 export default async function Page() {
