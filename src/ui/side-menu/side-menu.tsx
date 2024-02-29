@@ -26,8 +26,6 @@ export function SideMenu({ sports }: Props) {
       <div id="menu">
         <div className="pure-menu">
           <ul className="pure-menu-list">
-            {/*TODO: handle selection by checking if the URL contains the sport group */}
-
             <li className="pure-menu-item">
               <Link href={`/events/all`} className="pure-menu-link">
                 FULL LIST (
@@ -42,12 +40,6 @@ export function SideMenu({ sports }: Props) {
                 </Link>
               </li>
             ))}
-
-            {/*<li className={`pure-menu-item pure-menu-divided pure-menu-selected`}>*/}
-            {/*  <a href="#" className="pure-menu-link">*/}
-            {/*    Services*/}
-            {/*  </a>*/}
-            {/*</li>*/}
           </ul>
         </div>
       </div>

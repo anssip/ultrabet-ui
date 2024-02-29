@@ -1,0 +1,17 @@
+.media {
+    height: 240px; /* Adjust based on your preference */
+    width: 100%; /* This makes the image container responsive */
+    position: relative;
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

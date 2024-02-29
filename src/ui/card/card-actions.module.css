@@ -1,0 +1,6 @@
+.actions {
+    padding: var(--spacing-medium);
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid var(--salmon);
+}

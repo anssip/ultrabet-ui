@@ -2,16 +2,18 @@
     --egyptian-blue: hsla(227, 75%, 38%, 1);
     --peach-yellow: hsla(41, 100%, 71%, 1);
     --salmon: hsla(9, 93%, 72%, 1);
-    --light-blue: hsla(227, 40%, 80%, 1);
+    --light-blue: hsla(227, 40%, 90%, 1);
     --pink-lavender: hsla(314, 48%, 82%, 1);
     --off-white: hsla(0, 0%, 96%, 1);
     --white: hsla(0, 0%, 100%, 1);
     --black: hsla(0, 0%, 0%, 1);
+    --dark-grey: hsla(0, 0%, 20%, 1);
 
     --spacing-small: 4px;
     --spacing-medium: 8px;
     --spacing-large: 12px;
-    --spacing-x-large: 20px;
+    --spacing-large-minus: -12px;
+    --spacing-x-large: 16px;
     --duration-paused: paused;
     --duration-slow: 3s;
     --duration-fast: 500ms;

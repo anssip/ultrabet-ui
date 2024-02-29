@@ -8,11 +8,7 @@
 }
 
 .content {
-    background-color: var(--light-blue);
-    padding: 1em;
     margin-bottom: 1em;
-    box-shadow: var(--shadow-level-3);
-    border-radius: var(--radius-large);
 }
 
 

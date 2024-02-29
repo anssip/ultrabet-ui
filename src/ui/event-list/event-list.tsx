@@ -34,19 +34,17 @@ export function EventList({
   live?: boolean
   updatedEvents?: string[]
 }) {
-  console.log('marketName', marketName)
   if (events.length === 0)
     return (
-      <h4 className="text-primary">
+      <p className="text-primary">
         {events.length === 0 &&
           (live ? 'No live events at the moment.' : 'No upcoming events at the moment.')}
-      </h4>
+      </p>
     )
 
   return (
-    // TODO: Extract a Card component
     <div className={styles.content}>
-      <h2 className="text-primary">{live ? 'Live now' : 'Upcoming'}</h2>
+      <h3 className="text-primary">{live ? 'Live now' : 'Upcoming'}</h3>
       <div className={styles.events}>
         {events.sort(eventCompare(live)).map((event: EventFragment) => {
           if (!event) return null
