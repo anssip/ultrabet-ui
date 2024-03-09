@@ -8,5 +8,5 @@ export type CardProps = {
 }
 
 export function Card({ children, className }: CardProps) {
-  return <div className={classnames(styles.card, className)}>{children}</div>
+  return <div className={classnames(className, styles.card)}>{children}</div>
 }

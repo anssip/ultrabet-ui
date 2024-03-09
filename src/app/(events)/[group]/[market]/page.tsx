@@ -10,18 +10,21 @@ import React from 'react'
 import { PageNav } from '@/ui/page-nav'
 import { EventList } from '@/ui/event-list/event-list'
 import classnames from 'classnames'
-import SportList from '@/ui/sport-list/sport-list'
+import { SportList } from '@/ui/sport-list/sport-list'
 
 export const revalidate = 60
 // export const dynamic = 'force-dynamic'
 
 async function fetchSports(params: { group: string; market: string }) {
+  const start = new Date().getTime()
   console.log('fetchSports', params.group)
   try {
-    return await getClient().query({
+    const result = await getClient().query({
       query: ListSportsWithEventsDocument,
       variables: { group: (params.group ? decodeURIComponent(params.group) : 'all') ?? 'all' },
     })
+    console.log('fetchSports completed in ', new Date().getTime() - start)
+    return result
   } catch (e) {
     console.error('fetchSports', e)
     return { data: { listSports: [] } }

@@ -1,3 +1,5 @@
+'use client'
+
 import { EventFragment, SportWithEventsFragment } from '@/gql/documents.generated'
 import { LiveEventList } from '@/ui/event-list/live-event-list'
 import { EventList } from '@/ui/event-list/event-list'
@@ -6,6 +8,8 @@ import { Card } from '@/ui/card/card'
 import CardHeader from '@/ui/card/card-header'
 import { CardContent } from '@/ui/card/card-content'
 import styles from './sport-list.module.css'
+import { SlipProvider } from '@/lib/slip-context'
+import BetSlip from '@/ui/bet-slip/bet-slip'
 
 const eventHasOptionsInMarket =
   (market: string) =>
@@ -21,7 +25,7 @@ export type SportListProps = {
   sports: SportWithEventsFragment[]
   market: string
 }
-export default function SportList({ sports, market }: SportListProps) {
+function SportListPlain({ sports, market }: SportListProps) {
   const sportsWithEvents = sports.filter((sport) => sport?.events?.length)
   const sportsWithoutEvents = sports.filter((sport) => !sport?.events?.length)
 
@@ -40,7 +44,7 @@ export default function SportList({ sports, market }: SportListProps) {
             <Card key={sport.id}>
               <CardHeader title={sport.title} />
               <CardContent className={styles.closedMarketContent}>
-                <p>Market closed. {sport.activeEventCount} events will open soon.</p>
+                <p>Market closed.</p>
               </CardContent>
             </Card>
           )
@@ -56,5 +60,14 @@ export default function SportList({ sports, market }: SportListProps) {
         )
       })}
     </div>
+  )
+}
+
+export function SportList({ sports, market }: SportListProps) {
+  return (
+    <SlipProvider>
+      <SportListPlain sports={sports} market={market} />
+      <BetSlip />
+    </SlipProvider>
   )
 }

@@ -9,6 +9,8 @@ import { useUser } from '@auth0/nextjs-auth0/client'
 import { EventFragment } from '@/gql/documents.generated'
 import { BetSlipOption } from '@/ui/bet-slip/bet-slip'
 import { getOptionPointLabel } from '@/ui/event-util'
+import { useContext } from 'react'
+import { SlipContext } from '@/lib/slip-context'
 
 const initialSlipFormState = {
   message: null,
@@ -22,6 +24,10 @@ type Props = {
 
 export function AddSlipOptionForm({ option, event, market }: Props) {
   const { user } = useUser()
+  const slipSate = useContext(SlipContext)
+  if (!slipSate) return null
+  const { addOption } = slipSate
+
   const betSlipOption: BetSlipOption = { ...option, event, marketName: market.name }
   const [slipFormState, slipFormAction] = useFormState(
     addSlipOption.bind(null, user ?? null, betSlipOption),
@@ -36,7 +42,11 @@ export function AddSlipOptionForm({ option, event, market }: Props) {
     }
   }
   return (
-    <form action={slipFormAction}>
+    <form
+      action={() => {
+        addOption(option)
+      }}
+    >
       <button
         onClick={handleClick}
         type={'submit'}

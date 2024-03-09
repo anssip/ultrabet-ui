@@ -49,7 +49,6 @@ fragment Sport on Sport {
     group
     description
     hasOutrights
-    activeEventCount
 }
 
 query me {

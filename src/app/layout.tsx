@@ -23,11 +23,6 @@ export const metadata = {
   description: 'Where your bet gains go parabolic',
 }
 
-async function loadSlip(session: Session | null): Promise<Slip> {
-  if (!session) return Promise.resolve({})
-  return (await kv.hgetall(`betslip:${session.user.sub}`)) ?? {}
-}
-
 async function getBettingUser(accessToken: string | undefined | null): Promise<User | null> {
   try {
     const response = accessToken
@@ -49,9 +44,6 @@ async function getBettingUser(accessToken: string | undefined | null): Promise<U
 
 // @ts-ignore
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = (await getSession()) ?? null
-  const slip = await loadSlip(session)
-
   const accessToken = await fetchAccessToken()
   const me = accessToken ? await getBettingUser(accessToken) : null
 
@@ -88,10 +80,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <UserProvider>
           <TopBar bettingUser={me} />
           <div id="layout">
-            <div id="layout">
-              {children}
-              <BetSlip slip={slip ?? {}} />
-            </div>
+            <div id="layout">{children}</div>
             <Analytics />
           </div>
         </UserProvider>

@@ -13,10 +13,6 @@ export function SideMenu({ sports }: Props) {
     return acc
   }, new Map<string, Sport[]>())
 
-  function activeEventCount(sports: Sport[]) {
-    return sports.reduce((acc: number, sport: Sport) => acc + (sport.activeEventCount ?? 0), 0)
-  }
-
   return (
     <>
       <a href="#menu" id="menuLink" className="menu-link">
@@ -28,15 +24,14 @@ export function SideMenu({ sports }: Props) {
           <ul className="pure-menu-list">
             <li className="pure-menu-item">
               <Link href={`/all`} className="pure-menu-link">
-                FULL LIST (
-                {[...groups.values()].reduce((acc, sports) => acc + activeEventCount(sports), 0)})
+                FULL LIST
               </Link>
             </li>
             {[...groups.entries()].map(([group, sports]) => (
               <li key={group} className="pure-menu-item">
                 {/* TODO: change to selectable links */}
                 <Link href={`/${group}`} className="pure-menu-link">
-                  {group} ({activeEventCount(sports)})
+                  {group}
                 </Link>
               </li>
             ))}

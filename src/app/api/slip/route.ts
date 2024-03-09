@@ -1,5 +1,5 @@
 import { kv } from '@vercel/kv'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getAccessToken, getSession, withApiAuthRequired } from '@auth0/nextjs-auth0'
 import { getClient } from '@/lib/client'
 import { PlaceBetDocument, PlaceSingleBetsDocument } from '@/gql/documents.generated'
@@ -13,8 +13,8 @@ export const GET = withApiAuthRequired(async function myApiRoute(req) {
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized', status: 400 }, res)
   }
-  const slipOptions = await kv.smembers(`betslip:${session.user.sub}`)
-  return NextResponse.json({ slipOptions, id: session.user.sub }, res)
+  const slip: Slip = (await kv.hgetall(`betslip:${session.user.sub}`)) ?? {}
+  return NextResponse.json({ slip, id: session.user.sub }, res)
 })
 
 async function clearSlip(options: BetSlipOption[], sub: string) {
@@ -37,7 +37,7 @@ export const POST = withApiAuthRequired(async function postSlipRoute(req) {
   try {
     const client = getClient(true)
     const [placeBetData, placeSingleBetsData] = await Promise.all([
-      long.stake ?? 0 > 0
+      long?.stake ?? 0 > 0
         ? client.mutate({
             mutation: PlaceBetDocument,
             variables: {

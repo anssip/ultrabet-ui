@@ -1,13 +1,16 @@
+
 .betslip {
     position: fixed;
-    bottom: 2em;
+    bottom: 0;
     right: 2em;
     width: 400px;
-    background-color: #fff;
+    background-color: var(--white) !important;
     box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
     overflow-y: auto; /* Allows scrolling if the content overflows */
     max-height: 100%; /* Ensures it doesn't grow beyond the height of the viewport */
     transition: max-height 0.3s ease-out;
+    border-radius: var(--radius-large);
+    padding: var(--spacing-medium);
 }
 
 .open {
@@ -20,17 +23,6 @@
     overflow: hidden;
 }
 
-.tab {
-    position: fixed;
-    right: 0;
-    bottom: 20px;
-    background-color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
-    box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 5px 0 0 5px;
-    transition: opacity 0.3s ease-out;
-}
 
 .visible {
     opacity: 1;
