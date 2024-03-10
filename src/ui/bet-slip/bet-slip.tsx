@@ -18,14 +18,9 @@ export type BetSlipOption = MarketOption & {
 
 export type Slip = { [key: string]: BetSlipOption }
 
-export type BetSLipProps = {
-  sports: SportWithEventsFragment[]
-}
-
-const BetSlip = ({ sports }: BetSLipProps) => {
+const BetSlip = () => {
   const [isOpen, setIsOpen] = useState(true)
   const slipState = useContext(SlipContext)
-  console.log('BetSlip: slipState', slipState)
   const options = slipState?.options ?? []
 
   const getSlipTitle = () => {
@@ -61,7 +56,7 @@ const BetSlip = ({ sports }: BetSLipProps) => {
         ></button>
       </div>
       <div className={styles.options}>
-        <PlaceBetForm sports={sports} />
+        <PlaceBetForm />
       </div>
     </div>
   )

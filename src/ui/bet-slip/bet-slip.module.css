@@ -8,9 +8,10 @@
     box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
     overflow-y: auto; /* Allows scrolling if the content overflows */
     max-height: 100%; /* Ensures it doesn't grow beyond the height of the viewport */
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.1s ease-out;
     border-radius: var(--radius-large);
     padding: var(--spacing-medium);
+    border-top: 10px solid var(--pink-lavender);
 }
 
 .betSlipTitle {
@@ -22,7 +23,7 @@
 }
 
 .showAction {
-    color: var(--salmon);
+    color: var(--egyptian-blue);
 }
 
 .open {
@@ -69,6 +70,7 @@
 .optionInfo {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 }
 
 .options {
@@ -85,18 +87,19 @@
 }
 
 .options .right {
+    border-bottom: 1px solid var(--salmon);
 }
 
 .options .option {
     display: flex;
     flex-direction: row;
+    gap: 1em;
     width: 100%;
-    border-bottom: 1px solid var(--salmon);
     font-size: .8rem;
     color: #777;
     align-items: flex-start;
     justify-content: space-between;
-    height: 50px;
+    height: 70px;
     padding-bottom: 1em;
 }
 
@@ -111,6 +114,9 @@
 .options .option .content {
     padding-left: 5px;
     width: 100%;
+    font-weight: normal;
+    font-size: var(--font-size-caption);
+    overflow: visible;
 }
 
 .options .option .name {
@@ -118,7 +124,8 @@
     flex-direction: row;
     justify-content: space-between;
     flex-grow: 1;
-    font-size: 1.2rem;
+    gap: 0.5em;
+    font-size: var(--font-size-body);
     font-weight: 600;
     margin-bottom: 0.3rem;
     margin-left: 5px;
@@ -142,7 +149,6 @@ input.stake {
     border-radius: 5px;
     padding: 0 5px;
     font-size: 1rem;
-    margin: 0.5rem 0;
 }
 
 .actions {
@@ -166,6 +172,9 @@ input.stake {
 
 .empty {
     padding: 1em;
+    font-size: var(--font-size-body);
     font-weight: 600;
-    border-bottom: dashed 2px var(--egyptian-blue);
+    border-bottom: dashed 4px var(--salmon);
+    text-align: center;
+    line-height: 1.5em;
 }

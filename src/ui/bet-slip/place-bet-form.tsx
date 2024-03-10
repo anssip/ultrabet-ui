@@ -1,6 +1,5 @@
 'use client'
 
-import { useUser } from '@auth0/nextjs-auth0/client'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
 import React, { useContext, useEffect, useState } from 'react'
@@ -10,10 +9,9 @@ import { RemoveSlipOptionForm } from '@/ui/bet-slip/remove-slip-option-form'
 import { useRouter } from 'next/navigation'
 import { getLongBetName } from '@/lib/util'
 import { getOptionPointLabel, getSpreadOptionLabel } from '@/ui/event-util'
-import useSlip, { PlaceBetResponse } from '@/lib/useSlip'
 import { SlipContext, SlipType } from '@/lib/slip-context'
-import { SportWithEventsFragment } from '@/gql/documents.generated'
-import { removeSlipOption } from '@/app/actions'
+import { PlaceBetResponse } from '@/lib/useSlip'
+import classnames from 'classnames'
 
 export type CreatedBets = {
   singles: Bet[]
@@ -43,11 +41,7 @@ const initialState = {
   message: null,
 }
 
-export type PlaceBetFormProps = {
-  sports: SportWithEventsFragment[]
-}
-
-export function PlaceBetForm({ sports }: PlaceBetFormProps) {
+export function PlaceBetForm() {
   const slipState: SlipType | null = useContext(SlipContext)
   const [stakes, setStakes] = useState<Map<string, number>>(new Map())
   const [longStake, setLongStake] = useState<number | null>(null)
@@ -57,7 +51,6 @@ export function PlaceBetForm({ sports }: PlaceBetFormProps) {
   const [createdBetsCount, setCreatedBetsCount] = useState(0)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const events = sports.flatMap((sport) => sport.events ?? [])
 
   const getSingles = (): BetSlipOption[] => {
     return (
@@ -93,7 +86,7 @@ export function PlaceBetForm({ sports }: PlaceBetFormProps) {
       (bets: PlaceBetResponse) => {
         setLoading(false)
         const count = (bets.singles?.length ?? 0) + (bets.long ? 1 : 0)
-        router.refresh()
+        // router.refresh()
         setCreatedBetsCount(count)
 
         setTimeout(() => {
@@ -107,31 +100,25 @@ export function PlaceBetForm({ sports }: PlaceBetFormProps) {
     )
   }
 
-  function renderOption(option: MarketOption) {
+  function renderOption(option: BetSlipOption) {
     if (!option) return null
 
     function renderEventInfo() {
-      // find the event that has the market that has the option
-      const event = events.find((e) => {
-        return !!e?.markets?.find((m) =>
-          m?.options?.find((o: MarketOption | null) => o?.id === option.id)
-        )
-      })
-      console.log('event', event)
+      const event = option.event
       if (!event) {
         return null
       }
       return (
         <>
-          {event.homeTeamName} {getSpreadOptionLabel(event, true)} vs {event.awayTeamName}{' '}
+          {event.homeTeamName} {getSpreadOptionLabel(event, true)} &nbsp;vs&nbsp;
+          {event.awayTeamName}
           {getSpreadOptionLabel(event, false)}
         </>
       )
     }
 
-    // console.log('option', option, event)
     return (
-      <li key={option.id} className={styles.option}>
+      <li className={classnames(styles.option, styles.right)}>
         <div className={styles.optionInfo}>
           <div className={styles.header}>
             <div className={styles.name}>
@@ -143,7 +130,7 @@ export function PlaceBetForm({ sports }: PlaceBetFormProps) {
           </div>
           <div className={styles.content}>
             <div>{option.market?.name}</div>
-            <div>{event && renderEventInfo()}</div>
+            <div>{renderEventInfo()}</div>
           </div>
         </div>
         <input
@@ -183,11 +170,10 @@ export function PlaceBetForm({ sports }: PlaceBetFormProps) {
     )
   }
   if (!slipState?.options) return null
-  const long = slipState?.options.find((option) => option.id === 'long')
   return (
     <>
       <ol className={styles.column}>
-        {slipState?.options.map((option) => (
+        {slipState?.options.map((option: BetSlipOption) => (
           <li key={option.id} className={styles.option}>
             <div className={styles.header}>
               <RemoveSlipOptionForm option={option} />
@@ -196,13 +182,16 @@ export function PlaceBetForm({ sports }: PlaceBetFormProps) {
         ))}
       </ol>
       <form className={styles.betForm}>
-        <ol className={`${styles.right} ${styles.column}`}>
+        <ol className={`${styles.column}`}>
           {slipState?.options.map(renderOption)}
           {optionIds.length > 1 &&
             renderOption({
+              event: null,
+              stake: 0,
               id: 'long',
               name: getLongBetName(optionIds.length),
               odds: slipState.options.reduce((acc, o) => acc * o.odds, 1),
+              marketName: '',
             })}
         </ol>
         {optionIds.length > 0 ? (

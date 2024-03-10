@@ -25,14 +25,7 @@ type Props = {
 export function AddSlipOptionForm({ option, event, market }: Props) {
   const { user } = useUser()
   const slipSate = useContext(SlipContext)
-  if (!slipSate) return null
-  const { addOption } = slipSate
 
-  const betSlipOption: BetSlipOption = { ...option, event, marketName: market.name }
-  const [slipFormState, slipFormAction] = useFormState(
-    addSlipOption.bind(null, user ?? null, betSlipOption),
-    initialSlipFormState
-  )
   function handleClick(e: { preventDefault: () => void; stopPropagation: () => void }) {
     if (!user) {
       e.preventDefault()
@@ -41,10 +34,12 @@ export function AddSlipOptionForm({ option, event, market }: Props) {
       return (window.location.href = '/api/auth/login')
     }
   }
+  if (!slipSate) return null
   return (
     <form
       action={() => {
-        addOption(option)
+        const betSlipOption: BetSlipOption = { ...option, event, marketName: market.name }
+        slipSate?.addOption(betSlipOption)
       }}
     >
       <button
@@ -54,9 +49,6 @@ export function AddSlipOptionForm({ option, event, market }: Props) {
       >
         {option?.odds}
       </button>
-      <p aria-live="polite" className="sr-only">
-        {slipFormState?.message}
-      </p>
     </form>
   )
 }

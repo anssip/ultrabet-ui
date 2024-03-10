@@ -4,11 +4,11 @@ import { BetSlipOption } from '@/ui/bet-slip/bet-slip'
 import { MarketOption } from '@/gql/types.generated'
 
 export type SlipType = {
-  options: MarketOption[]
+  options: BetSlipOption[]
   refetchSlip: () => void
   loading: boolean
   removeOption: (optionId: string) => Promise<void>
-  addOption: (option: MarketOption) => Promise<void>
+  addOption: (option: BetSlipOption) => Promise<void>
   postBet: (singles: BetSlipOption[], long: BetSlipOption | null) => Promise<PlaceBetResponse>
 }
 

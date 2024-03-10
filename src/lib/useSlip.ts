@@ -22,7 +22,7 @@ async function removeSlipOption(optionId: string) {
   console.log('removed slip option', data)
 }
 
-async function addSlipOption(option: MarketOption) {
+async function addSlipOption(option: BetSlipOption) {
   console.log('adding slip option', option)
   const response = await fetch('/api/slip-options', {
     method: 'POST',
@@ -46,9 +46,7 @@ async function placeBet(
     method: 'POST',
     body: JSON.stringify({ singles, long }),
   })
-  const data = await response.json()
-  console.log('placed bet', data)
-  return data
+  return response.json()
 }
 
 const useSlip = (): SlipType => {
@@ -67,7 +65,6 @@ const useSlip = (): SlipType => {
       setIsLoading(true)
       try {
         const newData = await loadSlip()
-        console.log('got slip', newData)
         if (newData) {
           setOptions(newData ? Object.values(newData) : [])
         }
@@ -78,13 +75,8 @@ const useSlip = (): SlipType => {
     fetchData()
   }, [user])
 
-  useEffect(() => {
-    console.log('Slip is changed!', options)
-  }, [options])
-
   const refetchSlip = async () => {
     if (!user) {
-      console.log('no session, not refetching slip')
       return
     }
     const slip = await loadSlip()
@@ -106,8 +98,7 @@ const useSlip = (): SlipType => {
     setIsLoading(false)
   }
 
-  const addOption = async (option: MarketOption) => {
-    console.log('adding option', option)
+  const addOption = async (option: BetSlipOption) => {
     setIsLoading(true)
     await addSlipOption(option)
     await refetchSlip()
@@ -118,7 +109,6 @@ const useSlip = (): SlipType => {
     singles: BetSlipOption[],
     long: BetSlipOption | null
   ): Promise<PlaceBetResponse> => {
-    console.log('placing bet', singles, long)
     setIsLoading(true)
     const response = await placeBet(singles, long)
     setOptions([])

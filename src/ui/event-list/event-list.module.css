@@ -35,11 +35,11 @@
 .eventWrapper {
     display: flex;
     flex-direction: column;
-    /*margin-bottom: 16px;*/
     border: 1px solid #ccc;
     border-radius: var(--radius-large);
     color: black;
     width: 430px;
+    height: 235px;
     background-color: var(--off-white);
 }
 
@@ -62,7 +62,8 @@
 
 .headerItem {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.5em;
     text-align: center;
     max-width: 200px;
 }
@@ -73,7 +74,7 @@
 
 .headerSubItem2 {
     padding: 0.3em;
-    background-color: white;
+    background-color: var(--off-white);
 }
 
 .oddsWrapper {
@@ -92,6 +93,10 @@
 }
 
 .eventName {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2em;
     font-size: 1.2rem;
     font-weight: 400;
     color: var(--black);
@@ -105,7 +110,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-top: 1px solid #421c57;
+    border-top: 2px solid var(--pink-lavender);
     margin-top: 1em;
     padding-top: 1em;
 }
@@ -139,7 +144,7 @@
 .addSlipOptionButton {
     cursor: pointer;
     padding: 0.5em 2em 0.5em 2em;
-    background-color: #e4caf2;
+    background-color: var(--pink-lavender);
     color: black;
     border: none;
 }
