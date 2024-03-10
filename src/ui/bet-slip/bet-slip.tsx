@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 import styles from './bet-slip.module.css'
 import { MarketOption } from '@/gql/types.generated'
 import { PlaceBetForm } from '@/ui/bet-slip/place-bet-form'
-import { EventFragment } from '@/gql/documents.generated'
+import { EventFragment, SportWithEventsFragment } from '@/gql/documents.generated'
 import { Card } from '@/ui/card/card'
 import classnames from 'classnames'
 import useSlip from '@/lib/useSlip'
@@ -18,7 +18,11 @@ export type BetSlipOption = MarketOption & {
 
 export type Slip = { [key: string]: BetSlipOption }
 
-const BetSlip = () => {
+export type BetSLipProps = {
+  sports: SportWithEventsFragment[]
+}
+
+const BetSlip = ({ sports }: BetSLipProps) => {
   const [isOpen, setIsOpen] = useState(true)
   const slipState = useContext(SlipContext)
   console.log('BetSlip: slipState', slipState)
@@ -45,7 +49,10 @@ const BetSlip = () => {
         className={`${styles.betslip} ${isOpen ? styles.hidden : styles.visible}`}
         onClick={() => setIsOpen(true)}
       >
-        {getSlipTitle()}
+        <div className={styles.betSlipTitle}>
+          {getSlipTitle()}
+          <div className={styles.showAction}>Show selections ^</div>
+        </div>
       </div>
       <div className={styles.header}>
         <button
@@ -54,9 +61,7 @@ const BetSlip = () => {
         ></button>
       </div>
       <div className={styles.options}>
-        {/*TODO: pass a callback to PlaceBetForm to know when a bet is placed, then reload slip via*/}
-        {/* the new hook. Same callback is also called when an option is removed from slip. */}
-        <PlaceBetForm />
+        <PlaceBetForm sports={sports} />
       </div>
     </div>
   )

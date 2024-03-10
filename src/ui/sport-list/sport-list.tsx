@@ -67,7 +67,7 @@ export function SportList({ sports, market }: SportListProps) {
   return (
     <SlipProvider>
       <SportListPlain sports={sports} market={market} />
-      <BetSlip />
+      <BetSlip sports={sports} />
     </SlipProvider>
   )
 }

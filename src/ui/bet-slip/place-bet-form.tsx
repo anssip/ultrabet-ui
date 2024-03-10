@@ -5,13 +5,15 @@ import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
 import React, { useContext, useEffect, useState } from 'react'
 import { BetSlipOption, Slip } from '@/ui/bet-slip/bet-slip'
-import { Bet, MarketOption } from '@/gql/types.generated'
+import { Bet, Market, MarketOption } from '@/gql/types.generated'
 import { RemoveSlipOptionForm } from '@/ui/bet-slip/remove-slip-option-form'
 import { useRouter } from 'next/navigation'
 import { getLongBetName } from '@/lib/util'
 import { getOptionPointLabel, getSpreadOptionLabel } from '@/ui/event-util'
 import useSlip, { PlaceBetResponse } from '@/lib/useSlip'
 import { SlipContext, SlipType } from '@/lib/slip-context'
+import { SportWithEventsFragment } from '@/gql/documents.generated'
+import { removeSlipOption } from '@/app/actions'
 
 export type CreatedBets = {
   singles: Bet[]
@@ -41,7 +43,11 @@ const initialState = {
   message: null,
 }
 
-export function PlaceBetForm() {
+export type PlaceBetFormProps = {
+  sports: SportWithEventsFragment[]
+}
+
+export function PlaceBetForm({ sports }: PlaceBetFormProps) {
   const slipState: SlipType | null = useContext(SlipContext)
   const [stakes, setStakes] = useState<Map<string, number>>(new Map())
   const [longStake, setLongStake] = useState<number | null>(null)
@@ -51,6 +57,7 @@ export function PlaceBetForm() {
   const [createdBetsCount, setCreatedBetsCount] = useState(0)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const events = sports.flatMap((sport) => sport.events ?? [])
 
   const getSingles = (): BetSlipOption[] => {
     return (
@@ -102,23 +109,41 @@ export function PlaceBetForm() {
 
   function renderOption(option: MarketOption) {
     if (!option) return null
+
+    function renderEventInfo() {
+      // find the event that has the market that has the option
+      const event = events.find((e) => {
+        return !!e?.markets?.find((m) =>
+          m?.options?.find((o: MarketOption | null) => o?.id === option.id)
+        )
+      })
+      console.log('event', event)
+      if (!event) {
+        return null
+      }
+      return (
+        <>
+          {event.homeTeamName} {getSpreadOptionLabel(event, true)} vs {event.awayTeamName}{' '}
+          {getSpreadOptionLabel(event, false)}
+        </>
+      )
+    }
+
+    // console.log('option', option, event)
     return (
       <li key={option.id} className={styles.option}>
-        <div className={styles.header}>
-          <div className={styles.name}>
-            <div>
-              {option.name} {getOptionPointLabel(option, option.market?.name ?? '')}
+        <div className={styles.optionInfo}>
+          <div className={styles.header}>
+            <div className={styles.name}>
+              <div>
+                {option.name} {getOptionPointLabel(option, option.market?.name ?? '')}
+              </div>
+              <div>{option.odds.toFixed(2)}</div>
             </div>
-            <div>{option.odds.toFixed(2)}</div>
           </div>
-        </div>
-        <div className={styles.content}>
-          <div>{option.market?.name}</div>
-          <div>
-            {option.market?.event?.homeTeamName}{' '}
-            {getSpreadOptionLabel(option.market?.event ?? null, true)} vs{' '}
-            {option.market?.event?.awayTeamName}{' '}
-            {getSpreadOptionLabel(option.market?.event ?? null, false)}
+          <div className={styles.content}>
+            <div>{option.market?.name}</div>
+            <div>{event && renderEventInfo()}</div>
           </div>
         </div>
         <input
@@ -128,7 +153,7 @@ export function PlaceBetForm() {
           id={`${option.id}-stake`}
           min={0}
           step={1}
-          placeholder="Enter stake"
+          placeholder="Stake"
           required
           value={option.id === 'long' ? longStake ?? '' : stakes.get(option.id) ?? ''}
           onChange={(e) => {

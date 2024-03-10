@@ -9,6 +9,6 @@
 }
 
 .primary {
-    background-color: #367A65;
+    background-color: var(--salmon);
     color: white;
 }
