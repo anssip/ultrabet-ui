@@ -1,25 +1,30 @@
+
 .main {
-    margin: 0;
-    background-color: #555555;
+    background-color: var(--off-white);
+    color: var(--dark-grey);
+    padding-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1em;
     min-height: 100vh;
+    /* no left sidebar here */
+    margin: 0 0 0 -190px;
 }
 
 .header {
-    color: white;
 }
 
 .betItem {
-    padding: 1em;
-    width: 95vw;
+    width: 80%;
     display: flex;
     flex-direction: column;
-    color: white;
-    background-color: #3b4752;
+    color: var(--dark-grey);
     border: 1px solid rgb(255, 255, 0, 0.4);
+}
+
+.options {
+    padding-left: 1em;
 }
 
 .betHeader {
@@ -27,7 +32,6 @@
     flex-direction: row;
     justify-content: space-between;
     font-weight: bold;
-    margin: 1em 1.5em;
 }
 
 .betDetails {
@@ -38,7 +42,7 @@
 }
 
 .betMeta {
-    font-size: 0.8rem;
+    font-size: var(--font-size-body);
     font-weight: 200;
 }
 
@@ -49,12 +53,12 @@
     height: 7px;
     left: -20px;
     top: 5px;
-    border: 1px solid darkgray;
+    border: 1px solid var(--dark-grey);
     border-radius: 50%;
 }
 
 .status-pending {
-    color: ghostwhite;
+    color: var(--dark-grey);
 }
 
 .status-lost::before {
@@ -63,8 +67,8 @@
 }
 
 .status-won::before {
-    background-color: greenyellow;
-    border: 2px solid greenyellow;
+    background-color: green;
+    border: 2px solid green;
 }
 
 .status-canceled::before {
@@ -79,8 +83,8 @@
 }
 
 .smallText {
-    font-size: 0.8rem;
-    font-weight: 200;
+    font-size: var(--font-size-caption);
+    font-weight: 400;
 }
 
 .smallestText {
@@ -94,11 +98,11 @@
 
 .score {
     padding: 1em;
-    color: yellow;
+    color: var(--egyptian-blue);
     .live {
         text-transform: uppercase;
         font-family: monospace;
-        color: lightyellow;
+        color: var(--salmon);
         padding-left: 0.5rem;
     }
 }
@@ -110,7 +114,7 @@
     align-items: baseline;
     gap: 1em;
     margin: 0 1.5em;
-    border-top: 1px solid yellow;
+    border-top: 2px solid var(--salmon);
     padding-top: 0.5em
 }
 

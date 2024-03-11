@@ -4,7 +4,7 @@ import React from 'react'
 import { getClient } from '@/lib/client'
 import { ListSportsDocument } from '@/gql/documents.generated'
 import { Sport } from '@/gql/types.generated'
-import { PageNav } from '@/ui/page-nav'
+import '../../app/global-layout.css'
 
 export default async function EventsLayout({ children }: { children: React.ReactNode }) {
   const data = await getClient(false).query({
