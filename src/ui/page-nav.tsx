@@ -15,8 +15,8 @@ export function NavLink({
   className?: string
 }) {
   const path = usePathname()
-  const isActive = path.includes(slug) || (slug === 'h2h' && path === '/')
-  console.log('slug, path, isActive', slug, path, isActive)
+  const pathHasMarket = path.split('/').length >= 3
+  const isActive = path.includes(slug) || (slug.includes('h2h') && !pathHasMarket)
 
   return (
     <li className="pure-menu-item">
