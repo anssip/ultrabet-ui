@@ -2,10 +2,8 @@
 
 import { MarketOption } from '@/gql/types.generated'
 // @ts-ignore
-import { useFormState, useFormStatus } from 'react-dom'
-import { removeSlipOption } from '@/app/actions'
+import { useFormStatus } from 'react-dom'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
-import { useUser } from '@auth0/nextjs-auth0/client'
 import { useContext } from 'react'
 import { SlipContext } from '@/lib/slip-context'
 

@@ -1,19 +1,12 @@
 import { getClient } from '@/lib/client'
-import {
-  EventFragment,
-  ListSportsWithEventsDocument,
-  SportWithEventsFragment,
-} from '@/gql/documents.generated'
+import { ListSportsWithEventsDocument, SportWithEventsFragment } from '@/gql/documents.generated'
 import styles from '../../page.module.css'
-import { LiveEventList } from '@/ui/event-list/live-event-list'
 import React from 'react'
 import { PageNav } from '@/ui/page-nav'
-import { EventList } from '@/ui/event-list/event-list'
 import classnames from 'classnames'
 import { SportList } from '@/ui/sport-list/sport-list'
 
 export const revalidate = 60
-// export const dynamic = 'force-dynamic'
 
 async function fetchSports(params: { group: string; market: string }) {
   const start = new Date().getTime()

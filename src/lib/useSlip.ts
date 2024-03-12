@@ -58,9 +58,6 @@ const useSlip = (): SlipType => {
     if (!user) {
       return
     }
-    if (loading) {
-      return
-    }
     const fetchData = async () => {
       setIsLoading(true)
       try {

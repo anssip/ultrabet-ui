@@ -14,10 +14,8 @@ export type Props = {
 }
 
 export default function TopBar({ bettingUser }: Props) {
-  const path = usePathname()
   const { user, isLoading } = useUser()
   const [userMenuVisible, setUserMenuVisible] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
   const [toggleHorizontalTimeout, setToggleHorizontalTimeout] = useState<NodeJS.Timeout | null>(
     null
   )
@@ -51,13 +49,13 @@ export default function TopBar({ bettingUser }: Props) {
     menuRef.current.classList.toggle(styles.open)
     toggleRef.current.classList.toggle(styles.x)
   }
-  const closeMenu = () => {
-    if (menuRef.current && menuRef.current.classList.contains(styles.open)) {
-      toggleMenu()
-    }
-  }
 
   useEffect(() => {
+    const closeMenu = () => {
+      if (menuRef.current && menuRef.current.classList.contains(styles.open)) {
+        toggleMenu()
+      }
+    }
     const windowChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize'
     window.addEventListener(windowChangeEvent, closeMenu)
     return () => {

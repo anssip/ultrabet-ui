@@ -4,10 +4,8 @@ import React, { useContext, useState } from 'react'
 import styles from './bet-slip.module.css'
 import { MarketOption } from '@/gql/types.generated'
 import { PlaceBetForm } from '@/ui/bet-slip/place-bet-form'
-import { EventFragment, SportWithEventsFragment } from '@/gql/documents.generated'
-import { Card } from '@/ui/card/card'
+import { EventFragment } from '@/gql/documents.generated'
 import classnames from 'classnames'
-import useSlip from '@/lib/useSlip'
 import { SlipContext } from '@/lib/slip-context'
 
 export type BetSlipOption = MarketOption & {

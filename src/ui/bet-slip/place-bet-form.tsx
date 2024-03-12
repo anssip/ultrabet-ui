@@ -2,9 +2,9 @@
 
 import styles from '@/ui/bet-slip/bet-slip.module.css'
 import globals from '@/ui/globals.module.css'
-import React, { useContext, useEffect, useState } from 'react'
-import { BetSlipOption, Slip } from '@/ui/bet-slip/bet-slip'
-import { Bet, Market, MarketOption } from '@/gql/types.generated'
+import React, { useContext, useState } from 'react'
+import { BetSlipOption } from '@/ui/bet-slip/bet-slip'
+import { Bet } from '@/gql/types.generated'
 import { RemoveSlipOptionForm } from '@/ui/bet-slip/remove-slip-option-form'
 import { useRouter } from 'next/navigation'
 import { getLongBetName } from '@/lib/util'
