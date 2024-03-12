@@ -119,6 +119,12 @@
     overflow: visible;
 }
 
+.options .marketName {
+    font-weight: 600;
+    color: var(--salmon);
+    margin-bottom: 0.3rem;
+}
+
 .options .option .name {
     display: flex;
     flex-direction: row;

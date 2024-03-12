@@ -12,11 +12,7 @@ export default function Loading() {
       <Card className={styles.betItem}>
         <CardHeader title="Loading..." />
         <CardContent>
-          <div className={styles.numbers}>
-            <div className={styles.number}>
-              <div>...</div>
-            </div>
-          </div>
+          <p>loading...</p>
         </CardContent>
       </Card>
     </main>

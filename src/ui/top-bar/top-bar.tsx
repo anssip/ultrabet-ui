@@ -89,6 +89,7 @@ export default function TopBar({ bettingUser }: Props) {
       </div>
       <div className="pure-u-1 pure-u-md-1-3">
         <div className="pure-menu pure-menu-horizontal custom-can-transform">
+          {/*TODO: Use PageNav here*/}
           <ul className="pure-menu-list">
             <li className="pure-menu-item">
               <NavLink className="pure-menu-link" slug={'/'} label="Events" />

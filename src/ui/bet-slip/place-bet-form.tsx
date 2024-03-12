@@ -116,6 +116,7 @@ export function PlaceBetForm() {
         </>
       )
     }
+    console.log('option', option)
 
     return (
       <li className={classnames(styles.option, styles.right)}>
@@ -129,7 +130,7 @@ export function PlaceBetForm() {
             </div>
           </div>
           <div className={styles.content}>
-            <div>{option.market?.name}</div>
+            <div className={styles.marketName}>{option.marketName}</div>
             <div>{renderEventInfo()}</div>
           </div>
         </div>

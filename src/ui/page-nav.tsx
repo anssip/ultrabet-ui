@@ -35,8 +35,8 @@ export function PageNav({ prefix }: { prefix: string }) {
     <nav className={classnames(styles.nav, 'pure-menu pure-menu-horizontal')}>
       <ul className={'pure-menu-list'}>
         <NavLink slug={`${prefix}/h2h`} label="1x2" />
-        <NavLink slug={`${prefix}/spreads`} label="Handicap" />
-        <NavLink slug={`${prefix}/totals`} label="Match Goals" />
+        <NavLink slug={`${prefix}/spreads`} label="Spreads" />
+        <NavLink slug={`${prefix}/totals`} label="Totals" />
       </ul>
     </nav>
   )
