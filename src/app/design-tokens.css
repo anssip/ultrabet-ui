@@ -8,6 +8,7 @@
     --off-white-transparent: hsla(0, 0%, 96%, 0.8);
     --white: hsla(0, 0%, 100%, 1);
     --black: hsla(0, 0%, 0%, 1);
+    --black-transparent: hsla(0, 0%, 0%, 0.7);
     --dark-grey: hsla(0, 0%, 20%, 1);
 
     --spacing-small: 4px;

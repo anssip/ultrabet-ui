@@ -141,7 +141,6 @@
     font-size: 10px;
     color: #666;
     height: 10px;
-    margin-top: -15px;
     padding-bottom: 2px;
 }
 
@@ -151,6 +150,10 @@
     background-color: var(--pink-lavender);
     color: black;
     border: none;
+
+    @media screen and (max-width: 60em) {
+        padding: 0.5em 1.4em;
+    }
 }
 
 .addSlipOptionButton:hover {
