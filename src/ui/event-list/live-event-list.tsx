@@ -35,7 +35,7 @@ export function LiveEventList({
   const error = optionsError || scoreError || statusError
   useEffect(() => {
     if (error) {
-      alert(`Subscription error: ${error.message}`)
+      console.error(`Subscription error: ${error.message}`)
     }
   }, [error])
 

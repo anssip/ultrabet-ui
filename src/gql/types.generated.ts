@@ -210,15 +210,29 @@ export type MutationWithdrawFundsArgs = {
 /**  Queries */
 export type Query = {
   __typename?: 'Query';
+  /** List events available for betting in the specified sport group. Lists both live an upcoming events. */
+  eventsBySportGroup?: Maybe<Array<Maybe<Event>>>;
   getBet?: Maybe<Bet>;
   getEvent?: Maybe<Event>;
   getMarket?: Maybe<Market>;
+  /** List all events available for betting. Lists both live an upcoming events. */
+  listAllEvents?: Maybe<Array<Maybe<Event>>>;
   listBets?: Maybe<Array<Maybe<Bet>>>;
+  /** List upcoming events available for betting. */
   listEvents?: Maybe<Array<Maybe<Event>>>;
+  /** List live events available for betting. */
   listLiveEvents?: Maybe<Array<Maybe<Event>>>;
   listLiveMarkets?: Maybe<Array<Maybe<Market>>>;
   listMarkets?: Maybe<Array<Maybe<Market>>>;
+  /** List sports by group. */
+  listSports?: Maybe<Array<Maybe<Sport>>>;
   me?: Maybe<User>;
+};
+
+
+/**  Queries */
+export type QueryEventsBySportGroupArgs = {
+  group: Scalars['String'];
 };
 
 
@@ -251,6 +265,12 @@ export type QueryListMarketsArgs = {
   eventId: Scalars['ID'];
 };
 
+
+/**  Queries */
+export type QueryListSportsArgs = {
+  group?: InputMaybe<Scalars['String']>;
+};
+
 export type ScoreUpdate = {
   __typename?: 'ScoreUpdate';
   event: Event;
@@ -264,7 +284,10 @@ export type Sport = {
   __typename?: 'Sport';
   /** Is this sport in season at the moment? */
   active: Scalars['Boolean'];
+  activeEventCount?: Maybe<Scalars['Int']>;
   description: Scalars['String'];
+  /** List all events available for betting in this sport. */
+  events?: Maybe<Array<Maybe<Event>>>;
   group: Scalars['String'];
   /** Does this sport have outright markets? */
   hasOutrights: Scalars['Boolean'];

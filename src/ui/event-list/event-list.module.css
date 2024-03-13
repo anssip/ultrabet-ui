@@ -7,12 +7,24 @@
     font-weight: bold;
 }
 
+.content {
+    margin-bottom: 1em;
+}
+
+
 .events {
     display: flex;
     flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
     margin-top: 1em;
+    gap: var(--spacing-medium);
+    margin-bottom: 1em;
+
+    justify-content: center;
+    @media screen and (min-width: 80em) {
+        justify-content: flex-start;
+    }
 }
 
 @keyframes flash {
@@ -27,14 +39,12 @@
 .eventWrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    width: 400px;
     border: 1px solid #ccc;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 7px;
+    border-radius: var(--radius-large);
     color: black;
+    width: 430px;
+    height: 235px;
+    background-color: var(--off-white);
 }
 
 .eventWrapper.flash {
@@ -44,17 +54,20 @@
 .eventHeader {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    font-weight: 600;
-    color: #555;
+    justify-content: center;
+    /*font-weight: 600;*/
+    color: var(--black);
+    background-color: var(--peach-yellow);
     margin-bottom: 1em;
-    background-color: linen;
     padding: .5em 1em;
+    border-top-left-radius: var(--radius-large);
+    border-top-right-radius: var(--radius-large);
 }
 
 .headerItem {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.5em;
     text-align: center;
     max-width: 200px;
 }
@@ -65,23 +78,45 @@
 
 .headerSubItem2 {
     padding: 0.3em;
-    background-color: white;
+    background-color: var(--off-white);
 }
 
 .oddsWrapper {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 2em;
+}
+
+.market {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+}
+
+.eventName {
+    display: flex;
     align-items: center;
-    padding: 0 0.5em 0.5em 0.5em;
+    justify-content: center;
+    height: 2em;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--black);
+    text-align: center;
+    min-height: 1.5rem;
+    max-width: 400px;
+    word-wrap: break-word;
 }
 
 .oddsBox {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 33%;
-    /*width: 90px;*/
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 2px solid var(--pink-lavender);
+    margin-top: 1em;
+    padding-top: 1em;
 }
 
 .oddsValue {
@@ -91,7 +126,7 @@
 }
 
 .optionName {
-    font-size: 0.7rem;
+    font-size: 1rem;
     color: #222;
     text-align: center;
     min-height: 1.5rem;
@@ -103,16 +138,17 @@
 }
 
 .oddsHistory {
-    margin-top: 2px;
     font-size: 10px;
     color: #666;
     height: 10px;
+    margin-top: -15px;
+    padding-bottom: 2px;
 }
 
 .addSlipOptionButton {
     cursor: pointer;
-    padding: 0.5em 1em 0.5em 1em;
-    background-color: #ddd;
+    padding: 0.5em 2em 0.5em 2em;
+    background-color: var(--pink-lavender);
     color: black;
     border: none;
 }

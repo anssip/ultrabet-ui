@@ -2,10 +2,10 @@
 
 import { MarketOption } from '@/gql/types.generated'
 // @ts-ignore
-import { useFormState, useFormStatus } from 'react-dom'
-import { removeSlipOption } from '@/app/actions'
+import { useFormStatus } from 'react-dom'
 import styles from '@/ui/bet-slip/bet-slip.module.css'
-import { useUser } from '@auth0/nextjs-auth0/client'
+import { useContext } from 'react'
+import { SlipContext } from '@/lib/slip-context'
 
 const initialSlipFormState = {
   message: null,
@@ -25,17 +25,17 @@ function DeleteButton() {
 }
 
 export function RemoveSlipOptionForm({ option }: Props) {
-  const { user } = useUser()
-  const [slipFormState, slipFormAction] = useFormState(
-    removeSlipOption.bind(null, { sub: user?.sub ?? '' }, option),
-    initialSlipFormState
-  )
+  const slipSate = useContext(SlipContext)
+  if (!slipSate) return null
+  const { removeOption } = slipSate
+
   return (
-    <form action={slipFormAction}>
+    <form
+      action={(formData: FormData) => {
+        removeOption(option.id)
+      }}
+    >
       <DeleteButton />
-      <p aria-live="polite" className="sr-only">
-        {slipFormState?.message}
-      </p>
     </form>
   )
 }

@@ -5,7 +5,15 @@ import { MarketOption } from '@/gql/types.generated'
 import { MarketOptionWithHistory } from '@/ui/event-list/event-list'
 import { getOptionPointLabel } from '@/ui/event-util'
 
-export function Market({ event, market }: { event: EventFragment; market: MarketFragment }) {
+export function Market({
+  event,
+  market,
+  live,
+}: {
+  event: EventFragment
+  market: MarketFragment
+  live: boolean
+}) {
   const options = market?.options
   if (!options) return null
 
@@ -22,32 +30,45 @@ export function Market({ event, market }: { event: EventFragment; market: Market
     )
   })
 
+  function renderOptions(options: JSX.Element[]) {
+    return (
+      <div className={styles.market}>
+        <div className={styles.eventName}>{event.name}</div>
+        <div className={styles.oddsBox}>{options}</div>
+      </div>
+    )
+  }
+
   if (market.name === 'h2h' || market.name === 'h2h_lay' || market.name === 'spreads') {
-    return sortedOptions.map((option) => (
-      <div key={option?.id} className={styles.oddsBox}>
-        <div className={styles.optionName}>
-          {option?.name}{' '}
-          <span className={styles.point}>{getOptionPointLabel(option, market.name)}</span>
-        </div>
+    const h2hOptions = ['1', 'x', '2']
+    const options = sortedOptions.map((option, i: number) => (
+      <div key={option?.id}>
+        {market.name === 'spreads' ? getOptionPointLabel(option, market.name) : h2hOptions[i]}
         <AddSlipOptionForm option={option!} event={event} market={market} />
-        <div className={styles.oddsHistory}>
-          {(option as MarketOptionWithHistory).history ?? ''}
-        </div>
+        {live && (
+          <div className={styles.oddsHistory}>
+            {(option as MarketOptionWithHistory).history ?? ''}
+          </div>
+        )}
       </div>
     ))
+    return renderOptions(options)
   }
   if (market.name === 'totals') {
-    return sortedOptions.map((option) => (
-      <div key={option?.id} className={styles.oddsBox}>
+    const options = sortedOptions.map((option) => (
+      <div key={option?.id}>
         <div className={styles.optionName}>
           {option?.name} {option?.point}
         </div>
         <AddSlipOptionForm option={option!} event={event} market={market} />
-        <div className={styles.oddsHistory}>
-          {(option as MarketOptionWithHistory).history ?? ''}
-        </div>
+        {live && (
+          <div className={styles.oddsHistory}>
+            {(option as MarketOptionWithHistory).history ?? ''}
+          </div>
+        )}
       </div>
     ))
+    return renderOptions(options)
   }
 
   return <div></div>

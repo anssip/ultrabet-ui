@@ -2,12 +2,14 @@ import { getClient } from '@/lib/client'
 import { ListBetsDocument } from '@/gql/documents.generated'
 import styles from './page.module.css'
 import React from 'react'
-import { getAccessToken } from '@auth0/nextjs-auth0'
 import { Bet, BetOption, BetStatus, Maybe } from '@/gql/types.generated'
-import { getLongBetName } from '@/lib/util'
+import { fetchAccessToken, getLongBetName } from '@/lib/util'
 import { redirect } from 'next/navigation'
 import { formatTime } from '@/ui/date-util'
 import { getOptionPointLabel, getSpreadOptionLabel, renderScore } from '@/ui/event-util'
+import { Card } from '@/ui/card/card'
+import CardHeader from '@/ui/card/card-header'
+import { CardContent } from '@/ui/card/card-content'
 
 export const revalidate = 60
 
@@ -56,35 +58,27 @@ const BetListItem: React.FC<{ bet: Bet }> = ({ bet }) => {
   })
 
   return (
-    <div className={styles.betItem}>
-      <div className={styles.betHeader}>
-        <div>
-          €{bet.stake} {betType}
+    <Card className={styles.betItem}>
+      <CardHeader className={styles.betHeader} title={`$${bet.stake} ${betType}`}>
+        <div className={styles.betHeader}>
+          <div className={styles.betMeta}>Placed {formatTime(new Date(bet.createdAt))}</div>
         </div>
-        <div className={styles.betMeta}>Placed {formatTime(new Date(bet.createdAt))}</div>
-      </div>
-      <ul>{betOptions}</ul>
-      <div className={styles.numbers}>
-        <div className={styles.number}>
-          <div className={styles.smallText}>Stake</div>
-          <div>€{bet.stake}</div>
+      </CardHeader>
+      <CardContent>
+        <ul className={styles.options}>{betOptions}</ul>
+        <div className={styles.numbers}>
+          <div className={styles.number}>
+            <div className={styles.smallText}>Stake</div>
+            <div>€{bet.stake}</div>
+          </div>
+          <div className={styles.number}>
+            <div className={styles.smallText}>{betWinLabel(bet.status)}</div>
+            <div>€{Number(bet.potentialWinnings).toFixed(2)}</div>
+          </div>
         </div>
-        <div className={styles.number}>
-          <div className={styles.smallText}>{betWinLabel(bet.status)}</div>
-          <div>€{Number(bet.potentialWinnings).toFixed(2)}</div>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
-}
-
-export async function fetchAccessToken() {
-  try {
-    const { accessToken } = await getAccessToken()
-    return accessToken
-  } catch (e) {
-    return null
-  }
 }
 
 export default async function Page() {

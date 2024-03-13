@@ -1,0 +1,29 @@
+.cardHeader {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-x-large);
+    background-color: var(--egyptian-blue);
+    margin: var(--spacing-large-minus);
+    color: var(--white);
+    border-radius: var(--radius-large) var(--radius-large) 0 0;
+}
+
+.avatar {
+    margin-right: var(--spacing-large);
+    /* Adjust size as needed, or make it flexible based on content */
+}
+
+.headerContent {
+    flex: 1;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: var(--spacing-small) var(--spacing-large);
+}
+
+.subheader {
+    font-size: 0.875rem;
+    color: var(--dark-grey);
+}

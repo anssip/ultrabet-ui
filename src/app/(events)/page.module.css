@@ -1,0 +1,8 @@
+.eventsContainer {
+    padding: 2em;
+    background-color: var(--off-white);
+}
+
+.eventsContainer h2 {
+    margin-top: 0;
+}

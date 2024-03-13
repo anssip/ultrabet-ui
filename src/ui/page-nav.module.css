@@ -1,14 +1,27 @@
-.nav {
+.marketNav {
+    position: fixed;
+    top: 34px;
+    background-color: var(--off-white-transparent); ;
+    margin-left: -190px;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #e0e0e0;
+    /*border-bottom: 5px solid var(--light-blue);*/
     gap: 1em;
     font-size: 1.2rem;
     font-weight: 400;
+    color: var(--egyptian-blue);
+    /*// sticky at top of page*/
+}
 
-    .active {
-        font-weight: 600;
-    }
+.marketNav a {
+    color: var(--egyptian-blue);
+}
+
+.active {
+    font-weight: 600;
+    font-size: 1.1em;
+    background-color: var(--off-white);
 }

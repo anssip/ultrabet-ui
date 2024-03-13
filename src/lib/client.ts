@@ -13,7 +13,6 @@ export const getClient = (isAuthenticated: boolean = false) => {
     console.log(`uri, is authenticated? ${isAuthenticated}`, uri)
     const httpLink = new HttpLink({
       uri,
-      fetchOptions: { revalidate: 10 },
     })
     return new ApolloClient({
       cache: new InMemoryCache(),

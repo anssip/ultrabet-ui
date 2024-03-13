@@ -1,0 +1,8 @@
+
+.card {
+    background-color: var(--light-blue);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-level-3);
+    overflow: hidden;
+    padding: var(--spacing-medium);
+}

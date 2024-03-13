@@ -42,6 +42,35 @@ fragment Event on Event {
     }
 }
 
+fragment EventWithoutSport on Event {
+    id
+    externalId
+    name
+    startTime
+    homeTeamName
+    awayTeamName
+    result
+    isLive
+    completed
+    markets {
+        ...Market
+    }
+    scoreUpdates {
+        id
+        name
+        score
+    }
+}
+
+fragment Sport on Sport {
+    id
+    title
+    active
+    group
+    description
+    hasOutrights
+}
+
 query me {
     me {
         id
@@ -55,14 +84,14 @@ query me {
     }
 }
 
-query ListEvents {
-    listEvents {
+query ListLiveEvents {
+    listLiveEvents {
         ...Event
     }
 }
 
-query ListLiveEvents {
-    listLiveEvents {
+query ListEventsBySport($group: String!) {
+    eventsBySportGroup(group: $group) {
         ...Event
     }
 }
@@ -96,7 +125,24 @@ query ListBets {
     }
 }
 
+query listSports {
+    listSports(group: "all") {
+        ...Sport
+    }
+}
 
+fragment SportWithEvents on Sport {
+    ...Sport
+    events {
+        ...EventWithoutSport
+    }
+}
+
+query listSportsWithEvents($group: String!) {
+    listSports(group: $group) {
+        ...SportWithEvents
+    }
+}
 
 subscription marketOptionUpdates {
     liveMarketOptionsUpdated {
@@ -125,6 +171,7 @@ mutation placeBet($betType: BetType!, $marketOptions: [ID!]!, $stake: Float!) {
         status
     }
 }
+
 mutation placeSingleBets($options: [BetOptionInput!]!) {
     placeSingleBets(options: $options) {
         id

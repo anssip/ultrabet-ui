@@ -104,14 +104,22 @@ type Mutation {
 
 " Queries"
 type Query {
+    "List events available for betting in the specified sport group. Lists both live an upcoming events."
+    eventsBySportGroup(group: String!): [Event]
     getBet(id: ID!): Bet
     getEvent(id: ID!): Event
     getMarket(id: ID!): Market
+    "List all events available for betting. Lists both live an upcoming events."
+    listAllEvents: [Event]
     listBets: [Bet]
+    "List upcoming events available for betting."
     listEvents: [Event]
+    "List live events available for betting."
     listLiveEvents: [Event]
     listLiveMarkets(eventId: ID!): [Market]
     listMarkets(eventId: ID!): [Market]
+    "List sports by group."
+    listSports(group: String): [Sport]
     me: User
 }
 
@@ -126,7 +134,10 @@ type ScoreUpdate {
 type Sport {
     "Is this sport in season at the moment?"
     active: Boolean!
+    activeEventCount: Int
     description: String!
+    "List all events available for betting in this sport."
+    events: [Event]
     group: String!
     "Does this sport have outright markets?"
     hasOutrights: Boolean!
