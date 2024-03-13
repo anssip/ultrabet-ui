@@ -1,4 +1,9 @@
-.nav {
+.marketNav {
+    position: fixed;
+    top: 34px;
+    background-color: var(--off-white-transparent); ;
+    margin-left: -190px;
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,13 +13,15 @@
     font-size: 1.2rem;
     font-weight: 400;
     color: var(--egyptian-blue);
+    /*// sticky at top of page*/
 }
 
-.nav a {
+.marketNav a {
     color: var(--egyptian-blue);
 }
 
 .active {
     font-weight: 600;
     font-size: 1.1em;
+    background-color: var(--off-white);
 }

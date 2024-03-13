@@ -19,8 +19,12 @@
     flex-wrap: wrap;
     margin-top: 1em;
     gap: var(--spacing-medium);
-    justify-content: flex-start;
     margin-bottom: 1em;
+
+    justify-content: center;
+    @media screen and (min-width: 80em) {
+        justify-content: flex-start;
+    }
 }
 
 @keyframes flash {

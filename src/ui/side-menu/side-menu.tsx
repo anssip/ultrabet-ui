@@ -1,5 +1,6 @@
 import { Sport } from '@/gql/types.generated'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export type Props = {
   sports: Sport[]

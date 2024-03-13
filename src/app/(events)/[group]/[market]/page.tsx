@@ -2,7 +2,7 @@ import { getClient } from '@/lib/client'
 import { ListSportsWithEventsDocument, SportWithEventsFragment } from '@/gql/documents.generated'
 import styles from '../../page.module.css'
 import React from 'react'
-import { PageNav } from '@/ui/page-nav'
+import { MarketNav, PageNav } from '@/ui/page-nav'
 import classnames from 'classnames'
 import { SportList } from '@/ui/sport-list/sport-list'
 
@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { group: string; market
 
   return (
     <main className={classnames(styles.eventsContainer)}>
-      <PageNav prefix={`/${params.group ?? 'all'}`} />
+      <MarketNav prefix={`/${params.group ?? 'all'}`} />
       <SportList sports={sports} market={params.market} />
     </main>
   )

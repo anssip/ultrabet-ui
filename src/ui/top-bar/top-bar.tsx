@@ -1,13 +1,12 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { formatTime } from '@/ui/date-util'
 import { useUser } from '@auth0/nextjs-auth0/client'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './top-bar.module.css'
 import { User } from '@/gql/types.generated'
-import { NavLink } from '@/ui/page-nav'
+import { PageNav } from '@/ui/page-nav'
 
 export type Props = {
   bettingUser: User | null
@@ -26,14 +25,14 @@ export default function TopBar({ bettingUser }: Props) {
     setUserMenuVisible(!userMenuVisible)
   }
 
-  const toggleHorizontal = () => {
-    if (!menuRef.current) return
-    menuRef.current.classList.remove('closing')
-    Array.from(menuRef.current.querySelectorAll('.custom-can-transform')).forEach((el) => {
-      el.classList.toggle('pure-menu-horizontal')
-    })
-  }
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
+    const toggleHorizontal = () => {
+      if (!menuRef.current) return
+      menuRef.current.classList.remove('closing')
+      Array.from(menuRef.current.querySelectorAll('.custom-can-transform')).forEach((el) => {
+        el.classList.toggle('pure-menu-horizontal')
+      })
+    }
     console.log('toggleMenu()')
     if (!menuRef.current || !toggleRef.current) return
     if (menuRef.current.classList.contains(styles.open)) {
@@ -48,7 +47,7 @@ export default function TopBar({ bettingUser }: Props) {
     }
     menuRef.current.classList.toggle(styles.open)
     toggleRef.current.classList.toggle(styles.x)
-  }
+  }, [toggleHorizontalTimeout])
 
   useEffect(() => {
     const closeMenu = () => {
@@ -87,15 +86,7 @@ export default function TopBar({ bettingUser }: Props) {
       </div>
       <div className="pure-u-1 pure-u-md-1-3">
         <div className="pure-menu pure-menu-horizontal custom-can-transform">
-          {/*TODO: Use PageNav here*/}
-          <ul className="pure-menu-list">
-            <li className="pure-menu-item">
-              <NavLink className="pure-menu-link" slug={'/'} label="Events" />
-            </li>
-            <li className="pure-menu-item">
-              <NavLink className="pure-menu-link" slug={'/bets'} label="My Bets" />
-            </li>
-          </ul>
+          <PageNav />
         </div>
       </div>
       <div className={`pure-u-1 pure-u-md-1-3 ${styles.profileActions}`}>

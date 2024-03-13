@@ -5,6 +5,7 @@
     --light-blue: hsla(227, 40%, 90%, 1);
     --pink-lavender: hsla(314, 48%, 82%, 1);
     --off-white: hsla(0, 0%, 96%, 1);
+    --off-white-transparent: hsla(0, 0%, 96%, 0.8);
     --white: hsla(0, 0%, 100%, 1);
     --black: hsla(0, 0%, 0%, 1);
     --dark-grey: hsla(0, 0%, 20%, 1);
