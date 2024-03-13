@@ -97,6 +97,15 @@ export default async function Page() {
   })
   const bets: Bet[] = data.data.listBets as Bet[]
 
+  if (bets.length === 0) {
+    return (
+      <main className={styles.main}>
+        <h1 className={styles.header}>My Bets</h1>
+        <p>No bets placed yet.</p>
+      </main>
+    )
+  }
+
   return (
     <main className={styles.main}>
       <h1 className={styles.header}>My Bets</h1>
