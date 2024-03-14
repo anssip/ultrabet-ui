@@ -6,7 +6,8 @@ import { MarketNav, PageNav } from '@/ui/page-nav'
 import classnames from 'classnames'
 import { SportList } from '@/ui/sport-list/sport-list'
 
-export const revalidate = 60
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 async function fetchSports(params: { group: string; market: string }) {
   const start = new Date().getTime()
