@@ -33,7 +33,7 @@ function SportListPlain({ group, sports, market }: SportListProps) {
   return (
     <div className={styles.container}>
       <h1 className={styles.groupTitle}>
-        {group === 'all' ? 'All Sports' : decodeURIComponent(group)}
+        {(group ?? 'all') === 'all' ? 'All Sports' : decodeURIComponent(group)}
       </h1>
       {[...sportsWithEvents, ...sportsWithoutEvents].map((sport) => {
         const liveEvents = (
