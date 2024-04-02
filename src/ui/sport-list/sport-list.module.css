@@ -1,3 +1,7 @@
+.groupTitle {
+    color: var(--egyptian-blue);
+}
+
 .container {
     display: flex;
     flex-direction: column;

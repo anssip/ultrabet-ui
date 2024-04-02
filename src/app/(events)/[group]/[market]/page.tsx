@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: { group: string; market
   return (
     <main className={classnames(styles.eventsContainer)}>
       <MarketNav prefix={`/${params.group ?? 'all'}`} />
-      <SportList sports={sports} market={params.market} />
+      <SportList group={params.group} sports={sports} market={params.market} />
     </main>
   )
 }

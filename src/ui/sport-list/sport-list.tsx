@@ -22,15 +22,19 @@ const eventHasOptionsInMarket =
   }
 
 export type SportListProps = {
+  group: string
   sports: SportWithEventsFragment[]
   market: string
 }
-function SportListPlain({ sports, market }: SportListProps) {
+function SportListPlain({ group, sports, market }: SportListProps) {
   const sportsWithEvents = sports.filter((sport) => sport?.events?.length)
   const sportsWithoutEvents = sports.filter((sport) => !sport?.events?.length)
 
   return (
     <div className={styles.container}>
+      <h1 className={styles.groupTitle}>
+        {group === 'all' ? 'All Sports' : decodeURIComponent(group)}
+      </h1>
       {[...sportsWithEvents, ...sportsWithoutEvents].map((sport) => {
         const liveEvents = (
           sport.events?.filter((event) => event?.isLive) as EventFragment[]
@@ -63,10 +67,10 @@ function SportListPlain({ sports, market }: SportListProps) {
   )
 }
 
-export function SportList({ sports, market }: SportListProps) {
+export function SportList({ group, sports, market }: SportListProps) {
   return (
     <SlipProvider>
-      <SportListPlain sports={sports} market={market} />
+      <SportListPlain group={group} sports={sports} market={market} />
       <BetSlip />
     </SlipProvider>
   )
